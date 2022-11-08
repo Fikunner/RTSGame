@@ -1,0 +1,61 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "Units/BaseAIControllerUnits.h"
+#include "Niagara/Public/NiagaraComponent.h"
+#include "Niagara/Public/NiagaraFunctionLibrary.h"
+#include "Buildings/SelectionEvent.h"
+#include "Units/UnitActions.h"
+#include "CoreMinimal.h"
+#include "GameFramework/PlayerController.h"
+#include "BasePlayerController.generated.h"
+
+/**
+ * 
+ */
+UCLASS()
+class RTSGAME_API ABasePlayerController : public APlayerController, public ISelectionEvent, public IUnitActions
+{
+	GENERATED_BODY()
+	
+public:
+	ABasePlayerController();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void AddActorSelectedToList(AActor* SelectedActor);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void DeselectAllActors();
+
+protected:
+	virtual void SetupInputComponent() override;
+
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Movement")
+	float ViewportEdgeTreshold = 0.02;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Movement")
+	float MouseForwardScale;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Movement")
+	float MouseRightScale;
+
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* NS_ClickIndicator;
+
+private:
+
+	void MoveForward(float Value);
+	void MoveRight(float Value);
+	void MouseMovement(float Value);
+
+	void MouseSelection();
+	void MouseAction();
+
+	UPROPERTY(EditAnywhere)
+	TArray<AActor*> SelectedActors;
+
+	class ABaseBuildings* BuildingBase;
+	class ABaseWorker* Worker;
+	class ABaseAIControllerUnits* AIControllerUnits;
+
+};
