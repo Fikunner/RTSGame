@@ -82,6 +82,8 @@ private:
 	FTimerHandle HandleGatherThisResource;
 	FTimerDelegate DelegateGatherThisResource;
 
+	UPathFollowingComponent* PathFollowingComponent;
+
 	FRotator ResourcePosition;
 
 	FAIRequestID Results;

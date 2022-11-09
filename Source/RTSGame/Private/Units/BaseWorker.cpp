@@ -40,8 +40,14 @@ void ABaseWorker::NotifyActorOnClicked(FKey ButtonPressed)
 
 void ABaseWorker::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {	
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "OnMoveCompleted always");
+	
+	bool GoToTownHall = false;
+
 	if (bMoveUnitToThisLocation && Result.Code == EPathFollowingResult::Success || Result.Code == EPathFollowingResult::Blocked || Result.Code == EPathFollowingResult::OffPath || Result.Code == EPathFollowingResult::Invalid)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "OnMoveCompleted in MoveUnitToThisLocation");
+
 		bMoveUnitToThisLocation = false;
 
 		BaseUnitComponent->HandleNewUnitState(EUnitState::Idle);
@@ -51,6 +57,7 @@ void ABaseWorker::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingRe
 	{	
 		DelegateGatherThisResource.BindLambda([&]()
 		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, "OnMoveCompleted in GatherThisResource");
 			if (BaseUnitComponent->UnitState == EUnitState::Mining)
 			{
 				ResourceBeingCarried = ResourceComponent->TypeOfResource;
@@ -59,10 +66,10 @@ void ABaseWorker::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingRe
 				RTSGameMode = Cast<ABaseRTSGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
 				BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
-				AIControllerUnits->MoveToActor(RTSGameMode->GetPlayerTownHall(), 200.f, true);
 
-				//BaseUnitComponent->HandleNewUnitState(EUnitState::Idle);
-				//GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::Yellow, "Stop!");
+				AIControllerUnits->MoveToActor(RTSGameMode->GetPlayerTownHall(RTSGameMode->TownHallLoc), 200.f, true);
+
+				GoToTownHall = true;
 			}
 		});
 
@@ -81,6 +88,13 @@ void ABaseWorker::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingRe
 		{
 			BaseUnitComponent->HandleNewUnitState(EUnitState::Idle);
 		}
+	}
+
+	if (GoToTownHall)
+	{
+		GoToTownHall = false;
+
+		BaseUnitComponent->HandleNewUnitState(EUnitState::Idle);
 	}
 }
 
@@ -127,7 +141,7 @@ void ABaseWorker::GatherThisResource(AActor* ResourceRef)
 void ABaseWorker::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	if (ResourceComponent == NULL)
 	{
 		ResourceComponent = NewObject<UResourceComponent>(this);
@@ -135,7 +149,7 @@ void ABaseWorker::BeginPlay()
 
 	AIControllerUnits = Cast<ABaseAIControllerUnits>(GetController());
 
-	UPathFollowingComponent* PathFollowingComponent = AIControllerUnits->GetPathFollowingComponent();
+	PathFollowingComponent = AIControllerUnits->GetPathFollowingComponent();
 
 	if (AIControllerUnits)
 	{
