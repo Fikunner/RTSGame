@@ -18,16 +18,16 @@ public:
 	// Sets default values for this component's properties
 	UResourceComponent();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY()
 	TEnumAsByte<EResourceTypes> TypeOfResource;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY()
 	int TimeIsCanBeMined;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY()
 	int NumberOfResourcesToGive;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	float TimeItTakesToBeGatheredInSeconds = 2.f;
 
 protected:

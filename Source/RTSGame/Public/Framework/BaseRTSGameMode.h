@@ -21,10 +21,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Buildings")
 	TSubclassOf<AActor> TownHall;
 
-	AActor* TownHallLoc;
+	AActor* TownHallLocation;
 
 	UFUNCTION(BlueprintCallable)
-	AActor* GetPlayerTownHall(AActor* TownHallLocation);
+	AActor* GetPlayerTownHall(AActor* Location);
 
 protected:
 

@@ -9,7 +9,7 @@ void ABaseRTSGameMode::BeginPlay()
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), TownHall, ATownHalls);
 }
 
-AActor* ABaseRTSGameMode::GetPlayerTownHall(AActor* TownHallLocation)
+AActor* ABaseRTSGameMode::GetPlayerTownHall(AActor* Location)
 {
 	int FoundIndex;
 
@@ -18,11 +18,11 @@ AActor* ABaseRTSGameMode::GetPlayerTownHall(AActor* TownHallLocation)
 		if (ArrayElements->Tags.Find("Player") >= 0)
 		{
 			FoundIndex = ArrayElements->Tags.Find("Player");
+
+			Location = ATownHalls[FoundIndex];
 			break;
 		}
 	}
 
-	TownHallLocation = ATownHalls[FoundIndex];
-
-	return TownHallLocation;
+	return Location;
 }

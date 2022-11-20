@@ -32,12 +32,6 @@ public:
 	UFUNCTION()
 	void GatherThisResource(AActor* ResourceRef);
 
-	UPROPERTY()
-	bool bMoveUnitToThisLocation;
-
-	UPROPERTY()
-	bool bGatherThisResource;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -53,9 +47,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Animations")
 	UAnimationAsset* AnimationIdle;
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UActorComponent> ClassOfResourceComponent;
 
 	UPROPERTY(EditAnywhere)
 	TEnumAsByte<EResourceTypes> ResourceBeingCarried;
@@ -75,8 +66,9 @@ private:
 	UFUNCTION()
 	void NotifyActorOnClicked(FKey ButtonPressed);
 
-	void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result);
-
+	void OnMoveCompletedMoveUnitToThisLocation(FAIRequestID RequestID, const FPathFollowingResult& Result);
+	void OnMoveCompletedGatherThisResource(FAIRequestID RequestID, const FPathFollowingResult& Result);
+	
 	void SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void> ObjectDelegate, float Time, bool bLoop);
 
 	FTimerHandle HandleGatherThisResource;
@@ -92,6 +84,7 @@ private:
 	class UResourceComponent* ResourceComponent;
 	class UBaseUnitComponent* BaseUnitComponent;
 	class ABaseRTSGameMode* RTSGameMode;
+	class ABasePlayerController* PlayerController;
 
 };
 

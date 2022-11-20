@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
+#include "Resources/ResourceComponent.h"
+#include "Resources/BaseResource.h"
 #include "Units/BaseAIControllerUnits.h"
 #include "Niagara/Public/NiagaraComponent.h"
 #include "Niagara/Public/NiagaraFunctionLibrary.h"
@@ -22,6 +23,14 @@ class RTSGAME_API ABasePlayerController : public APlayerController, public ISele
 public:
 	ABasePlayerController();
 
+	UFUNCTION(BlueprintCallable)
+	void ReceiveResources(EResourceTypes ResourceType, int32 Amount);
+
+	TArray<class AActor*> OutActors;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<EResourceTypes, int32> StoredResource;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void AddActorSelectedToList(AActor* SelectedActor);
 
@@ -30,7 +39,6 @@ public:
 
 protected:
 	virtual void SetupInputComponent() override;
-
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Movement")
 	float ViewportEdgeTreshold = 0.02;
@@ -50,7 +58,7 @@ private:
 
 	void MouseSelection();
 	void MouseAction();
-
+	
 	UPROPERTY(EditAnywhere)
 	TArray<AActor*> SelectedActors;
 

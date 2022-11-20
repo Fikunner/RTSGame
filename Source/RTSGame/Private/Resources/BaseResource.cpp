@@ -2,6 +2,7 @@
 
 
 #include "Resources/BaseResource.h"
+#include "Resources/ResourceComponent.h"
 
 // Sets default values
 ABaseResource::ABaseResource()
@@ -12,6 +13,7 @@ ABaseResource::ABaseResource()
 	ResourceMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	ResourceMesh->SetupAttachment(RootComponent);
 
+	ResourceComponent = CreateDefaultSubobject<UResourceComponent>("ResourceComponent");
 }
 
 // Called when the game starts or when spawned
@@ -19,6 +21,11 @@ void ABaseResource::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (ResourceComponent == NULL)
+	{
+		ResourceComponent = NewObject<UResourceComponent>(this);
+	}
+
 }
 
 // Called every frame

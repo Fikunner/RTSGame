@@ -21,8 +21,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* ResourceMesh;
+
+	UPROPERTY(EditAnywhere)
+	class UResourceComponent* ResourceComponent;
 
 public:	
 	// Called every frame
@@ -30,10 +33,10 @@ public:
 
 };
 
-UENUM()
+UENUM(BlueprintType)
 enum class EResourceTypes : uint8
 {
-	None = 0 UMETA(DisplayName = "None"),
-	Gold = 1 UMETA(DisplayName = "Gold"),
-	Wood = 2 UMETA(DisplayName = "Wood")
+	None UMETA(DisplayName = "None"),
+	Gold UMETA(DisplayName = "Gold"),
+	Wood UMETA(DisplayName = "Wood")
 };

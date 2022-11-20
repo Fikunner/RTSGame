@@ -70,7 +70,6 @@ void ABasePlayerController::MouseAction()
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
 	
 	const TArray<AActor*> ActorsToIgnore;
-	TArray<class AActor*> OutActors;
 
 	UClass* ActorClassFilter = NULL;
 
@@ -104,6 +103,28 @@ void ABasePlayerController::MouseAction()
 				}
 			}
 		}
+	}
+}
+
+void ABasePlayerController::ReceiveResources(EResourceTypes ResourceType, int32 Amount)
+{
+	FString IntAsString = FString::FromInt(Amount);
+
+	if (StoredResource.Contains(ResourceType))
+	{
+		StoredResource.Find(ResourceType);
+
+		Amount += 5;
+
+		StoredResource.Add(ResourceType, Amount);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Contains");
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, IntAsString);
+	}
+
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, IntAsString);
+		StoredResource.Add(ResourceType, Amount);
 	}
 }
 

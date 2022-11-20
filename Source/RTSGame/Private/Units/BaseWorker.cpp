@@ -8,12 +8,12 @@
 #include "AIController.h"
 #include "Units/BaseAIControllerUnits.h"
 #include "NavigationSystem.h"
-#include "AITypes.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Units/BaseUnitComponent.h"
 #include "Framework/BaseRTSGameMode.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "BasePlayerController.h"
+#include "GameFramework/PlayerController.h"
 
 // Sets default values
 ABaseWorker::ABaseWorker()
@@ -38,63 +38,63 @@ void ABaseWorker::NotifyActorOnClicked(FKey ButtonPressed)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f , FColor::Red, "Clicked Actor");
 }
 
-void ABaseWorker::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
-{	
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "OnMoveCompleted always");
-	
-	bool GoToTownHall = false;
-
-	if (bMoveUnitToThisLocation && Result.Code == EPathFollowingResult::Success || Result.Code == EPathFollowingResult::Blocked || Result.Code == EPathFollowingResult::OffPath || Result.Code == EPathFollowingResult::Invalid)
+void ABaseWorker::OnMoveCompletedMoveUnitToThisLocation(FAIRequestID RequestID, const FPathFollowingResult& Result)
+{
+	if (Result.Code == EPathFollowingResult::Success || Result.Code == EPathFollowingResult::Blocked || Result.Code == EPathFollowingResult::OffPath || Result.Code == EPathFollowingResult::Invalid)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "OnMoveCompleted in MoveUnitToThisLocation");
-
-		bMoveUnitToThisLocation = false;
 
 		BaseUnitComponent->HandleNewUnitState(EUnitState::Idle);
 	}
 
-	if (bGatherThisResource && Result.Code == EPathFollowingResult::Success)
-	{	
+	PathFollowingComponent->OnRequestFinished.RemoveAll(this);
+}
+
+void ABaseWorker::OnMoveCompletedGatherThisResource(FAIRequestID RequestID, const FPathFollowingResult& Result)
+{
+	if (Result.Code == EPathFollowingResult::Success)
+	{
 		DelegateGatherThisResource.BindLambda([&]()
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, "OnMoveCompleted in GatherThisResource");
+
 			if (BaseUnitComponent->UnitState == EUnitState::Mining)
 			{
-				ResourceBeingCarried = ResourceComponent->TypeOfResource;
-				AmountOfResources = ResourceComponent->NumberOfResourcesToGive;
-
-				RTSGameMode = Cast<ABaseRTSGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-
+				ResourceComponent->TypeOfResource = ResourceBeingCarried;
+				ResourceComponent->NumberOfResourcesToGive = AmountOfResources;
+		
 				BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
 
-				AIControllerUnits->MoveToActor(RTSGameMode->GetPlayerTownHall(RTSGameMode->TownHallLoc), 200.f, true);
-
-				GoToTownHall = true;
+				AIControllerUnits->MoveToActor(RTSGameMode->GetPlayerTownHall(RTSGameMode->TownHallLocation), 200.f, true);
 			}
 		});
 
-		bGatherThisResource = false;
 		SetActorRotation(FRotator(0, ResourcePosition.Yaw, 0));
+
+		ResourceComponent->TypeOfResource = EResourceTypes::Gold;
 
 		if (ResourceBeingCarried != ResourceComponent->TypeOfResource)
 		{
 			BaseUnitComponent->HandleNewUnitState(EUnitState::Mining);
-			
+
 			AmountOfResources = 0;
-			
+
 			SetTimerWithDelegate(HandleGatherThisResource, DelegateGatherThisResource, ResourceComponent->TimeItTakesToBeGatheredInSeconds, false);
 		}
+
 		else
 		{
 			BaseUnitComponent->HandleNewUnitState(EUnitState::Idle);
+
+			PlayerController->ReceiveResources(ResourceBeingCarried, AmountOfResources);
+
+			ResourceBeingCarried = EResourceTypes::None;
+			AmountOfResources = 0;
+
+			//GatherThisResource();
+
+			PathFollowingComponent->OnRequestFinished.RemoveAll(this);
 		}
-	}
-
-	if (GoToTownHall)
-	{
-		GoToTownHall = false;
-
-		BaseUnitComponent->HandleNewUnitState(EUnitState::Idle);
 	}
 }
 
@@ -123,17 +123,25 @@ void ABaseWorker::MoveUnitToThisLocation(FVector Location)
 {	
 	BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
 
-	bMoveUnitToThisLocation = true;
 	AIControllerUnits->MoveToLocation(Location, 50.f);
+
+	if (AIControllerUnits)
+	{
+		PathFollowingComponent->OnRequestFinished.AddUObject(this, &ABaseWorker::OnMoveCompletedMoveUnitToThisLocation);
+	}
 }
 
 void ABaseWorker::GatherThisResource(AActor* ResourceRef)
 {	
+	if (AIControllerUnits)
+	{
+		PathFollowingComponent->OnRequestFinished.AddUObject(this, &ABaseWorker::OnMoveCompletedGatherThisResource);
+	}
+	
 	BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
 	
 	ResourcePosition = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), ResourceRef->GetActorLocation());
 
-	bGatherThisResource = true;
 	AIControllerUnits->MoveToActor(ResourceRef, 200.f);
 }
 
@@ -147,14 +155,11 @@ void ABaseWorker::BeginPlay()
 		ResourceComponent = NewObject<UResourceComponent>(this);
 	}
 
+	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	RTSGameMode = Cast<ABaseRTSGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	AIControllerUnits = Cast<ABaseAIControllerUnits>(GetController());
 
 	PathFollowingComponent = AIControllerUnits->GetPathFollowingComponent();
-
-	if (AIControllerUnits)
-	{
-		PathFollowingComponent->OnRequestFinished.AddUObject(this, &ABaseWorker::OnMoveCompleted);
-	}
 
 	BaseUnitComponent = Cast<UBaseUnitComponent>(GetComponentByClass(UBaseUnitComponent::StaticClass()));
 
