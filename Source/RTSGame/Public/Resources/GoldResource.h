@@ -22,7 +22,6 @@ protected:
 
 	void BeginPlay() override;
 
-private:
+	class UResourceComponent* ResourceComponent;
 
-	UResourceComponent* ResourceComponent;
 };

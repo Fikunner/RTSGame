@@ -38,16 +38,41 @@ void ABaseWorker::NotifyActorOnClicked(FKey ButtonPressed)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f , FColor::Red, "Clicked Actor");
 }
 
+void ABaseWorker::MoveUnitToThisLocation(FVector Location)
+{
+	BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
+
+	AIControllerUnits->MoveToLocation(Location, 50.f);
+
+	if (AIControllerUnits)
+	{
+		PathFollowingComponent->OnRequestFinished.AddUObject(this, &ABaseWorker::OnMoveCompletedMoveUnitToThisLocation);
+	}
+}
+
 void ABaseWorker::OnMoveCompletedMoveUnitToThisLocation(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
 	if (Result.Code == EPathFollowingResult::Success || Result.Code == EPathFollowingResult::Blocked || Result.Code == EPathFollowingResult::OffPath || Result.Code == EPathFollowingResult::Invalid)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "OnMoveCompleted in MoveUnitToThisLocation");
-
 		BaseUnitComponent->HandleNewUnitState(EUnitState::Idle);
 	}
 
 	PathFollowingComponent->OnRequestFinished.RemoveAll(this);
+}
+
+void ABaseWorker::GatherThisResource(AActor* ResourceRef)
+{
+	if (AIControllerUnits)
+	{
+		PathFollowingComponent->OnRequestFinished.RemoveAll(this);
+		PathFollowingComponent->OnRequestFinished.AddUObject(this, &ABaseWorker::OnMoveCompletedGatherThisResource);
+	}
+
+	BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
+
+	ResourcePosition = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), ResourceRef->GetActorLocation());
+
+	AIControllerUnits->MoveToActor(ResourceRef, 200.f);
 }
 
 void ABaseWorker::OnMoveCompletedGatherThisResource(FAIRequestID RequestID, const FPathFollowingResult& Result)
@@ -56,22 +81,18 @@ void ABaseWorker::OnMoveCompletedGatherThisResource(FAIRequestID RequestID, cons
 	{
 		DelegateGatherThisResource.BindLambda([&]()
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, "OnMoveCompleted in GatherThisResource");
-
 			if (BaseUnitComponent->UnitState == EUnitState::Mining)
 			{
-				ResourceComponent->TypeOfResource = ResourceBeingCarried;
-				ResourceComponent->NumberOfResourcesToGive = AmountOfResources;
+				ResourceBeingCarried = ResourceComponent->TypeOfResource;
+				AmountOfResources = ResourceComponent->NumberOfResourcesToGive;
 		
 				BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
 
-				AIControllerUnits->MoveToActor(RTSGameMode->GetPlayerTownHall(RTSGameMode->TownHallLocation), 200.f, true);
+				AIControllerUnits->MoveToActor(RTSGameMode->GetPlayerTownHall(), 200.f, true);
 			}
 		});
 
 		SetActorRotation(FRotator(0, ResourcePosition.Yaw, 0));
-
-		ResourceComponent->TypeOfResource = EResourceTypes::Gold;
 
 		if (ResourceBeingCarried != ResourceComponent->TypeOfResource)
 		{
@@ -91,58 +112,11 @@ void ABaseWorker::OnMoveCompletedGatherThisResource(FAIRequestID RequestID, cons
 			ResourceBeingCarried = EResourceTypes::None;
 			AmountOfResources = 0;
 
-			//GatherThisResource();
+			GatherThisResource(PlayerController->OutActors[0]);
 
 			PathFollowingComponent->OnRequestFinished.RemoveAll(this);
 		}
 	}
-}
-
-void ABaseWorker::SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void> ObjectDelegate, float Time, bool bLoop)
-{
-	GetWorld()->GetTimerManager().ClearTimer(HandleGatherThisResource);
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, ObjectDelegate, Time, bLoop);
-}
-
-void ABaseWorker::OnEnterIdle()
-{
-	GetMesh()->PlayAnimation(AnimationIdle, true);
-}
-
-void ABaseWorker::OnEnterMovement()
-{
-	GetMesh()->PlayAnimation(AnimationOfWalkFWD, true);
-}
-
-void ABaseWorker::OnEnterMining()
-{
-	GetMesh()->PlayAnimation(AnimMontageMining, true);
-}
-
-void ABaseWorker::MoveUnitToThisLocation(FVector Location)
-{	
-	BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
-
-	AIControllerUnits->MoveToLocation(Location, 50.f);
-
-	if (AIControllerUnits)
-	{
-		PathFollowingComponent->OnRequestFinished.AddUObject(this, &ABaseWorker::OnMoveCompletedMoveUnitToThisLocation);
-	}
-}
-
-void ABaseWorker::GatherThisResource(AActor* ResourceRef)
-{	
-	if (AIControllerUnits)
-	{
-		PathFollowingComponent->OnRequestFinished.AddUObject(this, &ABaseWorker::OnMoveCompletedGatherThisResource);
-	}
-	
-	BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
-	
-	ResourcePosition = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), ResourceRef->GetActorLocation());
-
-	AIControllerUnits->MoveToActor(ResourceRef, 200.f);
 }
 
 // Called when the game starts or when spawned
@@ -150,10 +124,7 @@ void ABaseWorker::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (ResourceComponent == NULL)
-	{
-		ResourceComponent = NewObject<UResourceComponent>(this);
-	}
+	ResourceComponent = NewObject<UResourceComponent>(this);
 
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	RTSGameMode = Cast<ABaseRTSGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
@@ -183,3 +154,23 @@ void ABaseWorker::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 }
 
+void ABaseWorker::SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void> ObjectDelegate, float Time, bool bLoop)
+{
+	GetWorld()->GetTimerManager().ClearTimer(HandleGatherThisResource);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, ObjectDelegate, Time, bLoop);
+}
+
+void ABaseWorker::OnEnterIdle()
+{
+	GetMesh()->PlayAnimation(AnimationIdle, true);
+}
+
+void ABaseWorker::OnEnterMovement()
+{
+	GetMesh()->PlayAnimation(AnimationOfWalkFWD, true);
+}
+
+void ABaseWorker::OnEnterMining()
+{
+	GetMesh()->PlayAnimation(AnimMontageMining, true);
+}

@@ -20,11 +20,6 @@ ABaseResource::ABaseResource()
 void ABaseResource::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (ResourceComponent == NULL)
-	{
-		ResourceComponent = NewObject<UResourceComponent>(this);
-	}
 
 }
 

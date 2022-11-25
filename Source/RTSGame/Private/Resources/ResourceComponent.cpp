@@ -13,6 +13,13 @@ UResourceComponent::UResourceComponent()
 }
 
 
+void UResourceComponent::SetGold(EResourceTypes Resource, int HowMuchTimeIsCanBeMined, int NumberOfResources)
+{
+	Resource = TypeOfResource;
+	HowMuchTimeIsCanBeMined = TimeIsCanBeMined;
+	NumberOfResources = NumberOfResourcesToGive;
+}
+
 // Called when the game starts
 void UResourceComponent::BeginPlay()
 {

@@ -18,17 +18,19 @@ public:
 	// Sets default values for this component's properties
 	UResourceComponent();
 
-	UPROPERTY()
-	TEnumAsByte<EResourceTypes> TypeOfResource;
+	UPROPERTY(EditAnywhere)
+	TEnumAsByte<EResourceTypes> TypeOfResource = EResourceTypes::Gold;
 
-	UPROPERTY()
-	int TimeIsCanBeMined;
+	UPROPERTY(EditAnywhere)
+	int TimeIsCanBeMined = 2;
 
-	UPROPERTY()
-	int NumberOfResourcesToGive;
+	UPROPERTY(EditAnywhere)
+	int NumberOfResourcesToGive = 5;
 
 	UPROPERTY(EditAnywhere)
 	float TimeItTakesToBeGatheredInSeconds = 2.f;
+
+	void SetGold(EResourceTypes Resource, int HowMuchTimeIsCanBeMined, int NumberOfResources);
 
 protected:
 	// Called when the game starts

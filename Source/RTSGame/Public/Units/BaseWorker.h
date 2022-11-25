@@ -32,6 +32,10 @@ public:
 	UFUNCTION()
 	void GatherThisResource(AActor* ResourceRef);
 
+	class UResourceComponent* ResourceComponent;
+
+	AActor* ResourcePos;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -81,10 +85,10 @@ private:
 	FAIRequestID Results;
 
 	class ABaseAIControllerUnits* AIControllerUnits;
-	class UResourceComponent* ResourceComponent;
 	class UBaseUnitComponent* BaseUnitComponent;
 	class ABaseRTSGameMode* RTSGameMode;
 	class ABasePlayerController* PlayerController;
+	class ABaseResource* BaseResource;
 
 };
 
