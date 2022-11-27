@@ -8,7 +8,6 @@
 #include "Units/BaseWorker.h"
 #include "Units/BaseAIControllerUnits.h"
 #include "GameFramework/Controller.h"
-#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetArrayLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -84,7 +83,7 @@ void ABasePlayerController::MouseAction()
 
 				if (Worker)
 				{
-					Worker->MoveUnitToThisLocation(HitLocation);
+					//Worker->MoveUnitToThisLocation(HitLocation);
 					UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NS_ClickIndicator, HitLocation);
 				}
 			}
@@ -98,7 +97,7 @@ void ABasePlayerController::MouseAction()
 
 				if (Worker)
 				{
-					Worker->GatherThisResource(OutActors[0]);
+					//Worker->GatherThisResource(OutActors[0]);
 				}
 			}
 		}

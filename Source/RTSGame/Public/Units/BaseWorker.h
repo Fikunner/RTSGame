@@ -26,15 +26,13 @@ public:
 	UFUNCTION()
 	void OnEnterMining();
 
-	UFUNCTION()
+	/*UFUNCTION()
 	void MoveUnitToThisLocation(FVector Location);
 
 	UFUNCTION()
-	void GatherThisResource(AActor* ResourceRef);
+	void GatherThisResource(AActor* ResourceRef);*/
 
 	class UResourceComponent* ResourceComponent;
-
-	AActor* ResourcePos;
 
 protected:
 	// Called when the game starts or when spawned
@@ -70,21 +68,21 @@ private:
 	UFUNCTION()
 	void NotifyActorOnClicked(FKey ButtonPressed);
 
-	void OnMoveCompletedMoveUnitToThisLocation(FAIRequestID RequestID, const FPathFollowingResult& Result);
-	void OnMoveCompletedGatherThisResource(FAIRequestID RequestID, const FPathFollowingResult& Result);
+	/*void OnMoveCompletedMoveUnitToThisLocation(FAIRequestID RequestID, const FPathFollowingResult& Result);
+	void OnMoveCompletedGatherThisResource(FAIRequestID RequestID, const FPathFollowingResult& Result);*/
 	
-	void SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void> ObjectDelegate, float Time, bool bLoop);
+	//void SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void> ObjectDelegate, float Time, bool bLoop);
 
-	FTimerHandle HandleGatherThisResource;
-	FTimerDelegate DelegateGatherThisResource;
+	//FTimerHandle HandleGatherThisResource;
+	//FTimerDelegate DelegateGatherThisResource;
 
-	UPathFollowingComponent* PathFollowingComponent;
+	//UPathFollowingComponent* PathFollowingComponent;
 
 	FRotator ResourcePosition;
 
-	FAIRequestID Results;
+	//FAIRequestID Results;
 
-	class ABaseAIControllerUnits* AIControllerUnits;
+	//class ABaseAIControllerUnits* AIControllerUnits;
 	class UBaseUnitComponent* BaseUnitComponent;
 	class ABaseRTSGameMode* RTSGameMode;
 	class ABasePlayerController* PlayerController;

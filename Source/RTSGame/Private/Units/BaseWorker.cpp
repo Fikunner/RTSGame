@@ -38,6 +38,7 @@ void ABaseWorker::NotifyActorOnClicked(FKey ButtonPressed)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f , FColor::Red, "Clicked Actor");
 }
 
+/*
 void ABaseWorker::MoveUnitToThisLocation(FVector Location)
 {
 	BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
@@ -77,6 +78,8 @@ void ABaseWorker::GatherThisResource(AActor* ResourceRef)
 
 void ABaseWorker::OnMoveCompletedGatherThisResource(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::White, "OnMoveCompletedGatheredThisResource");
+
 	if (Result.Code == EPathFollowingResult::Success)
 	{
 		DelegateGatherThisResource.BindLambda([&]()
@@ -118,7 +121,7 @@ void ABaseWorker::OnMoveCompletedGatherThisResource(FAIRequestID RequestID, cons
 		}
 	}
 }
-
+*/
 // Called when the game starts or when spawned
 void ABaseWorker::BeginPlay()
 {
@@ -128,9 +131,9 @@ void ABaseWorker::BeginPlay()
 
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	RTSGameMode = Cast<ABaseRTSGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	AIControllerUnits = Cast<ABaseAIControllerUnits>(GetController());
+	//AIControllerUnits = Cast<ABaseAIControllerUnits>(GetController());
 
-	PathFollowingComponent = AIControllerUnits->GetPathFollowingComponent();
+	//PathFollowingComponent = AIControllerUnits->GetPathFollowingComponent();
 
 	BaseUnitComponent = Cast<UBaseUnitComponent>(GetComponentByClass(UBaseUnitComponent::StaticClass()));
 
@@ -154,11 +157,11 @@ void ABaseWorker::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 }
 
-void ABaseWorker::SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void> ObjectDelegate, float Time, bool bLoop)
-{
-	GetWorld()->GetTimerManager().ClearTimer(HandleGatherThisResource);
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, ObjectDelegate, Time, bLoop);
-}
+//void ABaseWorker::SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void> ObjectDelegate, float Time, bool bLoop)
+//{
+//	GetWorld()->GetTimerManager().ClearTimer(HandleGatherThisResource);
+//	GetWorld()->GetTimerManager().SetTimer(TimerHandle, ObjectDelegate, Time, bLoop);
+//}
 
 void ABaseWorker::OnEnterIdle()
 {

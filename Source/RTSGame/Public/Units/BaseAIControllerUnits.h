@@ -6,6 +6,8 @@
 #include "AIController.h"
 #include "BaseAIControllerUnits.generated.h"
 
+class UBehaviorTreeComponent;
+
 /**
  * 
  */
@@ -16,6 +18,22 @@ class RTSGAME_API ABaseAIControllerUnits : public AAIController
 	
 public:
 
-	void BeginPlay() override;
+	ABaseAIControllerUnits();
+
+protected:
+
+	virtual void BeginPlay() override;
+	virtual void OnPossess(APawn* InPawn) override;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = true))
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "AI", meta = (AllowPrivateAccess = true))
+	TObjectPtr<UBehaviorTreeComponent> BehaviorTreeComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI", meta = (AllowPrivateAccess = true))
+	TObjectPtr<UBlackboardComponent> BlackboardComponent;
+
+private:
 
 };
