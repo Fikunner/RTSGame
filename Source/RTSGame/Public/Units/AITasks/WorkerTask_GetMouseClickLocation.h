@@ -2,27 +2,34 @@
 
 #pragma once
 
+#include "Units/BaseAIControllerUnits.h"
+#include "Units/BaseWorker.h"
+
 #include "CoreMinimal.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
-#include "WorkerBTTask_MoveUnitToLocation.generated.h"
+#include "WorkerTask_GetMouseClickLocation.generated.h"
 
 /**
- * BTTask for moving a units to location
+ *  BTTask for get a mouse actions clicked
  */
 UCLASS()
-class RTSGAME_API UWorkerBTTask_MoveUnitToLocation : public UBTTask_BlackboardBase
+class RTSGAME_API UWorkerTask_GetMouseClickLocation : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 	
 public:
-
-	UWorkerBTTask_MoveUnitToLocation();
+	
+	UWorkerTask_GetMouseClickLocation();
 
 private:
 
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	virtual FString GetStaticDescription() const override;
 
-	float SearchRadius { 500.f };
+	TArray<AActor*> SelectedActors;
+
+	float SearchRadius = 1000.f;
+
+	class ABaseWorker* Worker;
 
 };

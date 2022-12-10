@@ -12,6 +12,8 @@
 #include "Kismet/KismetArrayLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "HUD/BaseHUD.h"
+#include "HUD/BaseUserWidgetHUD.h"
 
 ABasePlayerController::ABasePlayerController()
 {
@@ -83,7 +85,7 @@ void ABasePlayerController::MouseAction()
 
 				if (Worker)
 				{
-					//Worker->MoveUnitToThisLocation(HitLocation);
+					Worker->MoveUnitToThisLocation(HitLocation);
 					UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NS_ClickIndicator, HitLocation);
 				}
 			}
@@ -97,7 +99,7 @@ void ABasePlayerController::MouseAction()
 
 				if (Worker)
 				{
-					//Worker->GatherThisResource(OutActors[0]);
+					Worker->GatherThisResource(OutActors[0]);
 				}
 			}
 		}
@@ -117,6 +119,10 @@ void ABasePlayerController::ReceiveResources(EResourceTypes ResourceType, int32 
 	{
 		StoredResource.Add(ResourceType, Amount);
 	}
+
+	HUD = Cast<ABaseHUD>(GetHUD());
+
+	HUD->HUDWidgetRef->UpdateResourceValue(ResourceType, *StoredResource.Find(ResourceType));
 }
 
 void ABasePlayerController::DeselectAllActors_Implementation()

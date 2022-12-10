@@ -34,11 +34,9 @@ void ABaseWorker::NotifyActorOnClicked(FKey ButtonPressed)
 
 	Decal->SetVisibility(true, false);
 	Decal->SetHiddenInGame(false, false);
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.f , FColor::Red, "Clicked Actor");
 }
 
-/*
+
 void ABaseWorker::MoveUnitToThisLocation(FVector Location)
 {
 	BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
@@ -62,7 +60,7 @@ void ABaseWorker::OnMoveCompletedMoveUnitToThisLocation(FAIRequestID RequestID, 
 }
 
 void ABaseWorker::GatherThisResource(AActor* ResourceRef)
-{
+{	
 	if (AIControllerUnits)
 	{
 		PathFollowingComponent->OnRequestFinished.RemoveAll(this);
@@ -78,26 +76,21 @@ void ABaseWorker::GatherThisResource(AActor* ResourceRef)
 
 void ABaseWorker::OnMoveCompletedGatherThisResource(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::White, "OnMoveCompletedGatheredThisResource");
-
 	if (Result.Code == EPathFollowingResult::Success)
 	{
 		DelegateGatherThisResource.BindLambda([&]()
 		{
 			if (BaseUnitComponent->UnitState == EUnitState::Mining)
 			{
-				ResourceBeingCarried = ResourceComponent->TypeOfResource;
-				AmountOfResources = ResourceComponent->NumberOfResourcesToGive;
-		
-				BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
+				ResourceComponent->GiveResource(ResourceBeingCarried, AmountOfResources);
 
-				AIControllerUnits->MoveToActor(RTSGameMode->GetPlayerTownHall(), 200.f, true);
+				GoToTownHallAndDepositResources(RTSGameMode->GetPlayerTownHall());
 			}
 		});
 
 		SetActorRotation(FRotator(0, ResourcePosition.Yaw, 0));
 
-		if (ResourceBeingCarried != ResourceComponent->TypeOfResource)
+		if (ResourceComponent->CanThisResourceBeMined() && ResourceBeingCarried != ResourceComponent->TypeOfResource)
 		{
 			BaseUnitComponent->HandleNewUnitState(EUnitState::Mining);
 
@@ -108,20 +101,47 @@ void ABaseWorker::OnMoveCompletedGatherThisResource(FAIRequestID RequestID, cons
 
 		else
 		{
-			BaseUnitComponent->HandleNewUnitState(EUnitState::Idle);
-
-			PlayerController->ReceiveResources(ResourceBeingCarried, AmountOfResources);
-
-			ResourceBeingCarried = EResourceTypes::None;
-			AmountOfResources = 0;
-
-			GatherThisResource(PlayerController->OutActors[0]);
-
-			PathFollowingComponent->OnRequestFinished.RemoveAll(this);
+			if (ResourceBeingCarried == ResourceComponent->TypeOfResource && AmountOfResources > 0)
+			{
+				GoToTownHallAndDepositResources(RTSGameMode->GetPlayerTownHall());
+			}
+			else
+			{
+				BaseUnitComponent->HandleNewUnitState(EUnitState::Idle);
+			}
 		}
 	}
 }
-*/
+
+void ABaseWorker::GoToTownHallAndDepositResources_Implementation(AActor* TownHallRef)
+{
+	if (AIControllerUnits)
+	{
+		PathFollowingComponent->OnRequestFinished.AddUObject(this, &ABaseWorker::OnMoveCompletedGoToTownHallAndDepositResources);
+	}
+	
+	BaseUnitComponent->HandleNewUnitState(EUnitState::Movement);
+
+	AIControllerUnits->MoveToActor(TownHallRef, 200.f, true);
+}
+
+void ABaseWorker::OnMoveCompletedGoToTownHallAndDepositResources(FAIRequestID RequestID, const FPathFollowingResult& Result)
+{
+	if (Result.Code == EPathFollowingResult::Success)
+	{
+		BaseUnitComponent->HandleNewUnitState(EUnitState::Idle);
+		PlayerController->ReceiveResources(ResourceBeingCarried, AmountOfResources);
+		
+		ResourceBeingCarried = EResourceTypes::None;
+		AmountOfResources = 0;
+
+		if (ResourceComponent->CanThisResourceBeMined())
+		{
+			GatherThisResource(PlayerController->OutActors[0]);
+		}
+	}
+}
+
 // Called when the game starts or when spawned
 void ABaseWorker::BeginPlay()
 {
@@ -131,9 +151,9 @@ void ABaseWorker::BeginPlay()
 
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	RTSGameMode = Cast<ABaseRTSGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	//AIControllerUnits = Cast<ABaseAIControllerUnits>(GetController());
+	AIControllerUnits = Cast<ABaseAIControllerUnits>(GetController());
 
-	//PathFollowingComponent = AIControllerUnits->GetPathFollowingComponent();
+	PathFollowingComponent = AIControllerUnits->GetPathFollowingComponent();
 
 	BaseUnitComponent = Cast<UBaseUnitComponent>(GetComponentByClass(UBaseUnitComponent::StaticClass()));
 
@@ -157,11 +177,11 @@ void ABaseWorker::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 }
 
-//void ABaseWorker::SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void> ObjectDelegate, float Time, bool bLoop)
-//{
-//	GetWorld()->GetTimerManager().ClearTimer(HandleGatherThisResource);
-//	GetWorld()->GetTimerManager().SetTimer(TimerHandle, ObjectDelegate, Time, bLoop);
-//}
+void ABaseWorker::SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void> ObjectDelegate, float Time, bool bLoop)
+{
+	GetWorld()->GetTimerManager().ClearTimer(HandleGatherThisResource);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, ObjectDelegate, Time, bLoop);
+}
 
 void ABaseWorker::OnEnterIdle()
 {

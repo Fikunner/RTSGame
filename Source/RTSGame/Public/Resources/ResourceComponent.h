@@ -22,7 +22,7 @@ public:
 	TEnumAsByte<EResourceTypes> TypeOfResource = EResourceTypes::Gold;
 
 	UPROPERTY(EditAnywhere)
-	int TimeIsCanBeMined = 2;
+	int TimeIsCanBeMined = 3;
 
 	UPROPERTY(EditAnywhere)
 	int NumberOfResourcesToGive = 5;
@@ -30,7 +30,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	float TimeItTakesToBeGatheredInSeconds = 2.f;
 
-	void SetGold(EResourceTypes Resource, int HowMuchTimeIsCanBeMined, int NumberOfResources);
+	bool CanMineThisResource;
+
+	void GiveResource(TEnumAsByte<EResourceTypes>& TypeResource, int& NumberResourcesToGive);
+	bool CanThisResourceBeMined();
 
 protected:
 	// Called when the game starts

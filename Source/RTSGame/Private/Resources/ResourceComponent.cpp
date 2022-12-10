@@ -12,12 +12,26 @@ UResourceComponent::UResourceComponent()
 
 }
 
-
-void UResourceComponent::SetGold(EResourceTypes Resource, int HowMuchTimeIsCanBeMined, int NumberOfResources)
+void UResourceComponent::GiveResource(TEnumAsByte<EResourceTypes>& TypeResource, int& NumberResourcesToGive)
 {
-	Resource = TypeOfResource;
-	HowMuchTimeIsCanBeMined = TimeIsCanBeMined;
-	NumberOfResources = NumberOfResourcesToGive;
+	TimeIsCanBeMined -= 1;
+	TypeResource = TypeOfResource;
+	NumberResourcesToGive = NumberOfResourcesToGive;
+}
+
+bool UResourceComponent::CanThisResourceBeMined()
+{
+	if (TimeIsCanBeMined > 0)
+	{
+		CanMineThisResource = true;
+	}
+
+	else
+	{
+		CanMineThisResource = false;
+	}
+
+	return CanMineThisResource;
 }
 
 // Called when the game starts

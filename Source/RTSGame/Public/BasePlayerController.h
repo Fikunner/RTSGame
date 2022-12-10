@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+
 #include "Resources/ResourceComponent.h"
 #include "Resources/BaseResource.h"
 #include "Units/BaseAIControllerUnits.h"
@@ -26,10 +27,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ReceiveResources(EResourceTypes ResourceType, int32 Amount);
 
-	TArray<class AActor*> OutActors;
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<EResourceTypes, int32> StoredResource;
+
+	TArray<class AActor*> OutActors;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void AddActorSelectedToList(AActor* SelectedActor);
@@ -65,5 +66,6 @@ private:
 	class ABaseBuildings* BuildingBase;
 	class ABaseWorker* Worker;
 	class ABaseAIControllerUnits* AIControllerUnits;
+	class ABaseHUD* HUD;
 
 };

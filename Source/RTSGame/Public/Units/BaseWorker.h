@@ -26,11 +26,14 @@ public:
 	UFUNCTION()
 	void OnEnterMining();
 
-	/*UFUNCTION()
+	UFUNCTION()
 	void MoveUnitToThisLocation(FVector Location);
 
 	UFUNCTION()
-	void GatherThisResource(AActor* ResourceRef);*/
+	void GatherThisResource(AActor* ResourceRef);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void GoToTownHallAndDepositResources(AActor* TownHallRef);
 
 	class UResourceComponent* ResourceComponent;
 
@@ -68,21 +71,22 @@ private:
 	UFUNCTION()
 	void NotifyActorOnClicked(FKey ButtonPressed);
 
-	/*void OnMoveCompletedMoveUnitToThisLocation(FAIRequestID RequestID, const FPathFollowingResult& Result);
-	void OnMoveCompletedGatherThisResource(FAIRequestID RequestID, const FPathFollowingResult& Result);*/
-	
-	//void SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void> ObjectDelegate, float Time, bool bLoop);
+	void OnMoveCompletedMoveUnitToThisLocation(FAIRequestID RequestID, const FPathFollowingResult& Result);
+	void OnMoveCompletedGatherThisResource(FAIRequestID RequestID, const FPathFollowingResult& Result);
+	void OnMoveCompletedGoToTownHallAndDepositResources(FAIRequestID RequestID, const FPathFollowingResult& Result);
 
-	//FTimerHandle HandleGatherThisResource;
-	//FTimerDelegate DelegateGatherThisResource;
+	void SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void> ObjectDelegate, float Time, bool bLoop);
 
-	//UPathFollowingComponent* PathFollowingComponent;
+	FTimerHandle HandleGatherThisResource;
+	FTimerDelegate DelegateGatherThisResource;
+
+	UPathFollowingComponent* PathFollowingComponent;
 
 	FRotator ResourcePosition;
 
-	//FAIRequestID Results;
+	FAIRequestID Results;
 
-	//class ABaseAIControllerUnits* AIControllerUnits;
+	class ABaseAIControllerUnits* AIControllerUnits;
 	class UBaseUnitComponent* BaseUnitComponent;
 	class ABaseRTSGameMode* RTSGameMode;
 	class ABasePlayerController* PlayerController;
