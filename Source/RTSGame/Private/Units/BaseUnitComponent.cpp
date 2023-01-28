@@ -55,7 +55,7 @@ void UBaseUnitComponent::ShowSelectionDecal_Implementation()
 
 void UBaseUnitComponent::HandleNewUnitState(EUnitState NewUnitState)
 {
-	UnitState = NewUnitState;
+	StateOfUnit = NewUnitState;
 
 	switch (NewUnitState)
 	{
@@ -72,6 +72,10 @@ void UBaseUnitComponent::HandleNewUnitState(EUnitState NewUnitState)
 	case EUnitState::Mining:
 
 		OnEnterMiningDelegate.Broadcast();
+
+		break;
+
+	default:
 
 		break;
 	}

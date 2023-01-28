@@ -3,20 +3,23 @@
 
 #include "BasePlayerController.h"
 #include "Components/InputComponent.h"
-#include "Buildings/SelectionEvent.h"
 #include "Buildings/BaseBuildings.h"
 #include "Units/BaseWorker.h"
-#include "Units/BaseAIControllerUnits.h"
 #include "GameFramework/Controller.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Kismet/KismetArrayLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "Kismet/GameplayStatics.h"
 #include "HUD/BaseHUD.h"
 #include "HUD/BaseUserWidgetHUD.h"
+#include "HUD/UnitSelectionMarquee.h"
 
 ABasePlayerController::ABasePlayerController()
 {
+}
+
+void ABasePlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
 }
 
 void ABasePlayerController::SetupInputComponent()
@@ -28,7 +31,20 @@ void ABasePlayerController::SetupInputComponent()
 	InputComponent->BindAxis("MouseMovement", this, &ABasePlayerController::MouseMovement);
 
 	InputComponent->BindAction("MouseSelection", IE_Pressed, this, &ABasePlayerController::MouseSelection);
+	InputComponent->BindAction("MouseSelection", IE_Released, this, &ABasePlayerController::MouseDeselection);
+
 	InputComponent->BindAction("MouseAction", IE_Released, this, &ABasePlayerController::MouseAction);
+}
+
+void ABasePlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	FVector Location(0.f, 0.f, 0.f);
+	FRotator Rotation(0.f, 0.f, 0.f);
+	FActorSpawnParameters SpawnInfo;
+
+	SelectionMarqueeRef = GetWorld()->SpawnActor<AUnitSelectionMarquee>(UnitSelectionMarqueeToSpawn, Location, Rotation, SpawnInfo);
 }
 
 void ABasePlayerController::MoveForward(float Value)
@@ -56,6 +72,23 @@ void ABasePlayerController::MouseMovement(float Value)
 
 void ABasePlayerController::MouseSelection()
 {
+	FVector HitLocation = FVector::ZeroVector;
+	FHitResult Hit;
+	GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, Hit);
+	HitLocation = Hit.Location;
+
+	SelectionMarqueeRef->SetActorLocation(HitLocation);
+
+	SelectionMarqueeRef->ShouldResizeMarquee = true;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Select");
+}
+
+void ABasePlayerController::MouseDeselection()
+{
+	SelectionMarqueeRef->ShouldResizeMarquee = false;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, "Deselect");
 }
 
 void ABasePlayerController::MouseAction()
@@ -68,13 +101,11 @@ void ABasePlayerController::MouseAction()
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_WorldDynamic));
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
-	
-	const TArray<AActor*> ActorsToIgnore;
-
-	UClass* ActorClassFilter = NULL;
 
 	if (!SelectedActors.IsEmpty())
 	{
+		const TArray<AActor*> ActorsToIgnore;
+		UClass* ActorClassFilter = nullptr;
 		UKismetSystemLibrary::SphereOverlapActors(GetWorld(), HitLocation, 100.f, ObjectTypes, ActorClassFilter, ActorsToIgnore, OutActors);
 
 		if (OutActors.IsEmpty())
@@ -91,15 +122,22 @@ void ABasePlayerController::MouseAction()
 			}
 		}
 
-		else if (UKismetSystemLibrary::IsValid(OutActors[0]))
+		else
 		{
-			for (AActor* ArrayElements : SelectedActors)
+			for (AActor* ArrayElements : SelectedActors) 
 			{
 				Worker = Cast<ABaseWorker>(ArrayElements);
 
 				if (Worker)
 				{
-					Worker->GatherThisResource(OutActors[0]);
+					if (IsValid(OutActors[0]->GetComponentByClass(ResourceComp)))
+					{
+						Worker->GatherThisResource(OutActors[0]);
+					}
+					else if (IsValid(OutActors[0]->GetComponentByClass(BuildingComp)))
+					{
+						Worker->InteractWithBuilding(OutActors[0]);
+					}
 				}
 			}
 		}
@@ -135,7 +173,7 @@ void ABasePlayerController::DeselectAllActors_Implementation()
 		{
 			BuildingBase->DeselectThisActor();
 		}
-		
+
 	}
 
 	SelectedActors.Empty();

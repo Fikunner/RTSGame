@@ -17,18 +17,25 @@ void UBaseUserWidgetHUD::UpdateResourceValue(TEnumAsByte<EResourceTypes> TypeOfR
 	const FName TextControlName = FName(TEXT("TB_GoldAmount"));
 	if (TextBlockOfGold == nullptr)
 	{
-		TextBlockOfGold = (UTextBlock*)(WidgetTree->FindWidget(TextControlName));
+		TextBlockOfGold = static_cast<UTextBlock*>(WidgetTree->FindWidget(TextControlName));
 	}
 
 	switch (TypeOfResource)
 	{
 	case EResourceTypes::Gold:
-
-		if (TextBlockOfGold != nullptr)
 		{
-			TextBlockOfGold->SetText(UKismetTextLibrary::Conv_IntToText(Amount, false, true, 2));
+			if (TextBlockOfGold != nullptr)
+			{
+				TextBlockOfGold->SetText(UKismetTextLibrary::Conv_IntToText(Amount, false, true, 2));
+			}
+		
+			break;	
 		}
 		
-		break;
+	default:
+		{
+
+			break;
+		}
 	}
 }

@@ -17,15 +17,17 @@ public:
 	// Sets default values for this actor's properties
 	ABaseResource();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UResourceComponent* ResourceComponent;
+
+	class ABaseWorker* Worker;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* ResourceMesh;
-
-	UPROPERTY(EditAnywhere)
-	class UResourceComponent* ResourceComponent;
+	UStaticMeshComponent* ResourceMesh;
 
 public:	
 	// Called every frame

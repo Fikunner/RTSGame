@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Resources/BaseResource.h"
 #include "Resources/ResourceComponent.h"
+#include "Units/BaseWorker.h"
 
 // Sets default values
 ABaseResource::ABaseResource()
@@ -12,8 +12,7 @@ ABaseResource::ABaseResource()
 
 	ResourceMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	ResourceMesh->SetupAttachment(RootComponent);
-
-	ResourceComponent = CreateDefaultSubobject<UResourceComponent>("ResourceComponent");
+	
 }
 
 // Called when the game starts or when spawned
@@ -27,6 +26,6 @@ void ABaseResource::BeginPlay()
 void ABaseResource::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 

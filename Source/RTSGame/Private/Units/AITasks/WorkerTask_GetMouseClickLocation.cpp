@@ -9,6 +9,8 @@
 #include "GameFramework/Controller.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+#include "GameFramework/PlayerController.h"
+
 UWorkerTask_GetMouseClickLocation::UWorkerTask_GetMouseClickLocation()
 {
 	NodeName = TEXT("Get Clicked Mouse Location");
@@ -18,19 +20,8 @@ UWorkerTask_GetMouseClickLocation::UWorkerTask_GetMouseClickLocation()
 
 EBTNodeResult::Type UWorkerTask_GetMouseClickLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {	
-	FNavLocation Location;
-
-	AAIController* AIController = OwnerComp.GetAIOwner();
-	const APawn* AIPawn = AIController->GetPawn();
-
-	const FVector Origin = AIPawn->GetActorLocation();
-
-	const UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
 	
-	if (IsValid(NavSystem) && NavSystem->GetRandomPointInNavigableRadius(Origin, SearchRadius, Location))
-	{
-		AIController->GetBlackboardComponent()->SetValueAsVector(BlackboardKey.SelectedKeyName, Location.Location);
-	}
+	
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Worker task work");
 

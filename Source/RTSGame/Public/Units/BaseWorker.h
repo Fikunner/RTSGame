@@ -2,16 +2,16 @@
 
 #pragma once
 
-#include "Resources/ResourceComponent.h"
 #include "Resources/BaseResource.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "UnitActions.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "BaseWorker.generated.h"
 
 UCLASS()
-class RTSGAME_API ABaseWorker : public ACharacter
+class RTSGAME_API ABaseWorker : public ACharacter, public IUnitActions
 {
 	GENERATED_BODY()
 	
@@ -26,16 +26,22 @@ public:
 	UFUNCTION()
 	void OnEnterMining();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void MoveUnitToThisLocation(FVector Location);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void GatherThisResource(AActor* ResourceRef);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void GoToTownHallAndDepositResources(AActor* TownHallRef);
+	void InteractWithBuilding(AActor* BuildingRef);
 
-	class UResourceComponent* ResourceComponent;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void GoToTownHallAndDepositResources(AActor* ResourceRef);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void RepeatTheMiningAction(AActor* ResourceRef);
+
+//	UResourceComponent* ResourceComponent;
 
 protected:
 	// Called when the game starts or when spawned
@@ -53,12 +59,15 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Animations")
 	UAnimationAsset* AnimationIdle;
 
-	UPROPERTY(EditAnywhere)
-	TEnumAsByte<EResourceTypes> ResourceBeingCarried;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UBaseUnitComponent* BaseUnitComponent;
 
-	UPROPERTY(EditAnywhere)
-	int AmountOfResources;
+	//UPROPERTY(EditAnywhere)
+	//EResourceTypes ResourceBeingCarried;
 
+	//UPROPERTY(EditAnywhere)
+	//int AmountOfResources;
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -69,29 +78,31 @@ public:
 private:
 
 	UFUNCTION()
-	void NotifyActorOnClicked(FKey ButtonPressed);
+	virtual void NotifyActorOnClicked(FKey ButtonPressed) override;
 
 	void OnMoveCompletedMoveUnitToThisLocation(FAIRequestID RequestID, const FPathFollowingResult& Result);
 	void OnMoveCompletedGatherThisResource(FAIRequestID RequestID, const FPathFollowingResult& Result);
 	void OnMoveCompletedGoToTownHallAndDepositResources(FAIRequestID RequestID, const FPathFollowingResult& Result);
 
-	void SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void> ObjectDelegate, float Time, bool bLoop);
+	void SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void>(ObjectDelegate), float Time, bool bLoop);
 
 	FTimerHandle HandleGatherThisResource;
 	FTimerDelegate DelegateGatherThisResource;
 
+	FTimerDelegate DelegateOnMoveCompletedGatherThisResource;
+	
 	UPathFollowingComponent* PathFollowingComponent;
 
 	FRotator ResourcePosition;
 
-	FAIRequestID Results;
-
+	FAIRequestID Results; 
+	
 	class ABaseAIControllerUnits* AIControllerUnits;
-	class UBaseUnitComponent* BaseUnitComponent;
 	class ABaseRTSGameMode* RTSGameMode;
 	class ABasePlayerController* PlayerController;
 	class ABaseResource* BaseResource;
-
+	class AGoldResource* GoldResource;
+	
 };
 
 UENUM(BlueprintType)

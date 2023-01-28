@@ -2,12 +2,11 @@
 
 #pragma once
 
-#include "BaseResource.h"
+#include "Resources/BaseResource.h"
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "ResourceComponent.generated.h"
-
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class RTSGAME_API UResourceComponent : public UActorComponent
@@ -16,23 +15,26 @@ class RTSGAME_API UResourceComponent : public UActorComponent
 
 public:	
 	// Sets default values for this component's properties
-	UResourceComponent();
+	UResourceComponent(); 
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EResourceTypes TypeOfResource;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int TimeIsCanBeMined;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int NumberOfResourcesToGive;
 
-	UPROPERTY(EditAnywhere)
-	TEnumAsByte<EResourceTypes> TypeOfResource = EResourceTypes::Gold;
-
-	UPROPERTY(EditAnywhere)
-	int TimeIsCanBeMined = 3;
-
-	UPROPERTY(EditAnywhere)
-	int NumberOfResourcesToGive = 5;
-
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float TimeItTakesToBeGatheredInSeconds = 2.f;
 
 	bool CanMineThisResource;
+	
+	UFUNCTION(BlueprintCallable)
+	void GiveResource(EResourceTypes& TypeResource, int& NumberResourcesToGive);
 
-	void GiveResource(TEnumAsByte<EResourceTypes>& TypeResource, int& NumberResourcesToGive);
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool CanThisResourceBeMined();
 
 protected:
@@ -42,6 +44,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
 		
 };

@@ -20,8 +20,10 @@ public:
 
 protected:
 
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
+
+private:
 
 	class UResourceComponent* ResourceComponent;
-
+	
 };

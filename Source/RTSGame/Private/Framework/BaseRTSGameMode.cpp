@@ -11,13 +11,11 @@ void ABaseRTSGameMode::BeginPlay()
 
 AActor* ABaseRTSGameMode::GetPlayerTownHall()
 {
-	int FoundIndex;
-
-	for (AActor* ArrayElements : ATownHalls)
+	for (const AActor* ArrayElements : ATownHalls)
 	{
 		if (ArrayElements->Tags.Find("Player") >= 0)
 		{
-			FoundIndex = ArrayElements->Tags.Find("Player");
+			const int FoundIndex = ArrayElements->Tags.Find("Player");
 
 			TownHallLocation = ATownHalls[FoundIndex];
 			break;

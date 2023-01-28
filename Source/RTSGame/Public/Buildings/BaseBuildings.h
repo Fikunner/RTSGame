@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "BasePlayerController.h"
 #include "Buildings/SelectionEvent.h"
 #include "Components/StaticMeshComponent.h"
 
@@ -11,7 +10,7 @@
 #include "BaseBuildings.generated.h"
 
 UCLASS()
-class RTSGAME_API ABaseBuildings : public AActor, public ISelectionEvent
+class RTSGAME_API ABaseBuildings : public AActor
 {
 	GENERATED_BODY()
 	
@@ -20,13 +19,16 @@ public:
 	ABaseBuildings();
 
 	UFUNCTION()
-	void NotifyActorOnClicked(FKey ButtonPressed);
+	virtual void NotifyActorOnClicked(FKey ButtonPressed) override;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void BuildingClicked();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void DeselectThisActor();
+	
+	UPROPERTY(EditAnywhere)
+	class UBuildingComponent* BuildingComponent;
 
 protected:
 	// Called when the game starts or when spawned
@@ -42,6 +44,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	class ABasePlayerController* BasePlayerController;
+};
 
+UENUM(BlueprintType)
+enum class EBuildingTypes : uint8
+{
+	None UMETA(DisplayName = "None"),
+	TownHall UMETA(DisplayName = "TownHall"),
+	House UMETA(DisplayName = "House"),
+	Barrack UMETA(DisplayName = "Barrack")
 };

@@ -23,7 +23,7 @@ public:
 
 	AActor* TownHallLocation;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	AActor* GetPlayerTownHall();
 
 protected:

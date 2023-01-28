@@ -30,10 +30,10 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnEnterMiningDelegate OnEnterMiningDelegate;
 
-	UPROPERTY()
-	EUnitState UnitState;
+	UPROPERTY(BlueprintReadWrite)
+	EUnitState StateOfUnit;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void HandleNewUnitState(EUnitState NewUnitState);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

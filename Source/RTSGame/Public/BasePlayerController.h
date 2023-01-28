@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Resources/ResourceComponent.h"
+#include "Buildings/BuildingComponent.h"
 #include "Resources/BaseResource.h"
 #include "Units/BaseAIControllerUnits.h"
 #include "Niagara/Public/NiagaraComponent.h"
@@ -17,7 +17,7 @@
  * 
  */
 UCLASS()
-class RTSGAME_API ABasePlayerController : public APlayerController, public ISelectionEvent, public IUnitActions
+class RTSGAME_API ABasePlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
@@ -38,8 +38,18 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void DeselectAllActors();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class AUnitSelectionMarquee* SelectionMarqueeRef;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AUnitSelectionMarquee> UnitSelectionMarqueeToSpawn;
+
+	virtual void Tick(float DeltaTime) override;
+
 protected:
 	virtual void SetupInputComponent() override;
+
+	virtual void BeginPlay() override;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Movement")
 	float ViewportEdgeTreshold = 0.02;
@@ -51,6 +61,15 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class UNiagaraSystem* NS_ClickIndicator;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<AActor*> SelectedActors;
+
+	UPROPERTY(EditAnywhere, Category = "Components")
+	TSubclassOf<UActorComponent> ResourceComp;
+
+	UPROPERTY(EditAnywhere, Category = "Components")
+	TSubclassOf<UActorComponent> BuildingComp;
+
 private:
 
 	void MoveForward(float Value);
@@ -58,10 +77,15 @@ private:
 	void MouseMovement(float Value);
 
 	void MouseSelection();
+	void MouseDeselection();
+
 	void MouseAction();
+
+	UPROPERTY(EditAnywhere, Category = "Components")
+	TSubclassOf<UActorComponent> ResourceComponent;
 	
-	UPROPERTY(EditAnywhere)
-	TArray<AActor*> SelectedActors;
+	UPROPERTY(EditAnywhere, Category = "Components")
+	TSubclassOf<UActorComponent> BuildingComponent;
 
 	class ABaseBuildings* BuildingBase;
 	class ABaseWorker* Worker;

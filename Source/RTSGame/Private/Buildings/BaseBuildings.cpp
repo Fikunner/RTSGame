@@ -1,8 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Buildings/BaseBuildings.h"
-
+#include "BasePlayerController.h"
 #include "Components/DecalComponent.h"
 #include "Kismet/Gameplaystatics.h"
 
@@ -18,6 +17,8 @@ ABaseBuildings::ABaseBuildings()
 	Decal = CreateDefaultSubobject<UDecalComponent>("DecalComponent");
 	Decal->SetupAttachment(Mesh);
 
+	//BuildingComponent = CreateDefaultSubobject<UBuildingComponent>("BuildingComponent");
+
 }
 
 void ABaseBuildings::NotifyActorOnClicked(FKey ButtonPressed)
@@ -29,14 +30,11 @@ void ABaseBuildings::NotifyActorOnClicked(FKey ButtonPressed)
 
 void ABaseBuildings::BuildingClicked_Implementation()
 {
-	BasePlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	ABasePlayerController* BasePlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	BasePlayerController->AddActorSelectedToList_Implementation(this);
 
 	Decal->SetHiddenInGame(false, false);
 	Decal->SetVisibility(true, false);
-
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::White, "BuildingClicked");
-
 }
 
 void ABaseBuildings::DeselectThisActor_Implementation()
