@@ -26,14 +26,11 @@ public:
 	UFUNCTION()
 	void OnEnterMining();
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void MoveUnitToThisLocation(FVector Location);
+	void MoveUnitToThisLocation_Implementation(FVector Location) override;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void GatherThisResource(AActor* ResourceRef);
+	void GatherThisResource_Implementation(AActor* ResourceRef) override;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void InteractWithBuilding(AActor* BuildingRef);
+	void InteractWithBuilding_Implementation(AActor* BuildingRef) override;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void GoToTownHallAndDepositResources(AActor* ResourceRef);

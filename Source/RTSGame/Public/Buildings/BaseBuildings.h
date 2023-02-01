@@ -4,13 +4,14 @@
 
 #include "Buildings/SelectionEvent.h"
 #include "Components/StaticMeshComponent.h"
+#include "SelectionEvent.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "BaseBuildings.generated.h"
 
 UCLASS()
-class RTSGAME_API ABaseBuildings : public AActor
+class RTSGAME_API ABaseBuildings : public AActor, public ISelectionEvent
 {
 	GENERATED_BODY()
 	
@@ -24,8 +25,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void BuildingClicked();
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void DeselectThisActor();
+	virtual void DeselectThisActor() override;
 	
 	UPROPERTY(EditAnywhere)
 	class UBuildingComponent* BuildingComponent;

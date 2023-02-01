@@ -17,7 +17,7 @@
  * 
  */
 UCLASS()
-class RTSGAME_API ABasePlayerController : public APlayerController
+class RTSGAME_API ABasePlayerController : public APlayerController, public ISelectionEvent, public IUnitActions
 {
 	GENERATED_BODY()
 	
@@ -35,7 +35,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void AddActorSelectedToList(AActor* SelectedActor);
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void DeselectAllActors();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

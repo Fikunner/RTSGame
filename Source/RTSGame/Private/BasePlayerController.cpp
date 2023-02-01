@@ -112,11 +112,10 @@ void ABasePlayerController::MouseAction()
 		{
 			for (AActor* ArrayElements : SelectedActors)
 			{
-				Worker = Cast<ABaseWorker>(ArrayElements);
-
-				if (Worker)
+				IUnitActions* UnitActions = Cast<IUnitActions>(ArrayElements);
+				if (UnitActions)
 				{
-					Worker->MoveUnitToThisLocation(HitLocation);
+					UnitActions->Execute_MoveUnitToThisLocation(ArrayElements, HitLocation);
 					UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NS_ClickIndicator, HitLocation);
 				}
 			}
@@ -126,17 +125,16 @@ void ABasePlayerController::MouseAction()
 		{
 			for (AActor* ArrayElements : SelectedActors) 
 			{
-				Worker = Cast<ABaseWorker>(ArrayElements);
-
-				if (Worker)
+				IUnitActions* UnitActions = Cast<IUnitActions>(ArrayElements);
+				if (UnitActions)
 				{
 					if (IsValid(OutActors[0]->GetComponentByClass(ResourceComp)))
 					{
-						Worker->GatherThisResource(OutActors[0]);
+						UnitActions->Execute_GatherThisResource(ArrayElements, OutActors[0]);
 					}
-					else if (IsValid(OutActors[0]->GetComponentByClass(BuildingComp)))
+					if (IsValid(OutActors[0]->GetComponentByClass(BuildingComp)))
 					{
-						Worker->InteractWithBuilding(OutActors[0]);
+						UnitActions->Execute_InteractWithBuilding(ArrayElements, OutActors[0]);
 					}
 				}
 			}
@@ -163,17 +161,17 @@ void ABasePlayerController::ReceiveResources(EResourceTypes ResourceType, int32 
 	HUD->HUDWidgetRef->UpdateResourceValue(ResourceType, *StoredResource.Find(ResourceType));
 }
 
-void ABasePlayerController::DeselectAllActors_Implementation()
+void ABasePlayerController::DeselectAllActors()
 {
 	for (AActor* ArrayElements : SelectedActors)
 	{
-		BuildingBase = Cast<ABaseBuildings>(ArrayElements);
-
-		if (BuildingBase)
+		ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(ArrayElements);
+		if (SelectionEvent)
 		{
-			BuildingBase->DeselectThisActor();
+			SelectionEvent->DeselectThisActor();
 		}
 
+		//6:17:00
 	}
 
 	SelectedActors.Empty();
@@ -181,7 +179,7 @@ void ABasePlayerController::DeselectAllActors_Implementation()
 
 void ABasePlayerController::AddActorSelectedToList_Implementation(AActor* SelectedActor)
 {
-	DeselectAllActors_Implementation();
+	DeselectAllActors();
 
 	SelectedActors.Add(SelectedActor);
 }

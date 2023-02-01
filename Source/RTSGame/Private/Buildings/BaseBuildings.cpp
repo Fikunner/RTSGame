@@ -37,7 +37,7 @@ void ABaseBuildings::BuildingClicked_Implementation()
 	Decal->SetVisibility(true, false);
 }
 
-void ABaseBuildings::DeselectThisActor_Implementation()
+void ABaseBuildings::DeselectThisActor()
 {
 	Decal->SetHiddenInGame(true, false);
 	Decal->SetVisibility(false, false);
@@ -47,7 +47,7 @@ void ABaseBuildings::DeselectThisActor_Implementation()
 void ABaseBuildings::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame

@@ -25,8 +25,6 @@ ABaseWorker::ABaseWorker()
 	Decal->SetupAttachment(GetMesh());
 	
 	BaseUnitComponent = CreateDefaultSubobject<UBaseUnitComponent>("BaseUnitComponent");
-	
-
 
 }
 
