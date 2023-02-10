@@ -14,6 +14,7 @@
 #include "Delegates/DelegateCombinations.h"
 #include "GameFramework/PlayerController.h"
 #include "Resources/ResourceComponent.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ABaseWorker::ABaseWorker()
@@ -25,7 +26,6 @@ ABaseWorker::ABaseWorker()
 	Decal->SetupAttachment(GetMesh());
 	
 	BaseUnitComponent = CreateDefaultSubobject<UBaseUnitComponent>("BaseUnitComponent");
-
 }
 
 void ABaseWorker::NotifyActorOnClicked(FKey ButtonPressed)
@@ -34,8 +34,9 @@ void ABaseWorker::NotifyActorOnClicked(FKey ButtonPressed)
 
 	Decal->SetVisibility(true, false);
 	Decal->SetHiddenInGame(false, false);
-}
 
+	PlayerController->ClickSelectThisActor(this);
+}
 
 void ABaseWorker::MoveUnitToThisLocation_Implementation(FVector Location)
 {
@@ -163,6 +164,16 @@ void ABaseWorker::OnMoveCompletedGoToTownHallAndDepositResources(FAIRequestID Re
 
 void ABaseWorker::RepeatTheMiningAction_Implementation(AActor* ResourceRef)
 {
+}
+
+void ABaseWorker::SelectThis()
+{
+	BaseUnitComponent->ShowSelectionDecal();
+}
+
+void ABaseWorker::DeselectThis()
+{
+	BaseUnitComponent->HideSelectionDecal();
 }
 
 // Called when the game starts or when spawned

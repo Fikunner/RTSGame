@@ -37,7 +37,7 @@ void ABaseBuildings::BuildingClicked_Implementation()
 	Decal->SetVisibility(true, false);
 }
 
-void ABaseBuildings::DeselectThisActor()
+void ABaseBuildings::DeselectThis()
 {
 	Decal->SetHiddenInGame(true, false);
 	Decal->SetVisibility(false, false);

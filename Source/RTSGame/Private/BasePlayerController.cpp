@@ -72,23 +72,31 @@ void ABasePlayerController::MouseMovement(float Value)
 
 void ABasePlayerController::MouseSelection()
 {
-	FVector HitLocation = FVector::ZeroVector;
-	FHitResult Hit;
-	GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, Hit);
-	HitLocation = Hit.Location;
+	if (!IsClickSelected)
+	{
+		FVector HitLocation = FVector::ZeroVector;
+		FHitResult Hit;
+		GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, Hit);
+		HitLocation = Hit.Location;
 
-	SelectionMarqueeRef->SetActorLocation(HitLocation);
+		DeselectAllActors();
 
-	SelectionMarqueeRef->ShouldResizeMarquee = true;
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Select");
+		SelectionMarqueeRef->SetActorLocation(HitLocation);
+		SelectionMarqueeRef->StartResizingMarquee();
+	}
 }
 
 void ABasePlayerController::MouseDeselection()
 {
-	SelectionMarqueeRef->ShouldResizeMarquee = false;
+	if (!IsClickSelected)
+	{
+		SelectionMarqueeRef->EndResizingMarquee();
+	}
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, "Deselect");
+	else
+	{
+		IsClickSelected = false;
+	}
 }
 
 void ABasePlayerController::MouseAction()
@@ -132,7 +140,7 @@ void ABasePlayerController::MouseAction()
 					{
 						UnitActions->Execute_GatherThisResource(ArrayElements, OutActors[0]);
 					}
-					if (IsValid(OutActors[0]->GetComponentByClass(BuildingComp)))
+					else if (IsValid(OutActors[0]->GetComponentByClass(BuildingComp)))
 					{
 						UnitActions->Execute_InteractWithBuilding(ArrayElements, OutActors[0]);
 					}
@@ -168,18 +176,45 @@ void ABasePlayerController::DeselectAllActors()
 		ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(ArrayElements);
 		if (SelectionEvent)
 		{
-			SelectionEvent->DeselectThisActor();
+			SelectionEvent->DeselectThis();
 		}
-
-		//6:17:00
 	}
 
 	SelectedActors.Empty();
 }
 
-void ABasePlayerController::AddActorSelectedToList_Implementation(AActor* SelectedActor)
+void ABasePlayerController::SelectThisActor(AActor* SelectedActor)
 {
+	AddActorSelectedToList(SelectedActor);
+}
+
+void ABasePlayerController::DeselectThisActor(AActor* DeselectedActor)
+{
+	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(DeselectedActor);
+	SelectedActors.Remove(DeselectedActor);
+
+	if (SelectionEvent)
+	{
+		SelectionEvent->DeselectThis();
+	}
+}
+
+void ABasePlayerController::ClickSelectThisActor(AActor* SelectedActor)
+{
+	IsClickSelected = true;
 	DeselectAllActors();
 
+	SelectThisActor(SelectedActor);
+	
+}
+
+void ABasePlayerController::AddActorSelectedToList_Implementation(AActor* SelectedActor)
+{
 	SelectedActors.Add(SelectedActor);
+
+	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(SelectedActor);
+	if (SelectionEvent)
+	{
+		SelectionEvent->SelectThis();
+	}
 }

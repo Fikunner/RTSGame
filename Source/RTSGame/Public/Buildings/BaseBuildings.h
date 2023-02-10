@@ -25,7 +25,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void BuildingClicked();
 
-	virtual void DeselectThisActor() override;
+	virtual void DeselectThis() override;
 	
 	UPROPERTY(EditAnywhere)
 	class UBuildingComponent* BuildingComponent;

@@ -5,13 +5,14 @@
 #include "Resources/BaseResource.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "UnitActions.h"
+#include "Buildings/SelectionEvent.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "BaseWorker.generated.h"
 
 UCLASS()
-class RTSGAME_API ABaseWorker : public ACharacter, public IUnitActions
+class RTSGAME_API ABaseWorker : public ACharacter, public IUnitActions, public ISelectionEvent
 {
 	GENERATED_BODY()
 	
@@ -26,11 +27,13 @@ public:
 	UFUNCTION()
 	void OnEnterMining();
 
+	//Interfaces
 	void MoveUnitToThisLocation_Implementation(FVector Location) override;
-
 	void GatherThisResource_Implementation(AActor* ResourceRef) override;
-
 	void InteractWithBuilding_Implementation(AActor* BuildingRef) override;
+
+	virtual void SelectThis() override;
+	virtual void DeselectThis() override;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void GoToTownHallAndDepositResources(AActor* ResourceRef);

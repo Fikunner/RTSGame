@@ -18,10 +18,11 @@ AUnitSelectionMarquee::AUnitSelectionMarquee()
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	BoxCollision->SetupAttachment(DefaultSceneRoot);
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AUnitSelectionMarquee::OnOverlapBegin);
+	BoxCollision->OnComponentEndOverlap.AddDynamic(this, &AUnitSelectionMarquee::OnOverlapEnd);
 
 	Sphere = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Sphere"));
 	Sphere->SetupAttachment(DefaultSceneRoot);
-	
+
 	SphereOne = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SphereOne"));
 	SphereOne->SetupAttachment(DefaultSceneRoot);
 
@@ -55,7 +56,7 @@ void AUnitSelectionMarquee::Tick(float DeltaTime)
 		FVector StartMouseLocation = GetActorLocation();
 		float Alpha = 0.5f;
 
-		FVector SizeOfBoxCollision = (StartMouseLocation - EndMouseLocation) / 2.f;
+		FVector SizeOfBoxCollision = UKismetMathLibrary::Vector_GetAbs((StartMouseLocation - EndMouseLocation) / 2);
 		float HeightOfBoxCollision = 200.f;
 
 		BoxCollision->SetWorldLocation(StartMouseLocation + (EndMouseLocation - StartMouseLocation) * Alpha);
@@ -64,8 +65,34 @@ void AUnitSelectionMarquee::Tick(float DeltaTime)
 
 }
 
+void AUnitSelectionMarquee::StartResizingMarquee()
+{
+	ShouldResizeMarquee = true;
+	BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}
+
+void AUnitSelectionMarquee::EndResizingMarquee()
+{
+	ShouldResizeMarquee = false;
+	BoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
 void AUnitSelectionMarquee::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-		
+	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(OtherActor);
+	if (SelectionEvent)
+	{
+		PlayerController->SelectThisActor(OtherActor);
+	}
+}
+
+void AUnitSelectionMarquee::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(OtherActor);
+
+	if (ShouldResizeMarquee && SelectionEvent)
+	{
+		PlayerController->DeselectThisActor(OtherActor);
+	}
 }
 

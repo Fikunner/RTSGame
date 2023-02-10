@@ -39,3 +39,18 @@ void UBaseUserWidgetHUD::UpdateResourceValue(TEnumAsByte<EResourceTypes> TypeOfR
 		}
 	}
 }
+
+void UBaseUserWidgetHUD::StartMarqueeUpdate()
+{
+	//UWidgetLayoutLibrary::GetMousePositionOnViewport();
+}
+
+void UBaseUserWidgetHUD::UpdateMarquee()
+{
+
+}
+
+void UBaseUserWidgetHUD::StopMarqueeUpdate()
+{
+
+}

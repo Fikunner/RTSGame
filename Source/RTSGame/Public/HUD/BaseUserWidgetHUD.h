@@ -6,6 +6,7 @@
 #include "Kismet/KismetTextLibrary.h"
 #include "Resources/BaseResource.h"
 #include "Resources/ResourceComponent.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
@@ -26,5 +27,7 @@ public:
 	UTextBlock* TextBlockOfGold;
 
 	void UpdateResourceValue(TEnumAsByte<EResourceTypes> TypeOfResource, int Amount);
-
+	void StartMarqueeUpdate();
+	void UpdateMarquee();
+	void StopMarqueeUpdate();
 };

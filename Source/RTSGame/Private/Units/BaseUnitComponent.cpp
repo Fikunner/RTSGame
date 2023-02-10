@@ -16,7 +16,6 @@ UBaseUnitComponent::UBaseUnitComponent()
 
 }
 
-
 // Called when the game starts
 void UBaseUnitComponent::BeginPlay()
 {
@@ -50,6 +49,20 @@ void UBaseUnitComponent::ShowSelectionDecal_Implementation()
 
 		FoundDecal->SetVisibility(true, false);
 		FoundDecal->SetHiddenInGame(false, false);
+	}
+}
+
+void UBaseUnitComponent::HideSelectionDecal_Implementation()
+{
+	TArray<UDecalComponent*> DecalsComp;
+
+	GetOwner()->GetComponents(DecalsComp);
+	if (DecalsComp.Num() > 0)
+	{
+		UDecalComponent* FoundDecal = DecalsComp[0];
+
+		FoundDecal->SetVisibility(false, false);
+		FoundDecal->SetHiddenInGame(true, false);
 	}
 }
 

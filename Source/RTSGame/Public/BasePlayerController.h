@@ -27,15 +27,19 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ReceiveResources(EResourceTypes ResourceType, int32 Amount);
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<EResourceTypes, int32> StoredResource;
-
-	TArray<class AActor*> OutActors;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void AddActorSelectedToList(AActor* SelectedActor);
 
 	void DeselectAllActors();
+
+	virtual void SelectThisActor(AActor* SelectedActor) override;
+	virtual void DeselectThisActor(AActor* DeselectedActor) override;
+	virtual void ClickSelectThisActor(AActor* SelectedActor) override;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<EResourceTypes, int32> StoredResource;
+
+	TArray<class AActor*> OutActors;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class AUnitSelectionMarquee* SelectionMarqueeRef;
@@ -71,6 +75,8 @@ protected:
 
 private:
 
+	bool IsClickSelected;
+
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 	void MouseMovement(float Value);
@@ -79,12 +85,6 @@ private:
 	void MouseDeselection();
 
 	void MouseAction();
-
-	UPROPERTY(EditAnywhere, Category = "Components")
-	TSubclassOf<UActorComponent> ResourceComponent;
-	
-	UPROPERTY(EditAnywhere, Category = "Components")
-	TSubclassOf<UActorComponent> BuildingComponent;
 
 	class ABaseBuildings* BuildingBase;
 	class ABaseWorker* Worker;

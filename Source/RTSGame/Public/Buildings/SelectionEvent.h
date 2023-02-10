@@ -23,6 +23,10 @@ class RTSGAME_API ISelectionEvent
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	virtual void DeselectThisActor() { check(0); }
+	virtual void SelectThisActor(AActor* SelectedActor) { check(0); }
+	virtual void SelectThis() { check(0); }
+	virtual void ClickSelectThisActor(AActor* SelectedActor) { check(0); }
+	virtual void DeselectThisActor(AActor* DeselectedActor) { check(0); }
+	virtual void DeselectThis() { check(0); }
 
 };
