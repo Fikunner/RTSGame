@@ -26,6 +26,8 @@ void ABaseBuildings::NotifyActorOnClicked(FKey ButtonPressed)
 	Super::NotifyActorOnClicked(ButtonPressed);
 
 	BuildingClicked_Implementation();
+
+	//7:15:22
 }
 
 void ABaseBuildings::BuildingClicked_Implementation()

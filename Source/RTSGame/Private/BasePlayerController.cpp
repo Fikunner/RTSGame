@@ -210,11 +210,11 @@ void ABasePlayerController::ClickSelectThisActor(AActor* SelectedActor)
 
 void ABasePlayerController::AddActorSelectedToList_Implementation(AActor* SelectedActor)
 {
-	SelectedActors.Add(SelectedActor);
-
 	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(SelectedActor);
 	if (SelectionEvent)
 	{
 		SelectionEvent->SelectThis();
+		SelectedActors.Add(SelectedActor);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "TTETETSTAST");
 	}
 }

@@ -19,16 +19,6 @@ AUnitSelectionMarquee::AUnitSelectionMarquee()
 	BoxCollision->SetupAttachment(DefaultSceneRoot);
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AUnitSelectionMarquee::OnOverlapBegin);
 	BoxCollision->OnComponentEndOverlap.AddDynamic(this, &AUnitSelectionMarquee::OnOverlapEnd);
-
-	Sphere = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Sphere"));
-	Sphere->SetupAttachment(DefaultSceneRoot);
-
-	SphereOne = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SphereOne"));
-	SphereOne->SetupAttachment(DefaultSceneRoot);
-
-	SphereTwo = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SphereTwo"));
-	SphereTwo->SetupAttachment(DefaultSceneRoot);
-	
 }
 
 // Called when the game starts or when spawned
@@ -50,8 +40,6 @@ void AUnitSelectionMarquee::Tick(float DeltaTime)
 		PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		PlayerController->GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, Hit);
 
-		Sphere->SetWorldLocation(Hit.Location);
-
 		FVector EndMouseLocation = Hit.Location;
 		FVector StartMouseLocation = GetActorLocation();
 		float Alpha = 0.5f;
@@ -61,6 +49,9 @@ void AUnitSelectionMarquee::Tick(float DeltaTime)
 
 		BoxCollision->SetWorldLocation(StartMouseLocation + (EndMouseLocation - StartMouseLocation) * Alpha);
 		BoxCollision->SetBoxExtent(SizeOfBoxCollision = UKismetMathLibrary::MakeVector(SizeOfBoxCollision.X, SizeOfBoxCollision.Y, HeightOfBoxCollision));
+
+		HUD = Cast<ABaseHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+		HUD->HUDWidgetRef->UpdateMarquee();
 	}
 
 }
@@ -69,12 +60,16 @@ void AUnitSelectionMarquee::StartResizingMarquee()
 {
 	ShouldResizeMarquee = true;
 	BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	HUD = Cast<ABaseHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+	HUD->HUDWidgetRef->StartMarqueeUpdate();
 }
 
 void AUnitSelectionMarquee::EndResizingMarquee()
 {
 	ShouldResizeMarquee = false;
 	BoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	HUD = Cast<ABaseHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+	HUD->HUDWidgetRef->StopMarqueeUpdate();
 }
 
 void AUnitSelectionMarquee::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Components/TextBlock.h"
+#include "Components/Image.h"
 #include "Kismet/KismetTextLibrary.h"
 #include "Resources/BaseResource.h"
 #include "Resources/ResourceComponent.h"
@@ -25,9 +26,23 @@ public:
 	UBaseUserWidgetHUD(const FObjectInitializer& ObjectInitializer);
 
 	UTextBlock* TextBlockOfGold;
+	UImage* ImageOfMarquee;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector2D StartLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector2D EndLocation;
+
+	UFUNCTION()
 	void UpdateResourceValue(TEnumAsByte<EResourceTypes> TypeOfResource, int Amount);
+	
+	UFUNCTION()
 	void StartMarqueeUpdate();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void UpdateMarquee();
+	
+	UFUNCTION()
 	void StopMarqueeUpdate();
 };

@@ -3,7 +3,8 @@
 
 #include "HUD/BaseUserWidgetHUD.h"
 #include "Blueprint/WidgetTree.h"
-
+#include "Components/CanvasPanelSlot.h"
+#include "Kismet/KismetMathLibrary.h"
 
 UBaseUserWidgetHUD::UBaseUserWidgetHUD(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -42,15 +43,39 @@ void UBaseUserWidgetHUD::UpdateResourceValue(TEnumAsByte<EResourceTypes> TypeOfR
 
 void UBaseUserWidgetHUD::StartMarqueeUpdate()
 {
-	//UWidgetLayoutLibrary::GetMousePositionOnViewport();
+	const FName TextControlName = FName(TEXT("Img_Marquee"));
+	if (ImageOfMarquee == nullptr)
+	{
+		ImageOfMarquee = static_cast<UImage*>(WidgetTree->FindWidget(TextControlName));
+	}
+
+	if (ImageOfMarquee != nullptr)
+	{
+		StartLocation = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
+		ImageOfMarquee->SetVisibility(ESlateVisibility::HitTestInvisible);
+	}
+
 }
 
-void UBaseUserWidgetHUD::UpdateMarquee()
+void UBaseUserWidgetHUD::UpdateMarquee_Implementation()
 {
+	/*FVector2D VSubstraction = EndLocation - StartLocation;
+	FVector2D VAdd = (EndLocation - StartLocation) + StartLocation;
+	double a = 0.f;
 
+	UKismetMathLibrary::BreakVector2D(VSubstraction, VSubstraction.X, VSubstraction.Y);
+	double SelectX = UKismetMathLibrary::SelectFloat(StartLocation.X, VAdd.X, VSubstraction.X >= 0);
+	double SelectY = UKismetMathLibrary::SelectFloat(StartLocation.Y, VAdd.Y, VSubstraction.Y >= 0);
+
+	EndLocation = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
+	UWidgetLayoutLibrary::SlotAsCanvasSlot(ImageOfMarquee)->SetPosition(UKismetMathLibrary::MakeVector2D(SelectX, SelectY));
+	UWidgetLayoutLibrary::SlotAsCanvasSlot(ImageOfMarquee)->SetSize(FVector2D(100, 100));*/
 }
 
 void UBaseUserWidgetHUD::StopMarqueeUpdate()
 {
-
+	if (ImageOfMarquee != nullptr)
+	{
+		ImageOfMarquee->SetVisibility(ESlateVisibility::Collapsed);
+	}
 }

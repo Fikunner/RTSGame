@@ -6,6 +6,8 @@
 #include "BasePlayerController.h"
 #include "Components/StaticMeshComponent.h"
 #include "Buildings/SelectionEvent.h"
+#include "BaseHUD.h"
+#include "BaseUserWidgetHUD.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
@@ -39,15 +41,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBoxComponent* BoxCollision;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UStaticMeshComponent* Sphere;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UStaticMeshComponent* SphereOne;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UStaticMeshComponent* SphereTwo;
-
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
@@ -62,5 +55,6 @@ public:
 private:
 
 	class ABasePlayerController* PlayerController;
+	class ABaseHUD* HUD;
 
 };
