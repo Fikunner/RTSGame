@@ -40,7 +40,7 @@ void ABaseWorker::NotifyActorOnClicked(FKey ButtonPressed)
 
 void ABaseWorker::MoveUnitToThisLocation_Implementation(FVector Location)
 {
-
+	
 }
 
 void ABaseWorker::OnMoveCompletedMoveUnitToThisLocation(FAIRequestID RequestID, const FPathFollowingResult& Result)
