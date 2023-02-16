@@ -74,20 +74,24 @@ void AUnitSelectionMarquee::EndResizingMarquee()
 
 void AUnitSelectionMarquee::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(OtherActor);
-	if (SelectionEvent)
-	{
-		PlayerController->SelectThisActor(OtherActor);
-	}
+	//ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(OtherActor);
+	//if (SelectionEvent)
+	//{
+	//	//PlayerController->SelectThisActor(OtherActor);
+	//	if (PlayerController != nullptr)
+	//	{
+	//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Debug");
+	//	}
+	//}
 }
 
 void AUnitSelectionMarquee::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(OtherActor);
+	//ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(OtherActor);
 
-	if (ShouldResizeMarquee && SelectionEvent)
-	{
-		PlayerController->DeselectThisActor(OtherActor);
-	}
+	//if (ShouldResizeMarquee && SelectionEvent)
+	//{
+	//	//PlayerController->DeselectThisActor(OtherActor);
+	//}
 }
 

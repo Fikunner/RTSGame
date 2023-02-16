@@ -41,8 +41,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void RepeatTheMiningAction(AActor* ResourceRef);
 
-//	UResourceComponent* ResourceComponent;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -61,12 +59,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBaseUnitComponent* BaseUnitComponent;
-
-	//UPROPERTY(EditAnywhere)
-	//EResourceTypes ResourceBeingCarried;
-
-	//UPROPERTY(EditAnywhere)
-	//int AmountOfResources;
 	
 public:	
 	// Called every frame
@@ -102,7 +94,6 @@ private:
 	class ABasePlayerController* PlayerController;
 	class ABaseResource* BaseResource;
 	class AGoldResource* GoldResource;
-	
 };
 
 UENUM(BlueprintType)

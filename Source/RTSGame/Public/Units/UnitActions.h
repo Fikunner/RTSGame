@@ -26,7 +26,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = "Interface")
 	void MoveUnitToThisLocation(FVector Location);
 
-	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interface")
 	void GatherThisResource(AActor* ResourceRef);
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Interface")
