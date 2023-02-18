@@ -6,6 +6,7 @@
 #include "Navigation/PathFollowingComponent.h"
 #include "UnitActions.h"
 #include "Buildings/SelectionEvent.h"
+#include "HUD/BaseHealthBarWidgetComponent.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
@@ -94,6 +95,9 @@ private:
 	class ABasePlayerController* PlayerController;
 	class ABaseResource* BaseResource;
 	class AGoldResource* GoldResource;
+
+	UPROPERTY(EditAnywhere)
+	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent;
 };
 
 UENUM(BlueprintType)

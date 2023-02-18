@@ -21,8 +21,21 @@ void UBaseUnitComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	GetOwner()->OnClicked.AddDynamic(this, &UBaseUnitComponent::OnOwnerClicked);
+	HealthBarWidgetComponent = Cast<UBaseHealthBarWidgetComponent>(GetOwner()->GetComponentByClass(UBaseHealthBarWidgetComponent::StaticClass()));
+	
+	Health = HealthMax;
+	float CurrentHealth = Health / HealthMax;
 
+	if (IsValid(HealthBarWidgetComponent))
+	{
+		HealthBarWidgetComponent->UpdateHealthBar(1);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Cyan, "UnitComponent: No Healthbar component valid");
+	}
+
+	GetOwner()->OnClicked.AddDynamic(this, &UBaseUnitComponent::OnOwnerClicked);
 }
 
 void UBaseUnitComponent::OnOwnerClicked_Implementation(AActor* TouchedActor, FKey ButtonPressed)
@@ -33,9 +46,9 @@ void UBaseUnitComponent::OnOwnerClicked_Implementation(AActor* TouchedActor, FKe
 
 void UBaseUnitComponent::AddUnitToSelectionList_Implementation()
 {
-	BasePlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-	BasePlayerController->AddActorSelectedToList(GetOwner());
+	PlayerController->AddActorSelectedToList(GetOwner());
 }
 
 void UBaseUnitComponent::ShowSelectionDecal_Implementation()

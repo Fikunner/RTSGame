@@ -15,6 +15,9 @@ class RTSGAME_API UBaseHealthBarWidgetComponent : public UWidgetComponent
 	GENERATED_BODY()
 
 public:
+
 	UBaseHealthBarWidgetComponent();
 	
+	void UpdateHealthBar(float InPercent);
+
 };

@@ -25,6 +25,9 @@ ABaseWorker::ABaseWorker()
 	Decal = CreateDefaultSubobject<UDecalComponent>("DecalComponent");
 	Decal->SetupAttachment(GetMesh());
 	
+	HealthBarWidgetComponent = CreateDefaultSubobject<UBaseHealthBarWidgetComponent>("HealthBarWidgetComponent");
+	HealthBarWidgetComponent->SetupAttachment(GetCapsuleComponent());
+
 	BaseUnitComponent = CreateDefaultSubobject<UBaseUnitComponent>("BaseUnitComponent");
 }
 

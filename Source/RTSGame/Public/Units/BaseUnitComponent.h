@@ -34,7 +34,7 @@ public:
 	EUnitState StateOfUnit;
 
 	float Health;
-	float HealthMax;
+	float HealthMax = 100.f;
 
 	UFUNCTION(BlueprintCallable)
 	void HandleNewUnitState(EUnitState NewUnitState);
@@ -61,6 +61,6 @@ public:
 
 private:
 
-	class ABasePlayerController* BasePlayerController;
-
+	class ABasePlayerController* PlayerController;
+	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent;
 };
