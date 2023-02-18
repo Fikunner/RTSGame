@@ -211,9 +211,10 @@ void ABasePlayerController::ClickSelectThisActor(AActor* SelectedActor)
 void ABasePlayerController::AddActorSelectedToList_Implementation(AActor* SelectedActor)
 {
 	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(SelectedActor);
+	SelectedActors.Add(SelectedActor);
+
 	if (SelectionEvent)
 	{
-		SelectionEvent->SelectThisActor(SelectedActor);
-		SelectedActors.Add(SelectedActor);
+		SelectionEvent->SelectThis();
 	}
 }

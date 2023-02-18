@@ -78,13 +78,19 @@ void ABaseWorker::RepeatTheMiningAction_Implementation(AActor* ResourceRef)
 }
 
 void ABaseWorker::SelectThis()
-{
-	BaseUnitComponent->ShowSelectionDecal();
+{	
+	if (BaseUnitComponent)
+	{
+		BaseUnitComponent->ShowSelectionDecal();
+	}
 }
 
 void ABaseWorker::DeselectThis()
 {
-	BaseUnitComponent->HideSelectionDecal();
+	if (BaseUnitComponent)
+	{
+		BaseUnitComponent->HideSelectionDecal();
+	}
 }
 
 // Called when the game starts or when spawned

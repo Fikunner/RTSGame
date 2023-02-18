@@ -26,6 +26,8 @@ void AUnitSelectionMarquee::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
 }
 
 // Called every frame
@@ -37,7 +39,6 @@ void AUnitSelectionMarquee::Tick(float DeltaTime)
 	{
 		FHitResult Hit;
 
-		PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		PlayerController->GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, Hit);
 
 		FVector EndMouseLocation = Hit.Location;
@@ -74,24 +75,22 @@ void AUnitSelectionMarquee::EndResizingMarquee()
 
 void AUnitSelectionMarquee::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(OtherActor);
-	//if (SelectionEvent)
-	//{
-	//	//PlayerController->SelectThisActor(OtherActor);
-	//	if (PlayerController != nullptr)
-	//	{
-	//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Debug");
-	//	}
-	//}
+	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(OtherActor);
+	if (SelectionEvent)
+	{
+		SelectionEvent = Cast<ISelectionEvent>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		SelectionEvent->SelectThisActor(OtherActor);
+	}
 }
 
 void AUnitSelectionMarquee::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	//ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(OtherActor);
+	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(OtherActor);
 
-	//if (ShouldResizeMarquee && SelectionEvent)
-	//{
-	//	//PlayerController->DeselectThisActor(OtherActor);
-	//}
+	if (ShouldResizeMarquee && SelectionEvent)
+	{
+		SelectionEvent = Cast<ISelectionEvent>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		SelectionEvent->DeselectThisActor(OtherActor);
+	}
 }
 

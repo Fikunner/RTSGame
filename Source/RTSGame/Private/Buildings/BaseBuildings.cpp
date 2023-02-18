@@ -32,8 +32,8 @@ void ABaseBuildings::NotifyActorOnClicked(FKey ButtonPressed)
 
 void ABaseBuildings::BuildingClicked_Implementation()
 {
-	ABasePlayerController* BasePlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	BasePlayerController->AddActorSelectedToList_Implementation(this);
+	ABasePlayerController* PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	PlayerController->AddActorSelectedToList(this);
 
 	Decal->SetHiddenInGame(false, false);
 	Decal->SetVisibility(true, false);

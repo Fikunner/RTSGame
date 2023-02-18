@@ -33,6 +33,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	EUnitState StateOfUnit;
 
+	float Health;
+	float HealthMax;
+
 	UFUNCTION(BlueprintCallable)
 	void HandleNewUnitState(EUnitState NewUnitState);
 
