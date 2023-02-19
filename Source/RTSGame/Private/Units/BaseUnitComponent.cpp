@@ -28,7 +28,7 @@ void UBaseUnitComponent::BeginPlay()
 
 	if (IsValid(HealthBarWidgetComponent))
 	{
-		HealthBarWidgetComponent->UpdateHealthBar(1);
+		HealthBarWidgetComponent->UpdateHealthBar(CurrentHealth);
 	}
 	else
 	{

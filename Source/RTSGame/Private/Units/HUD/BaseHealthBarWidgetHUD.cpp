@@ -12,8 +12,5 @@ void UBaseHealthBarWidgetHUD::UpdateBar(float InPercent)
 		HealthProgressBar = static_cast<UProgressBar*>(WidgetTree->FindWidget(TextControlName));
 	}
 
-	else
-	{
-		HealthProgressBar->SetPercent(InPercent);
-	}
+	HealthProgressBar->SetPercent(InPercent);
 }

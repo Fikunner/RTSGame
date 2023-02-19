@@ -49,11 +49,8 @@ void UBaseUserWidgetHUD::StartMarqueeUpdate()
 		ImageOfMarquee = static_cast<UImage*>(WidgetTree->FindWidget(TextControlName));
 	}
 
-	if (ImageOfMarquee != nullptr)
-	{
-		StartLocation = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
-		ImageOfMarquee->SetVisibility(ESlateVisibility::HitTestInvisible);
-	}
+	StartLocation = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
+	ImageOfMarquee->SetVisibility(ESlateVisibility::HitTestInvisible);
 
 }
 

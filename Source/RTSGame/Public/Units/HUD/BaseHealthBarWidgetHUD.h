@@ -22,6 +22,6 @@ public:
 
 private:
 
-	class UProgressBar* HealthProgressBar = nullptr;
+	class UProgressBar* HealthProgressBar;
 
 };
