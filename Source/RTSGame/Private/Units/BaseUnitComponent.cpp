@@ -4,6 +4,7 @@
 #include "Units/BaseUnitComponent.h"
 #include "BasePlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Components/SceneComponent.h"
 #include "Components/DecalComponent.h"
 
@@ -12,7 +13,9 @@ UBaseUnitComponent::UBaseUnitComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
+
+	Health = HealthMax;
 
 }
 
@@ -20,28 +23,24 @@ UBaseUnitComponent::UBaseUnitComponent()
 void UBaseUnitComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	HealthBarWidgetComponent = Cast<UBaseHealthBarWidgetComponent>(GetOwner()->GetComponentByClass(UBaseHealthBarWidgetComponent::StaticClass()));
-	
-	Health = HealthMax;
-	float CurrentHealth = Health / HealthMax;
 
-	if (IsValid(HealthBarWidgetComponent))
-	{
-		HealthBarWidgetComponent->UpdateHealthBar(CurrentHealth);
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Cyan, "UnitComponent: No Healthbar component valid");
-	}
+	UpdateHealthBar();
 
 	GetOwner()->OnClicked.AddDynamic(this, &UBaseUnitComponent::OnOwnerClicked);
+	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UBaseUnitComponent::OnOwnerTakeAnyDamage);
 }
 
 void UBaseUnitComponent::OnOwnerClicked_Implementation(AActor* TouchedActor, FKey ButtonPressed)
 {
 	AddUnitToSelectionList();
 	ShowSelectionDecal();
+}
+
+void UBaseUnitComponent::OnOwnerTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
+{
+	Health -= Damage;
+	Health = UKismetMathLibrary::Max(Health, 0);
+	UpdateHealthBar();
 }
 
 void UBaseUnitComponent::AddUnitToSelectionList_Implementation()
@@ -112,4 +111,20 @@ void UBaseUnitComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	
+}
+
+void UBaseUnitComponent::UpdateHealthBar()
+{
+	HealthBarWidgetComponent = Cast<UBaseHealthBarWidgetComponent>(GetOwner()->GetComponentByClass(UBaseHealthBarWidgetComponent::StaticClass()));
+
+	float CurrentHealth = Health / HealthMax;
+
+	if (IsValid(HealthBarWidgetComponent))
+	{
+		HealthBarWidgetComponent->UpdateHealthBar(CurrentHealth);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Cyan, "UnitComponent: No Healthbar component valid");
+	}
 }

@@ -113,6 +113,12 @@ void ABaseWorker::BeginPlay()
 	BaseUnitComponent->OnEnterMovementDelegate.AddDynamic(this, &ABaseWorker::OnEnterMovement);
 	BaseUnitComponent->OnEnterMiningDelegate.AddDynamic(this, &ABaseWorker::OnEnterMining);
 
+	AController* controller = nullptr;
+	AActor* damagecauser = nullptr;
+	TSubclassOf<UDamageType> damagetype;
+
+	UGameplayStatics::ApplyDamage(this, 20.f, controller, damagecauser, damagetype);
+
 }
 
 // Called every frame

@@ -33,7 +33,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	EUnitState StateOfUnit;
 
-	float Health;
+	float Health; 
 	float HealthMax = 100.f;
 
 	UFUNCTION(BlueprintCallable)
@@ -55,11 +55,16 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnOwnerClicked(AActor* TouchedActor, FKey ButtonPressed);
 
+	UFUNCTION()
+	void OnOwnerTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
+
+	void UpdateHealthBar();
 
 	class ABasePlayerController* PlayerController;
 	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent;
