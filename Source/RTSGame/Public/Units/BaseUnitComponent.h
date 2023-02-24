@@ -36,6 +36,8 @@ public:
 	float Health; 
 	float HealthMax = 100.f;
 
+	FVector2D HealthBarDrawSize;
+
 	UFUNCTION(BlueprintCallable)
 	void HandleNewUnitState(EUnitState NewUnitState);
 

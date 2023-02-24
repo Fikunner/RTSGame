@@ -95,6 +95,7 @@ private:
 	class ABasePlayerController* PlayerController;
 	class ABaseResource* BaseResource;
 	class AGoldResource* GoldResource;
+	class UResourceComponent* ResourceComponent;
 
 	UPROPERTY(EditAnywhere)
 	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent;

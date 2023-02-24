@@ -24,6 +24,8 @@ void UBaseUnitComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	HealthBarWidgetComponent = Cast<UBaseHealthBarWidgetComponent>(GetOwner()->GetComponentByClass(UBaseHealthBarWidgetComponent::StaticClass()));
+
 	UpdateHealthBar();
 
 	GetOwner()->OnClicked.AddDynamic(this, &UBaseUnitComponent::OnOwnerClicked);
@@ -115,12 +117,11 @@ void UBaseUnitComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void UBaseUnitComponent::UpdateHealthBar()
 {
-	HealthBarWidgetComponent = Cast<UBaseHealthBarWidgetComponent>(GetOwner()->GetComponentByClass(UBaseHealthBarWidgetComponent::StaticClass()));
-
 	float CurrentHealth = Health / HealthMax;
 
 	if (IsValid(HealthBarWidgetComponent))
 	{
+		HealthBarWidgetComponent->SetDrawSize(FVector2D(50,8));
 		HealthBarWidgetComponent->UpdateHealthBar(CurrentHealth);
 	}
 	else

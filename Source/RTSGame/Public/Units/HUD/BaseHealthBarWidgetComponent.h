@@ -18,6 +18,7 @@ public:
 
 	UBaseHealthBarWidgetComponent();
 	
+	UFUNCTION(BlueprintCallable)
 	void UpdateHealthBar(float InPercent);
 
 };

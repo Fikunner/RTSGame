@@ -53,7 +53,7 @@ void ABaseWorker::OnMoveCompletedMoveUnitToThisLocation(FAIRequestID RequestID, 
 
 void ABaseWorker::GatherThisResource_Implementation(AActor* ResourceRef)
 {	
-	
+
 }
 
 void ABaseWorker::OnMoveCompletedGatherThisResource(FAIRequestID RequestID, const FPathFollowingResult& Result)
@@ -101,6 +101,8 @@ void ABaseWorker::BeginPlay()
 {
 	Super::BeginPlay();
 
+	
+
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	RTSGameMode = Cast<ABaseRTSGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	AIControllerUnits = Cast<ABaseAIControllerUnits>(GetController());
@@ -112,13 +114,6 @@ void ABaseWorker::BeginPlay()
 	BaseUnitComponent->OnEnterIdleDelegate.AddDynamic(this, &ABaseWorker::OnEnterIdle);
 	BaseUnitComponent->OnEnterMovementDelegate.AddDynamic(this, &ABaseWorker::OnEnterMovement);
 	BaseUnitComponent->OnEnterMiningDelegate.AddDynamic(this, &ABaseWorker::OnEnterMining);
-
-	AController* controller = nullptr;
-	AActor* damagecauser = nullptr;
-	TSubclassOf<UDamageType> damagetype;
-
-	UGameplayStatics::ApplyDamage(this, 20.f, controller, damagecauser, damagetype);
-
 }
 
 // Called every frame
