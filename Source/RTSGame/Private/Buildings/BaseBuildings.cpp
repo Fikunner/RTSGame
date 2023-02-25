@@ -17,8 +17,6 @@ ABaseBuildings::ABaseBuildings()
 	Decal = CreateDefaultSubobject<UDecalComponent>("DecalComponent");
 	Decal->SetupAttachment(Mesh);
 
-	//BuildingComponent = CreateDefaultSubobject<UBuildingComponent>("BuildingComponent");
-
 }
 
 void ABaseBuildings::NotifyActorOnClicked(FKey ButtonPressed)
@@ -27,7 +25,6 @@ void ABaseBuildings::NotifyActorOnClicked(FKey ButtonPressed)
 
 	BuildingClicked_Implementation();
 
-	//7:15:22
 }
 
 void ABaseBuildings::BuildingClicked_Implementation()

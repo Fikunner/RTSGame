@@ -11,7 +11,7 @@
 #include "BaseBuildings.generated.h"
 
 UCLASS()
-class RTSGAME_API ABaseBuildings : public AActor, public ISelectionEvent
+class RTSGAME_API ABaseBuildings : public AActor
 {
 	GENERATED_BODY()
 	
@@ -25,10 +25,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void BuildingClicked();
 
-	virtual void DeselectThis() override;
-	
-	UPROPERTY(EditAnywhere)
-	class UBuildingComponent* BuildingComponent;
+	void DeselectThis();
 
 protected:
 	// Called when the game starts or when spawned

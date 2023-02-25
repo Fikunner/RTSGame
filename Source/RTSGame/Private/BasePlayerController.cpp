@@ -140,6 +140,7 @@ void ABasePlayerController::MouseAction()
 					{
 						UnitActions->Execute_GatherThisResource(ArrayElements, OutActors[0]);
 					}
+
 					else if (IsValid(OutActors[0]->GetComponentByClass(BuildingComp)))
 					{
 						UnitActions->Execute_InteractWithBuilding(ArrayElements, OutActors[0]);
@@ -208,7 +209,7 @@ void ABasePlayerController::ClickSelectThisActor(AActor* SelectedActor)
 	
 }
 
-void ABasePlayerController::AddActorSelectedToList_Implementation(AActor* SelectedActor)
+void ABasePlayerController::AddActorSelectedToList(AActor* SelectedActor)
 {
 	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(SelectedActor);
 	SelectedActors.Add(SelectedActor);

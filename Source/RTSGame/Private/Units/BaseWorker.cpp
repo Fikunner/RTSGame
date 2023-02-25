@@ -101,8 +101,6 @@ void ABaseWorker::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
-
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	RTSGameMode = Cast<ABaseRTSGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	AIControllerUnits = Cast<ABaseAIControllerUnits>(GetController());

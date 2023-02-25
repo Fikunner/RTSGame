@@ -27,7 +27,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ReceiveResources(EResourceTypes ResourceType, int32 Amount);
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION()
 	void AddActorSelectedToList(AActor* SelectedActor);
 
 	void DeselectAllActors();
