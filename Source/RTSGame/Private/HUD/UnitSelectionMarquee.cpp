@@ -5,6 +5,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Units/BaseUnitComponent.h"
+#include "GenericTeamAgentInterface.h"
 
 // Sets default values
 AUnitSelectionMarquee::AUnitSelectionMarquee()
@@ -76,7 +78,9 @@ void AUnitSelectionMarquee::EndResizingMarquee()
 void AUnitSelectionMarquee::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(OtherActor);
-	if (SelectionEvent)
+	UBaseUnitComponent* UnitComponent = Cast<UBaseUnitComponent>(OtherActor->GetComponentByClass(UBaseUnitComponent::StaticClass()));
+
+	if (SelectionEvent && UnitComponent->TeamAttitude == ETeamAttitude::Friendly)
 	{
 		SelectionEvent = Cast<ISelectionEvent>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		SelectionEvent->SelectThisActor(OtherActor);
@@ -93,4 +97,3 @@ void AUnitSelectionMarquee::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AA
 		SelectionEvent->DeselectThisActor(OtherActor);
 	}
 }
-

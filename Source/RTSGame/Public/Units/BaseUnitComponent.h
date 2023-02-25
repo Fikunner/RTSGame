@@ -3,6 +3,7 @@
 #pragma once
 
 #include "BaseWorker.h"
+#include "GenericTeamAgentInterface.h"
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
@@ -33,10 +34,11 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	EUnitState StateOfUnit;
 
+	UPROPERTY(EditAnywhere, Category = "Behavior")
+	TEnumAsByte<ETeamAttitude::Type> TeamAttitude;
+
 	float Health; 
 	float HealthMax = 100.f;
-
-	FVector2D HealthBarDrawSize;
 
 	UFUNCTION(BlueprintCallable)
 	void HandleNewUnitState(EUnitState NewUnitState);
