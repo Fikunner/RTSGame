@@ -35,10 +35,13 @@ void ABaseWorker::NotifyActorOnClicked(FKey ButtonPressed)
 {
 	Super::NotifyActorOnClicked(ButtonPressed);
 
-	Decal->SetVisibility(true, false);
-	Decal->SetHiddenInGame(false, false);
+	if (BaseUnitComponent->TeamAttitude == ETeamAttitude::Friendly)
+	{
+		Decal->SetVisibility(true, false);
+		Decal->SetHiddenInGame(false, false);
 
-	PlayerController->ClickSelectThisActor(this);
+		PlayerController->ClickSelectThisActor(this);
+	}
 }
 
 void ABaseWorker::MoveUnitToThisLocation_Implementation(FVector Location)

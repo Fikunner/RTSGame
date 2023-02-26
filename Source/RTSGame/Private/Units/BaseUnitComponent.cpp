@@ -34,8 +34,11 @@ void UBaseUnitComponent::BeginPlay()
 
 void UBaseUnitComponent::OnOwnerClicked_Implementation(AActor* TouchedActor, FKey ButtonPressed)
 {
-	AddUnitToSelectionList();
-	ShowSelectionDecal();
+	if (TeamAttitude == ETeamAttitude::Friendly)
+	{
+		AddUnitToSelectionList();
+		ShowSelectionDecal();
+	}
 }
 
 void UBaseUnitComponent::OnOwnerTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -121,6 +124,30 @@ void UBaseUnitComponent::UpdateHealthBar()
 
 	if (IsValid(HealthBarWidgetComponent))
 	{
+		switch (TeamAttitude)
+		{
+		case ETeamAttitude::Friendly:
+
+			HealthBarWidgetComponent->UpdateHealtBarColor(FriendlyColor);
+
+			break;
+
+		case ETeamAttitude::Neutral:
+
+			HealthBarWidgetComponent->UpdateHealtBarColor(NeutralColor);
+
+			break;
+		case ETeamAttitude::Hostile:
+
+			HealthBarWidgetComponent->UpdateHealtBarColor(HostileColor);
+
+			break;
+		
+		default:
+
+			break;
+		}
+
 		HealthBarWidgetComponent->SetDrawSize(FVector2D(50,8));
 		HealthBarWidgetComponent->UpdateHealthBar(CurrentHealth);
 	}

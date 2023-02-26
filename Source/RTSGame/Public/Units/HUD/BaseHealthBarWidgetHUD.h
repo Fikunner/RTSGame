@@ -20,8 +20,14 @@ public:
 
 	void UpdateBar(float InPercent);
 
-private:
+	void UpdateHealthBarColor(FLinearColor HealthBarColor);
 
 	class UProgressBar* HealthProgressBar;
+
+protected:
+	
+	virtual void NativeConstruct() override;
+
+private:
 
 };

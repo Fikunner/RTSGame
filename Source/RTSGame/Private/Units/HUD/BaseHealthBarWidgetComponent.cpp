@@ -14,3 +14,9 @@ void UBaseHealthBarWidgetComponent::UpdateHealthBar(float InPercent)
 	UBaseHealthBarWidgetHUD* HealthBarWidgetHUD = Cast<UBaseHealthBarWidgetHUD>(GetWidget());
 	HealthBarWidgetHUD->UpdateBar(InPercent);
 }
+
+void UBaseHealthBarWidgetComponent::UpdateHealtBarColor(FLinearColor HealthBarColor)
+{
+	UBaseHealthBarWidgetHUD* HealthBarWidgetHUD = Cast<UBaseHealthBarWidgetHUD>(GetWidget());
+	HealthBarWidgetHUD->UpdateHealthBarColor(HealthBarColor);
+}

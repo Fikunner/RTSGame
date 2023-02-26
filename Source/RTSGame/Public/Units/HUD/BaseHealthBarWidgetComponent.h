@@ -21,4 +21,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateHealthBar(float InPercent);
 
+	UFUNCTION()
+	void UpdateHealtBarColor(FLinearColor HealthBarColor);
+
 };

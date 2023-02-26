@@ -8,8 +8,6 @@
 
 UBaseUserWidgetHUD::UBaseUserWidgetHUD(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-	//ConstructorHelpers::FClassFinder<UUserWidget> ServerRowBP(TEXT("/Game/RTS/Core/HUD/WBP_HUD"));
-
 	TextBlockOfGold = nullptr;
 }
 

@@ -34,8 +34,17 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	EUnitState StateOfUnit;
 
-	UPROPERTY(EditAnywhere, Category = "Behavior")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior")
 	TEnumAsByte<ETeamAttitude::Type> TeamAttitude;
+
+	UPROPERTY(EditAnywhere)
+	FLinearColor FriendlyColor;
+
+	UPROPERTY(EditAnywhere)
+	FLinearColor NeutralColor;
+
+	UPROPERTY(EditAnywhere)
+	FLinearColor HostileColor;
 
 	float Health; 
 	float HealthMax = 100.f;
