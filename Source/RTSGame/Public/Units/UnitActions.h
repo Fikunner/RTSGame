@@ -23,12 +23,15 @@ class RTSGAME_API IUnitActions
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	
-	UFUNCTION(BlueprintNativeEvent, Category = "Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interfaces")
 	void MoveUnitToThisLocation(FVector Location);
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interfaces")
 	void GatherThisResource(AActor* ResourceRef);
 
-	UFUNCTION(BlueprintNativeEvent, Category = "Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interfaces")
 	void InteractWithBuilding(AActor* BuildingRef);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interfaces")
+	void AttackThisActor(AActor* ActorToAttack);
 };

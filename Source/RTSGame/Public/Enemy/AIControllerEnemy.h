@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "Units/UnitActions.h"
+
 #include "CoreMinimal.h"
 #include "Units/BaseAIControllerUnits.h"
 #include "AIControllerEnemy.generated.h"
@@ -10,8 +12,12 @@
  * 
  */
 UCLASS()
-class RTSGAME_API AAIControllerEnemy : public ABaseAIControllerUnits
+class RTSGAME_API AAIControllerEnemy : public ABaseAIControllerUnits, public IUnitActions
 {
 	GENERATED_BODY()
-	
+
+protected:
+
+	virtual void BeginPlay() override;
+
 };
