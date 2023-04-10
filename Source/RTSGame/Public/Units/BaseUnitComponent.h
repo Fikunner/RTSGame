@@ -2,16 +2,14 @@
 
 #pragma once
 
-#include "BaseWorker.h"
 #include "GenericTeamAgentInterface.h"
+#include "Units/BaseWorker.h"
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "BaseUnitComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnterIdleDelegate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnterMovementDelegate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnterMiningDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnterNewStateDelegate, EUnitState, UnitStateNew);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class RTSGAME_API UBaseUnitComponent : public UActorComponent
@@ -23,13 +21,7 @@ public:
 	UBaseUnitComponent();
 
 	UPROPERTY(BlueprintAssignable)
-	FOnEnterIdleDelegate OnEnterIdleDelegate;
-
-	UPROPERTY(BlueprintAssignable)
-	FOnEnterMovementDelegate OnEnterMovementDelegate;
-
-	UPROPERTY(BlueprintAssignable)
-	FOnEnterMiningDelegate OnEnterMiningDelegate;
+	FOnEnterNewStateDelegate OnEnterNewStateDelegate;
 
 	UPROPERTY(BlueprintReadWrite)
 	EUnitState StateOfUnit;

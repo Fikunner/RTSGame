@@ -37,6 +37,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UDecalComponent* Decal;
 
+	UPROPERTY(EditAnywhere)
+	class UBuildingComponent* BuildingComponent;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -6,7 +6,6 @@
 #include "AIController.h"
 #include "Units/BaseAIControllerUnits.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Units/BaseUnitComponent.h"
 #include "Framework/BaseRTSGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -15,6 +14,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Resources/ResourceComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Units/BaseUnitComponent.h"
 
 // Sets default values
 ABaseWorker::ABaseWorker()
@@ -111,10 +111,8 @@ void ABaseWorker::BeginPlay()
 	PathFollowingComponent = AIControllerUnits->GetPathFollowingComponent();
 	
 	BaseUnitComponent = Cast<UBaseUnitComponent>(GetComponentByClass(UBaseUnitComponent::StaticClass()));
-	
-	BaseUnitComponent->OnEnterIdleDelegate.AddDynamic(this, &ABaseWorker::OnEnterIdle);
-	BaseUnitComponent->OnEnterMovementDelegate.AddDynamic(this, &ABaseWorker::OnEnterMovement);
-	BaseUnitComponent->OnEnterMiningDelegate.AddDynamic(this, &ABaseWorker::OnEnterMining);
+
+	BaseUnitComponent->OnEnterNewStateDelegate.AddDynamic(this, &ABaseWorker::OnEnterNewState);
 }
 
 // Called every frame
@@ -137,17 +135,28 @@ void ABaseWorker::SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, ObjectDelegate, Time, bLoop);
 }
 
-void ABaseWorker::OnEnterIdle()
+void ABaseWorker::OnEnterNewState(EUnitState NewUnitState)
 {
-	GetMesh()->PlayAnimation(AnimationIdle, true);
-}
+	switch (NewUnitState)
+	{
+		case EUnitState::Idle:
 
-void ABaseWorker::OnEnterMovement()
-{
-	GetMesh()->PlayAnimation(AnimationOfWalkFWD, true);
-}
+			GetMesh()->PlayAnimation(AnimationIdle, true);
+			break;
 
-void ABaseWorker::OnEnterMining()
-{
-	GetMesh()->PlayAnimation(AnimMontageMining, true);
+		case EUnitState::Movement:
+			
+			GetMesh()->PlayAnimation(AnimationOfWalkFWD, true);
+			break;
+
+		case EUnitState::Mining:
+
+			GetMesh()->PlayAnimation(AnimMontageMining, true);
+			break;
+
+		case EUnitState::Attacking:
+
+			GetMesh()->PlayAnimation(AnimationOfAttacking, true);
+			break;
+	}
 }

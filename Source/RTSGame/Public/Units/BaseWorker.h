@@ -12,6 +12,16 @@
 #include "GameFramework/Character.h"
 #include "BaseWorker.generated.h"
 
+UENUM(BlueprintType)
+enum class EUnitState : uint8
+{
+	None UMETA(DisplayName = "None"),
+	Idle UMETA(DisplayName = "Idle"),
+	Movement UMETA(DisplayName = "Movement"),
+	Mining UMETA(DisplayName = "Mining"),
+	Attacking UMETA(DisplayName = "Attacking")
+};
+
 UCLASS()
 class RTSGAME_API ABaseWorker : public ACharacter, public IUnitActions, public ISelectionEvent
 {
@@ -21,12 +31,8 @@ public:
 	// Sets default values for this character's properties
 	ABaseWorker();
 
-	UFUNCTION()
-	void OnEnterIdle();
-	UFUNCTION()
-	void OnEnterMovement();
-	UFUNCTION()
-	void OnEnterMining();
+	UFUNCTION(BlueprintCallable)
+	void OnEnterNewState(EUnitState NewUnitState);
 
 	//Interfaces
 	void MoveUnitToThisLocation_Implementation(FVector Location) override;
@@ -57,6 +63,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Animations")
 	UAnimationAsset* AnimationIdle;
+
+	UPROPERTY(EditAnywhere, Category = "Animations")
+	UAnimationAsset* AnimationOfAttacking;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBaseUnitComponent* BaseUnitComponent;
@@ -99,13 +108,4 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent;
-};
-
-UENUM(BlueprintType)
-enum class EUnitState : uint8
-{
-	None UMETA(DisplayName = "None"),
-	Idle UMETA(DisplayName = "Idle"),
-	Movement UMETA(DisplayName = "Movement"),
-	Mining UMETA(DisplayName = "Mining"),
 };

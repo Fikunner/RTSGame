@@ -43,6 +43,10 @@
 		{
 			"Name": "RiderLink",
 			"Enabled": false
+		},
+		{
+			"Name": "StateTree",
+			"Enabled": true
 		}
 	]
 }

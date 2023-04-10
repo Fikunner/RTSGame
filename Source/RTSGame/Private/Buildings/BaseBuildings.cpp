@@ -4,6 +4,7 @@
 #include "BasePlayerController.h"
 #include "Components/DecalComponent.h"
 #include "Kismet/Gameplaystatics.h"
+#include "Buildings/BuildingComponent.h"
 
 // Sets default values
 ABaseBuildings::ABaseBuildings()

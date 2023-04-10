@@ -9,9 +9,4 @@ void AAIControllerEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
-	IUnitActions* UnitActions = Cast<IUnitActions>(GetPawn());
-
-	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATownHallBuilding::StaticClass(), );
-
-	//UnitActions->AttackThisActor();
 }

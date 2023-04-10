@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Units/BaseUnitComponent.h"
 #include "BasePlayerController.h"
 #include "Kismet/GameplayStatics.h"
@@ -85,30 +84,9 @@ void UBaseUnitComponent::HideSelectionDecal_Implementation()
 
 void UBaseUnitComponent::HandleNewUnitState(EUnitState NewUnitState)
 {
-	StateOfUnit = NewUnitState;
+	NewUnitState = StateOfUnit;
 
-	switch (NewUnitState)
-	{
-	case EUnitState::Idle:
-		
-		OnEnterIdleDelegate.Broadcast();
-
-		break;
-	case EUnitState::Movement:
-
-		OnEnterMovementDelegate.Broadcast();
-
-		break;
-	case EUnitState::Mining:
-
-		OnEnterMiningDelegate.Broadcast();
-
-		break;
-
-	default:
-
-		break;
-	}
+	OnEnterNewStateDelegate.Broadcast(NewUnitState);
 }
 
 // Called every frame

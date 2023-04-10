@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Buildings/BaseBuildings.h"
+#include "Components/WidgetComponent.h"
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
@@ -18,8 +19,21 @@ public:
 	// Sets default values for this component's properties
 	UBuildingComponent();
 
+	UPROPERTY(EditAnywhere)
+	FVector2D HealthBarDrawSize = FVector2D(75, 12);
+
+	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent = nullptr;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EBuildingTypes TypeOfBuilding = EBuildingTypes::TownHall;
+
+	void UpdateHealthBar();
+
+	UPROPERTY(EditAnywhere)
+	float Health;
+
+	UPROPERTY(EditAnywhere)
+	float HealthMax = 400;
 
 protected:
 	// Called when the game starts
