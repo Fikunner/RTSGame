@@ -84,7 +84,7 @@ void UBaseUnitComponent::HideSelectionDecal_Implementation()
 
 void UBaseUnitComponent::HandleNewUnitState(EUnitState NewUnitState)
 {
-	NewUnitState = StateOfUnit;
+	StateOfUnit = NewUnitState;
 
 	OnEnterNewStateDelegate.Broadcast(NewUnitState);
 }

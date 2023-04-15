@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Units/BaseUnitComponent.h"
 #include "Buildings/BuildingComponent.h"
 #include "Resources/BaseResource.h"
 #include "Units/BaseAIControllerUnits.h"
@@ -72,6 +73,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TSubclassOf<UActorComponent> BuildingComp;
+	
+	UPROPERTY(EditAnywhere, Category = "Components")
+	UBaseUnitComponent* UnitComponent;
+
 
 private:
 

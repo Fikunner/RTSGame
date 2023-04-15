@@ -29,17 +29,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior")
 	TEnumAsByte<ETeamAttitude::Type> TeamAttitude;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Color settings")
 	FLinearColor FriendlyColor;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Color settings")
 	FLinearColor NeutralColor;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Color settings")
 	FLinearColor HostileColor;
 
-	float Health; 
+	UPROPERTY(EditAnywhere, Category = "Gamemode settings")
+	float Health;
+
+	UPROPERTY(EditAnywhere, Category = "Gamemode settings")
 	float HealthMax = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gamemode settings")
+	float DamageToApply = 10.f;
 
 	UFUNCTION(BlueprintCallable)
 	void HandleNewUnitState(EUnitState NewUnitState);

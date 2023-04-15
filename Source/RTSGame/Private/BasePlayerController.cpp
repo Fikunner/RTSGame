@@ -133,6 +133,7 @@ void ABasePlayerController::MouseAction()
 		{
 			for (AActor* ArrayElements : SelectedActors) 
 			{
+				UnitComponent = Cast<UBaseUnitComponent>(OutActors[0]->GetComponentByClass(UBaseUnitComponent::StaticClass()));
 				IUnitActions* UnitActions = Cast<IUnitActions>(ArrayElements);
 				if (UnitActions)
 				{
@@ -144,6 +145,11 @@ void ABasePlayerController::MouseAction()
 					else if (IsValid(OutActors[0]->GetComponentByClass(BuildingComp)))
 					{
 						UnitActions->Execute_InteractWithBuilding(ArrayElements, OutActors[0]);
+					}
+
+					else if (IsValid(UnitComponent) && UnitComponent->TeamAttitude == ETeamAttitude::Hostile)
+					{
+						UnitActions->Execute_AttackThisActor(ArrayElements, OutActors[0]);
 					}
 				}
 			}
