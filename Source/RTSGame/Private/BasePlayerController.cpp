@@ -142,9 +142,10 @@ void ABasePlayerController::MouseAction()
 						UnitActions->Execute_GatherThisResource(ArrayElements, OutActors[0]);
 					}
 
-					else if (IsValid(OutActors[0]->GetComponentByClass(BuildingComp)))
+					else if (IsValid(OutActors[0]->GetComponentByClass(UBuildingComponent::StaticClass())))
 					{
 						UnitActions->Execute_InteractWithBuilding(ArrayElements, OutActors[0]);
+						GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "znaleziono");
 					}
 
 					else if (IsValid(UnitComponent) && UnitComponent->TeamAttitude == ETeamAttitude::Hostile)

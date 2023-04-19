@@ -7,6 +7,11 @@
 void ABaseRTSGameMode::BeginPlay()
 {
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), TownHall, ATownHalls);
+
+	for (AActor* ArrayElements : ATownHalls)
+	{
+
+	}
 }
 
 AActor* ABaseRTSGameMode::GetPlayerTownHall()

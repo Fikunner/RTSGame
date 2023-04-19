@@ -18,6 +18,12 @@ ABaseBuildings::ABaseBuildings()
 	Decal = CreateDefaultSubobject<UDecalComponent>("DecalComponent");
 	Decal->SetupAttachment(Mesh);
 
+	HealthBarWidgetComponent = CreateDefaultSubobject<UBaseHealthBarWidgetComponent>("HealthBarWidgetComponent");
+	HealthBarWidgetComponent->SetupAttachment(Mesh);
+	HealthBarWidgetComponent->SetDrawSize(FVector2D(200, 20));
+
+	BuildingComponent = CreateDefaultSubobject<UBuildingComponent>("BuildingComponent");
+
 }
 
 void ABaseBuildings::NotifyActorOnClicked(FKey ButtonPressed)

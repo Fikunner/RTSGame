@@ -40,6 +40,12 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class UBuildingComponent* BuildingComponent;
 
+	UPROPERTY(EditAnywhere)
+	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent;
+
+	UPROPERTY(EditAnywhere)
+	FVector2D HealthBarWidgetSize = FVector2D(200, 20);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

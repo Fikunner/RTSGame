@@ -111,7 +111,6 @@ void ABaseWorker::BeginPlay()
 	PathFollowingComponent = AIControllerUnits->GetPathFollowingComponent();
 	
 	BaseUnitComponent = Cast<UBaseUnitComponent>(GetComponentByClass(UBaseUnitComponent::StaticClass()));
-
 	BaseUnitComponent->OnEnterNewStateDelegate.AddDynamic(this, &ABaseWorker::OnEnterNewState);
 }
 
