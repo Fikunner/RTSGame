@@ -16,8 +16,3 @@ void ATownHallBuilding::BeginPlay()
 	BuildingComponent->OnBuildingDestroyed.AddDynamic(this, &ATownHallBuilding::OnBuildingDestroyed);
 
 }
-
-void ATownHallBuilding::OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "YOU HAVE LOST");
-}

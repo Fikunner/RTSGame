@@ -30,15 +30,15 @@ public:
 	UFUNCTION()
 	void OnTownHallDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
 
-	UFUNCTION()
+	UFUNCTION(BLueprintNativeEvent, BlueprintCallable)
 	void LoseTheGame();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<AActor*> ATownHalls;
 
 protected:
 
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<AActor*> ATownHalls;
 
 private:
 

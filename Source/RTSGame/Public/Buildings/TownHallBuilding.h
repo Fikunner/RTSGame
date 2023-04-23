@@ -21,9 +21,6 @@ protected:
 
 	virtual void BeginPlay() override;
 
-	
-	void OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
-
 private:
 
 	UBuildingComponent* BuildingComponent;

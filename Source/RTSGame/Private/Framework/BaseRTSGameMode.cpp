@@ -3,6 +3,7 @@
 #include "Framework/BaseRTSGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Actor.h"
+#include "Blueprint/UserWidget.h"
 
 void ABaseRTSGameMode::BeginPlay()
 {
@@ -35,12 +36,11 @@ void ABaseRTSGameMode::OnTownHallDestroyed(TEnumAsByte<ETeamAttitude::Type> Team
 {
 	if (TeamAttitude == ETeamAttitude::Friendly)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "OnTownHallDestroyed");
 		LoseTheGame();
 	}
 }
 
-void ABaseRTSGameMode::LoseTheGame()
+void ABaseRTSGameMode::LoseTheGame_Implementation()
 {
 	
 }

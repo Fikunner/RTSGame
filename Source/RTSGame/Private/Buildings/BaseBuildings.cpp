@@ -51,7 +51,6 @@ void ABaseBuildings::DeselectThis()
 
 void ABaseBuildings::OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, "OnTownHallDestroyed");
 	Destroy();
 }
 
