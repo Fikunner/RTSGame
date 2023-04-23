@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "BuildingComponent.h"
 #include "CoreMinimal.h"
 #include "Buildings/BaseBuildings.h"
 #include "TownHallBuilding.generated.h"
@@ -16,4 +17,13 @@ class RTSGAME_API ATownHallBuilding : public ABaseBuildings
 
 	ATownHallBuilding();
 	
+protected:
+
+	virtual void BeginPlay() override;
+
+	void OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
+
+private:
+
+	UBuildingComponent* BuildingComponent;
 };

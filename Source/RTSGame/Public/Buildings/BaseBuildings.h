@@ -5,6 +5,7 @@
 #include "Buildings/SelectionEvent.h"
 #include "Components/StaticMeshComponent.h"
 #include "SelectionEvent.h"
+#include "GenericTeamAgentInterface.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
@@ -26,6 +27,8 @@ public:
 	void BuildingClicked();
 
 	void DeselectThis();
+
+	void OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
 
 protected:
 	// Called when the game starts or when spawned

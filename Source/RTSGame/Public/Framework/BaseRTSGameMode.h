@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "Buildings\BuildingComponent.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
@@ -26,13 +27,21 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	AActor* GetPlayerTownHall();
 
+	UFUNCTION()
+	void OnTownHallDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
+
+	UFUNCTION()
+	void LoseTheGame();
+
 protected:
 
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<AActor*> ATownHalls;
 
 private:
+
+	class UBuildingComponent* BuildingComponent;
 
 };

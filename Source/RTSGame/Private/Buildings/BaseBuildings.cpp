@@ -49,10 +49,18 @@ void ABaseBuildings::DeselectThis()
 	Decal->SetVisibility(false, false);
 }
 
+void ABaseBuildings::OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Destroyed!!!!!!!!!!!!!!!!!!!!!!!");
+	Destroy();
+}
+
 // Called when the game starts or when spawned
 void ABaseBuildings::BeginPlay()
 {
 	Super::BeginPlay();
+
+	BuildingComponent->OnBuildingDestroyed.AddDynamic(this, &ABaseBuildings::OnBuildingDestroyed);
 
 }
 

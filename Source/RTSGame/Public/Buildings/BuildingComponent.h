@@ -10,7 +10,7 @@
 #include "Components/ActorComponent.h"
 #include "BuildingComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBuildingDestroyedDelegate, ETeamAttitude::Type, Team);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBuildingDestroyedDelegate, TEnumAsByte<ETeamAttitude::Type>, Team);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class RTSGAME_API UBuildingComponent : public UActorComponent

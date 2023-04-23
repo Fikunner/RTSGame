@@ -10,7 +10,8 @@ void ABaseRTSGameMode::BeginPlay()
 
 	for (AActor* ArrayElements : ATownHalls)
 	{
-
+		BuildingComponent = Cast<UBuildingComponent>(ArrayElements->GetComponentByClass(UBuildingComponent::StaticClass()));
+		BuildingComponent->OnBuildingDestroyed.AddDynamic(this, &ABaseRTSGameMode::OnTownHallDestroyed);
 	}
 }
 
@@ -28,4 +29,17 @@ AActor* ABaseRTSGameMode::GetPlayerTownHall()
 	}
 
 	return TownHallLocation;
+}
+
+void ABaseRTSGameMode::OnTownHallDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude)
+{
+	if (TeamAttitude == ETeamAttitude::Friendly)
+	{
+		LoseTheGame();
+	}
+}
+
+void ABaseRTSGameMode::LoseTheGame()
+{
+
 }
