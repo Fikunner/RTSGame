@@ -25,7 +25,7 @@ public:
 	FOnBuildingDestroyedDelegate OnBuildingDestroyed;
 
 	UPROPERTY(EditAnywhere)
-	FVector2D HealthBarDrawSize = FVector2D(75, 12);
+	FVector2D HealthBarDrawSize;
 
 	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent = nullptr;
 

@@ -28,6 +28,7 @@ public:
 
 	void DeselectThis();
 
+	UFUNCTION()
 	void OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
 
 protected:

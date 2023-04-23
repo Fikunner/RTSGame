@@ -35,11 +35,12 @@ void ABaseRTSGameMode::OnTownHallDestroyed(TEnumAsByte<ETeamAttitude::Type> Team
 {
 	if (TeamAttitude == ETeamAttitude::Friendly)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "OnTownHallDestroyed");
 		LoseTheGame();
 	}
 }
 
 void ABaseRTSGameMode::LoseTheGame()
 {
-
+	
 }
