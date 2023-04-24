@@ -5,6 +5,7 @@
 #include "Buildings/SelectionEvent.h"
 #include "Components/StaticMeshComponent.h"
 #include "SelectionEvent.h"
+#include "GenericTeamAgentInterface.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
@@ -14,8 +15,8 @@ UCLASS()
 class RTSGAME_API ABaseBuildings : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+	public:
 	// Sets default values for this actor's properties
 	ABaseBuildings();
 
@@ -26,6 +27,9 @@ public:
 	void BuildingClicked();
 
 	void DeselectThis();
+
+	UFUNCTION()
+	void OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
 
 protected:
 	// Called when the game starts or when spawned
@@ -40,7 +44,13 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class UBuildingComponent* BuildingComponent;
 
-public:	
+	UPROPERTY(EditAnywhere)
+	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent;
+
+	UPROPERTY(EditAnywhere)
+	FVector2D HealthBarWidgetSize = FVector2D(200, 20);
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

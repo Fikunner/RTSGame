@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "EnemySpawner.generated.h"
@@ -16,8 +16,13 @@ public:
 	// Sets default values for this actor's properties
 	AEnemySpawner();
 
-	UPROPERTY(EditAnywhere)
-	class UBoxComponent* BoxComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USphereComponent* SphereComponent;
+
+	void SpawnEnemy();
+
+	UPROPERTY(EditAnywhere, Category = "Actors")
+	UClass* ActorToSpawn;
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,5 +31,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+private:
 
 };

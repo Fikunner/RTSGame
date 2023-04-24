@@ -3,10 +3,17 @@
 #include "Framework/BaseRTSGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Actor.h"
+#include "Blueprint/UserWidget.h"
 
 void ABaseRTSGameMode::BeginPlay()
 {
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), TownHall, ATownHalls);
+
+	for (AActor* ArrayElements : ATownHalls)
+	{
+		BuildingComponent = Cast<UBuildingComponent>(ArrayElements->GetComponentByClass(UBuildingComponent::StaticClass()));
+		BuildingComponent->OnBuildingDestroyed.AddDynamic(this, &ABaseRTSGameMode::OnTownHallDestroyed);
+	}
 }
 
 AActor* ABaseRTSGameMode::GetPlayerTownHall()
@@ -23,4 +30,17 @@ AActor* ABaseRTSGameMode::GetPlayerTownHall()
 	}
 
 	return TownHallLocation;
+}
+
+void ABaseRTSGameMode::OnTownHallDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude)
+{
+	if (TeamAttitude == ETeamAttitude::Friendly)
+	{
+		LoseTheGame();
+	}
+}
+
+void ABaseRTSGameMode::LoseTheGame_Implementation()
+{
+
 }

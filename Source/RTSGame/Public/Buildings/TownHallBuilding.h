@@ -2,12 +2,13 @@
 
 #pragma once
 
+#include "BuildingComponent.h"
 #include "CoreMinimal.h"
 #include "Buildings/BaseBuildings.h"
 #include "TownHallBuilding.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class RTSGAME_API ATownHallBuilding : public ABaseBuildings
@@ -15,5 +16,12 @@ class RTSGAME_API ATownHallBuilding : public ABaseBuildings
 	GENERATED_BODY()
 
 	ATownHallBuilding();
-	
+
+protected:
+
+	virtual void BeginPlay() override;
+
+private:
+
+	UBuildingComponent* BuildingComponent;
 };

@@ -4,30 +4,41 @@
 
 #include "Buildings/BaseBuildings.h"
 #include "Components/WidgetComponent.h"
+#include "GenericTeamAgentInterface.h"
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "BuildingComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBuildingDestroyedDelegate, TEnumAsByte<ETeamAttitude::Type>, Team);
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class RTSGAME_API UBuildingComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+	public:
 	// Sets default values for this component's properties
 	UBuildingComponent();
 
+	UPROPERTY(BlueprintAssignable)
+	FOnBuildingDestroyedDelegate OnBuildingDestroyed;
+
 	UPROPERTY(EditAnywhere)
-	FVector2D HealthBarDrawSize = FVector2D(75, 12);
+	FVector2D HealthBarDrawSize;
 
 	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	EBuildingTypes TypeOfBuilding = EBuildingTypes::TownHall;
+	EBuildingTypes TypeOfBuilding;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TEnumAsByte<ETeamAttitude::Type> TeamAttitude;
 
 	void UpdateHealthBar();
+
+	UFUNCTION()
+	void OnOwnerTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
 	UPROPERTY(EditAnywhere)
 	float Health;
@@ -39,9 +50,9 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+
 };

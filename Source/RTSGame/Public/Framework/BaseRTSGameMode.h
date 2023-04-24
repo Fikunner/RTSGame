@@ -3,20 +3,21 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "Buildings\BuildingComponent.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "BaseRTSGameMode.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class RTSGAME_API ABaseRTSGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
-public:
+	public:
 
 	UPROPERTY(EditAnywhere, Category = "Buildings")
 	TSubclassOf<AActor> TownHall;
@@ -26,13 +27,21 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	AActor* GetPlayerTownHall();
 
+	UFUNCTION()
+	void OnTownHallDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
+
+	UFUNCTION(BLueprintNativeEvent, BlueprintCallable)
+	void LoseTheGame();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<AActor*> ATownHalls;
+
 protected:
 
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadWrite)
-	TArray<AActor*> ATownHalls;
-
 private:
+
+	class UBuildingComponent* BuildingComponent;
 
 };

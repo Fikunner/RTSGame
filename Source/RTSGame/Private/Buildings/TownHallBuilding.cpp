@@ -5,5 +5,14 @@
 
 ATownHallBuilding::ATownHallBuilding()
 {
-	
+
+}
+
+void ATownHallBuilding::BeginPlay()
+{
+	Super::BeginPlay();
+
+	BuildingComponent = Cast<UBuildingComponent>(GetComponentByClass(UBuildingComponent::StaticClass()));
+	BuildingComponent->OnBuildingDestroyed.AddDynamic(this, &ATownHallBuilding::OnBuildingDestroyed);
+
 }
