@@ -21,8 +21,10 @@ public:
 	
 	ABaseHUD();
 
+	UPROPERTY()
 	class UBaseUserWidgetHUD* UserWidgetHUD;
 
+	UPROPERTY()
 	class UBaseUserWidgetHUD* HUDWidgetRef;
 
 protected:

@@ -11,6 +11,7 @@ AEnemySpawner::AEnemySpawner()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SphereRadius = 1000.f;
+	Time = 10.f;
 
 	SphereCollision = CreateDefaultSubobject<USphereComponent>("Sphere");
 	SphereCollision->SetSphereRadius(SphereRadius);
@@ -20,8 +21,6 @@ AEnemySpawner::AEnemySpawner()
 void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
-
-	Time = 10.f;
 
 	TimerDelegate = FTimerDelegate::CreateUObject(this, &AEnemySpawner::SpawnWave);
 	GetWorld()->GetTimerManager().SetTimer(SpawnTimer, TimerDelegate, Time, true);
@@ -44,9 +43,10 @@ void AEnemySpawner::SpawnEnemy(int EnemiesToSpawn)
 		FActorSpawnParameters SpawnInfo;
 
 		GetWorld()->SpawnActor<AActor>(ActorToSpawn, Location + FVector(0.f, 0.f, 100.f), Rotation, SpawnInfo);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::SanitizeFloat(Time));
 	}
 }
+
+//9:23:51
 
 void AEnemySpawner::SpawnWave()
 {

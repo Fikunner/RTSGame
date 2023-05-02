@@ -12,11 +12,12 @@ class RTSGAME_API ABasePlayerCamera : public APawn
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
+
 	ABasePlayerCamera();
 
 protected:
-	// Called when the game starts or when spawned
+
+	UFUNCTION()
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
@@ -26,10 +27,11 @@ protected:
 	class UCameraComponent* CameraComponent;
 
 public:	
-	// Called every frame
+
+	UFUNCTION()
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
+	UFUNCTION()
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };

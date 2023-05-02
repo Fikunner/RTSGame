@@ -13,26 +13,27 @@ class RTSGAME_API AEnemySpawner : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
+	
 	AEnemySpawner();
 
-	UPROPERTY(EditAnywhere)
-	class USphereComponent* SphereCollision;
-
-	UPROPERTY(EditAnywhere, Category = "Actor")
-	TSubclassOf<AActor> ActorToSpawn;
-
 protected:
-	// Called when the game starts or when spawned
+	
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
 	void SpawnEnemy(int EnemiesToSpawn);
 
 	UPROPERTY(EditAnywhere)
 	int HowMuchEnemiesToSpawn;
 
+	UPROPERTY(EditAnywhere, Category = "Actor")
+	TSubclassOf<AActor> ActorToSpawn;
+
+	UPROPERTY(EditAnywhere)
+	class USphereComponent* SphereCollision;
+
 public:	
-	// Called every frame
+	
 	virtual void Tick(float DeltaTime) override;
 
 private:

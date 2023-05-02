@@ -23,6 +23,7 @@ class RTSGAME_API ABasePlayerController : public APlayerController, public ISele
 	GENERATED_BODY()
 	
 public:
+
 	ABasePlayerController();
 
 	UFUNCTION(BlueprintCallable)
@@ -31,15 +32,22 @@ public:
 	UFUNCTION()
 	void AddActorSelectedToList(AActor* SelectedActor);
 
+	UFUNCTION()
 	void DeselectAllActors();
 
+	UFUNCTION()
 	virtual void SelectThisActor(AActor* SelectedActor) override;
+	
+	UFUNCTION()
 	virtual void DeselectThisActor(AActor* DeselectedActor) override;
+
+	UFUNCTION()
 	virtual void ClickSelectThisActor(AActor* SelectedActor) override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<EResourceTypes, int32> StoredResource;
 
+	UPROPERTY()
 	TArray<class AActor*> OutActors;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -48,11 +56,15 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AUnitSelectionMarquee> UnitSelectionMarqueeToSpawn;
 
+	UFUNCTION()
 	virtual void Tick(float DeltaTime) override;
 
 protected:
+
+	UFUNCTION()
 	virtual void SetupInputComponent() override;
 
+	UFUNCTION()
 	virtual void BeginPlay() override;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Movement")
@@ -80,20 +92,31 @@ protected:
 
 private:
 
+	UPROPERTY()
 	bool IsClickSelected;
 
+	UFUNCTION()
 	void MoveForward(float Value);
+	UFUNCTION()
 	void MoveRight(float Value);
+	UFUNCTION()
 	void MouseMovement(float Value);
 
+	UFUNCTION()
 	void MouseSelection();
+	UFUNCTION()
 	void MouseDeselection();
 
+	UFUNCTION()
 	void MouseAction();
 
+	UPROPERTY()
 	class ABaseBuildings* BuildingBase;
+	UPROPERTY()
 	class ABaseWorker* Worker;
+	UPROPERTY()
 	class ABaseAIControllerUnits* AIControllerUnits;
+	UPROPERTY()
 	class ABaseHUD* HUD;
 
 };

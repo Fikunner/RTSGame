@@ -12,14 +12,19 @@ ABaseBuildings::ABaseBuildings()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>("RootComponent");
+	DefaultSceneRoot->SetupAttachment(RootComponent);
+
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("MeshComponent");
-	Mesh->SetupAttachment(RootComponent);
+	Mesh->SetupAttachment(DefaultSceneRoot);
 
 	Decal = CreateDefaultSubobject<UDecalComponent>("DecalComponent");
 	Decal->SetupAttachment(Mesh);
 
 	HealthBarWidgetComponent = CreateDefaultSubobject<UBaseHealthBarWidgetComponent>("HealthBarWidgetComponent");
 	HealthBarWidgetComponent->SetupAttachment(Mesh);
+	HealthBarWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+
 	HealthBarWidgetComponent->SetDrawSize(FVector2D(200, 20));
 
 	BuildingComponent = CreateDefaultSubobject<UBuildingComponent>("BuildingComponent");

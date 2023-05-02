@@ -17,11 +17,14 @@ class RTSGAME_API UBaseHealthBarWidgetHUD : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-
+	
+	UFUNCTION()
 	void UpdateBar(float InPercent);
 
+	UFUNCTION()
 	void UpdateHealthBarColor(FLinearColor HealthBarColor);
 
+	UPROPERTY()
 	class UProgressBar* HealthProgressBar;
 
 protected:

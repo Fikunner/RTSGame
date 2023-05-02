@@ -128,7 +128,7 @@ void ABaseWorker::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 }
 
-void ABaseWorker::SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void>(ObjectDelegate), float Time, bool bLoop)
+void ABaseWorker::SetTimerWithDelegate(FTimerHandle& TimerHandle, TDelegate<void()> ObjectDelegate, float Time, bool bLoop)
 {
 	GetWorld()->GetTimerManager().ClearTimer(HandleGatherThisResource);
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, ObjectDelegate, Time, bLoop);

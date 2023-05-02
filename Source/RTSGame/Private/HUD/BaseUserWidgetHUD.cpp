@@ -11,7 +11,7 @@ UBaseUserWidgetHUD::UBaseUserWidgetHUD(const FObjectInitializer& ObjectInitializ
 	TextBlockOfGold = nullptr;
 }
 
-void UBaseUserWidgetHUD::UpdateResourceValue(TEnumAsByte<EResourceTypes> TypeOfResource, int Amount)
+void UBaseUserWidgetHUD::UpdateResourceValue(EResourceTypes TypeOfResource, int Amount)
 {
 	const FName TextControlName = FName(TEXT("TB_GoldAmount"));
 	if (TextBlockOfGold == nullptr)

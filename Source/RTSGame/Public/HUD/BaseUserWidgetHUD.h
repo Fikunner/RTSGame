@@ -35,7 +35,7 @@ public:
 	FVector2D EndLocation;
 
 	UFUNCTION()
-	void UpdateResourceValue(TEnumAsByte<EResourceTypes> TypeOfResource, int Amount);
+	void UpdateResourceValue(EResourceTypes TypeOfResource, int Amount);
 	
 	UFUNCTION()
 	void StartMarqueeUpdate();

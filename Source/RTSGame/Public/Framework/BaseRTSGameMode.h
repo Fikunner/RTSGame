@@ -22,6 +22,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Buildings")
 	TSubclassOf<AActor> TownHall;
 
+	UPROPERTY()
 	AActor* TownHallLocation;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)

@@ -19,7 +19,7 @@ class RTSGAME_API AUnitSelectionMarquee : public AActor, public ISelectionEvent
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
+	
 	AUnitSelectionMarquee();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -32,7 +32,7 @@ public:
 	void EndResizingMarquee();
 
 protected:
-	// Called when the game starts or when spawned
+	
 	virtual void BeginPlay() override;
 
 	UPROPERTY()
@@ -48,9 +48,8 @@ protected:
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
+	virtual void Tick(float DeltaTime) override;
 
 private:
 

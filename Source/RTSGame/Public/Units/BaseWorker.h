@@ -28,18 +28,22 @@ class RTSGAME_API ABaseWorker : public ACharacter, public IUnitActions, public I
 	GENERATED_BODY()
 	
 public:
-	// Sets default values for this character's properties
+	
 	ABaseWorker();
 
 	UFUNCTION(BlueprintCallable)
 	void OnEnterNewState(EUnitState NewUnitState);
 
-	//Interfaces
+	UFUNCTION()
 	void MoveUnitToThisLocation_Implementation(FVector Location) override;
+	UFUNCTION()
 	void GatherThisResource_Implementation(AActor* ResourceRef) override;
+	UFUNCTION()
 	void InteractWithBuilding_Implementation(AActor* BuildingRef) override;
 
+	UFUNCTION()
 	virtual void SelectThis() override;
+	UFUNCTION()
 	virtual void DeselectThis() override;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -49,7 +53,7 @@ public:
 	void RepeatTheMiningAction(AActor* ResourceRef);
 
 protected:
-	// Called when the game starts or when spawned
+	
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
@@ -71,24 +75,25 @@ protected:
 	class UBaseUnitComponent* BaseUnitComponent;
 	
 public:	
-	// Called every frame
+	
+	UFUNCTION()
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
+	UFUNCTION()
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
 
-	UFUNCTION()
 	virtual void NotifyActorOnClicked(FKey ButtonPressed) override;
 
 	void OnMoveCompletedMoveUnitToThisLocation(FAIRequestID RequestID, const FPathFollowingResult& Result);
 	void OnMoveCompletedGatherThisResource(FAIRequestID RequestID, const FPathFollowingResult& Result);
 	void OnMoveCompletedGoToTownHallAndDepositResources(FAIRequestID RequestID, const FPathFollowingResult& Result);
 
-	void SetTimerWithDelegate(FTimerHandle& TimerHandle, TBaseDelegate<void>(ObjectDelegate), float Time, bool bLoop);
+	void SetTimerWithDelegate(FTimerHandle& TimerHandle, TDelegate<void()> ObjectDelegate, float Time, bool bLoop);
 
 	FTimerHandle HandleGatherThisResource;
+	
 	FTimerDelegate DelegateGatherThisResource;
 
 	FTimerDelegate DelegateOnMoveCompletedGatherThisResource;
@@ -105,7 +110,6 @@ private:
 	class ABaseResource* BaseResource;
 	class AGoldResource* GoldResource;
 	class UResourceComponent* ResourceComponent;
-
 	UPROPERTY(EditAnywhere)
 	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent;
 };

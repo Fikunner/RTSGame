@@ -26,20 +26,24 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void BuildingClicked();
 
+	UFUNCTION()
 	void DeselectThis();
 
 	UFUNCTION()
 	void OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USceneComponent* DefaultSceneRoot;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* Mesh;
+	class UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UDecalComponent* Decal;
+	class UDecalComponent* Decal;
 
 	UPROPERTY(EditAnywhere)
 	class UBuildingComponent* BuildingComponent;
