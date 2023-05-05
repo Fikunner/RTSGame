@@ -32,9 +32,6 @@ public:
 	UFUNCTION()
 	void OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class USceneComponent* DefaultSceneRoot;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
