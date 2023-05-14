@@ -46,8 +46,6 @@ void AEnemySpawner::SpawnEnemy(int EnemiesToSpawn)
 	}
 }
 
-//9:23:51
-
 void AEnemySpawner::SpawnWave()
 {
 	SpawnEnemy(FMath::RandRange(1, 2));

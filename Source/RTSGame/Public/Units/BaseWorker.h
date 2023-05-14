@@ -7,6 +7,7 @@
 #include "UnitActions.h"
 #include "Buildings/SelectionEvent.h"
 #include "HUD/BaseHealthBarWidgetComponent.h"
+#include "Units/SelectionComponent.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
@@ -56,9 +57,6 @@ protected:
 	
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere)
-	UDecalComponent* Decal;
-
 	UPROPERTY(EditAnywhere, Category = "Animations")
 	UAnimMontage* AnimMontageMining;
 
@@ -73,6 +71,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBaseUnitComponent* BaseUnitComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USelectionComponent* SelectionComponent;
 	
 public:	
 	

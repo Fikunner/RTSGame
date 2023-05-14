@@ -49,10 +49,6 @@ public:
 	void HandleNewUnitState(EUnitState NewUnitState);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void AddUnitToSelectionList();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void ShowSelectionDecal();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void HideSelectionDecal();
 
 protected:
 	

@@ -2,7 +2,6 @@
 
 
 #include "Units/BaseWorker.h"
-#include "Components/DecalComponent.h"
 #include "AIController.h"
 #include "Units/BaseAIControllerUnits.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -22,12 +21,10 @@ ABaseWorker::ABaseWorker()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Decal = CreateDefaultSubobject<UDecalComponent>("DecalComponent");
-	Decal->SetupAttachment(GetMesh());
-	
 	HealthBarWidgetComponent = CreateDefaultSubobject<UBaseHealthBarWidgetComponent>("HealthBarWidgetComponent");
 	HealthBarWidgetComponent->SetupAttachment(GetCapsuleComponent());
 
+	SelectionComponent = CreateDefaultSubobject<USelectionComponent>("SelectionComponent");
 	BaseUnitComponent = CreateDefaultSubobject<UBaseUnitComponent>("BaseUnitComponent");
 }
 
@@ -37,9 +34,6 @@ void ABaseWorker::NotifyActorOnClicked(FKey ButtonPressed)
 
 	if (BaseUnitComponent->TeamAttitude == ETeamAttitude::Friendly)
 	{
-		Decal->SetVisibility(true, false);
-		Decal->SetHiddenInGame(false, false);
-
 		PlayerController->ClickSelectThisActor(this);
 	}
 }
@@ -85,18 +79,12 @@ void ABaseWorker::RepeatTheMiningAction_Implementation(AActor* ResourceRef)
 
 void ABaseWorker::SelectThis()
 {	
-	if (BaseUnitComponent)
-	{
-		BaseUnitComponent->ShowSelectionDecal();
-	}
+	SelectionComponent->ShowSelectionDecal();
 }
 
 void ABaseWorker::DeselectThis()
 {
-	if (BaseUnitComponent)
-	{
-		BaseUnitComponent->HideSelectionDecal();
-	}
+	SelectionComponent->HideSelectionDecal();
 }
 
 // Called when the game starts or when spawned

@@ -7,6 +7,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Units/BaseUnitComponent.h"
 #include "GenericTeamAgentInterface.h"
+#include "Buildings/BuildingComponent.h"
 
 // Sets default values
 AUnitSelectionMarquee::AUnitSelectionMarquee()
@@ -79,12 +80,20 @@ void AUnitSelectionMarquee::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, 
 {
 	ISelectionEvent* SelectionEvent = Cast<ISelectionEvent>(OtherActor);
 	UBaseUnitComponent* UnitComponent = Cast<UBaseUnitComponent>(OtherActor->GetComponentByClass(UBaseUnitComponent::StaticClass()));
+	UBuildingComponent* BuildingComponent = Cast<UBuildingComponent>(OtherActor->GetComponentByClass(UBuildingComponent::StaticClass()));
 
-	if (SelectionEvent && UnitComponent->TeamAttitude == ETeamAttitude::Friendly)
+	if (SelectionEvent && UnitComponent && UnitComponent->TeamAttitude == ETeamAttitude::Friendly)
 	{
 		SelectionEvent = Cast<ISelectionEvent>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		SelectionEvent->SelectThisActor(OtherActor);
 	}
+	
+	else if (SelectionEvent && BuildingComponent && BuildingComponent->TeamAttitude == ETeamAttitude::Friendly)
+	{
+		SelectionEvent = Cast<ISelectionEvent>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		SelectionEvent->SelectThisActor(OtherActor);
+	}
+
 }
 
 void AUnitSelectionMarquee::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)

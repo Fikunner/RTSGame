@@ -37,6 +37,8 @@ public:
 
 	void UpdateHealthBar();
 
+	void GetSuitableLocation();
+
 	UFUNCTION()
 	void OnOwnerTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 

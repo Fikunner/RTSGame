@@ -4,7 +4,6 @@
 
 #include "Buildings/SelectionEvent.h"
 #include "Components/StaticMeshComponent.h"
-#include "SelectionEvent.h"
 #include "GenericTeamAgentInterface.h"
 
 #include "CoreMinimal.h"
@@ -12,7 +11,7 @@
 #include "BaseBuildings.generated.h"
 
 UCLASS()
-class RTSGAME_API ABaseBuildings : public AActor
+class RTSGAME_API ABaseBuildings : public AActor, public ISelectionEvent
 {
 	GENERATED_BODY()
 	
@@ -27,10 +26,12 @@ public:
 	void BuildingClicked();
 
 	UFUNCTION()
-	void DeselectThis();
+	void OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
 
 	UFUNCTION()
-	void OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
+	virtual void SelectThis() override;
+	UFUNCTION()
+	virtual void DeselectThis() override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -39,11 +40,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UStaticMeshComponent* Mesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UDecalComponent* Decal;
-
 	UPROPERTY(EditAnywhere)
 	class UBuildingComponent* BuildingComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USelectionComponent* SelectionComponent;
 
 	UPROPERTY(EditAnywhere)
 	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent;

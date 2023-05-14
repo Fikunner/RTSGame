@@ -36,7 +36,6 @@ void UBaseUnitComponent::OnOwnerClicked_Implementation(AActor* TouchedActor, FKe
 	if (TeamAttitude == ETeamAttitude::Friendly)
 	{
 		AddUnitToSelectionList();
-		ShowSelectionDecal();
 	}
 }
 
@@ -52,34 +51,6 @@ void UBaseUnitComponent::AddUnitToSelectionList_Implementation()
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
 	PlayerController->AddActorSelectedToList(GetOwner());
-}
-
-void UBaseUnitComponent::ShowSelectionDecal_Implementation()
-{		
-	TArray<UDecalComponent*> DecalsComp;
-	
-	GetOwner()->GetComponents(DecalsComp);
-	if (DecalsComp.Num() > 0)
-	{
-		UDecalComponent* FoundDecal = DecalsComp[0];
-
-		FoundDecal->SetVisibility(true, false);
-		FoundDecal->SetHiddenInGame(false, false);
-	}
-}
-
-void UBaseUnitComponent::HideSelectionDecal_Implementation()
-{
-	TArray<UDecalComponent*> DecalsComp;
-
-	GetOwner()->GetComponents(DecalsComp);
-	if (DecalsComp.Num() > 0)
-	{
-		UDecalComponent* FoundDecal = DecalsComp[0];
-
-		FoundDecal->SetVisibility(false, false);
-		FoundDecal->SetHiddenInGame(true, false);
-	}
 }
 
 void UBaseUnitComponent::HandleNewUnitState(EUnitState NewUnitState)

@@ -2,9 +2,9 @@
 
 #include "Buildings/BaseBuildings.h"
 #include "BasePlayerController.h"
-#include "Components/DecalComponent.h"
 #include "Kismet/Gameplaystatics.h"
 #include "Buildings/BuildingComponent.h"
+#include "Units/SelectionComponent.h"
 
 // Sets default values
 ABaseBuildings::ABaseBuildings()
@@ -15,17 +15,13 @@ ABaseBuildings::ABaseBuildings()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("MeshComponent");
 	Mesh->SetupAttachment(RootComponent);
 
-	Decal = CreateDefaultSubobject<UDecalComponent>("DecalComponent");
-	Decal->SetupAttachment(Mesh);
-
 	HealthBarWidgetComponent = CreateDefaultSubobject<UBaseHealthBarWidgetComponent>("HealthBarWidgetComponent");
 	HealthBarWidgetComponent->SetupAttachment(Mesh);
 	HealthBarWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
-
 	HealthBarWidgetComponent->SetDrawSize(FVector2D(200, 20));
 
 	BuildingComponent = CreateDefaultSubobject<UBuildingComponent>("BuildingComponent");
-
+	SelectionComponent = CreateDefaultSubobject<USelectionComponent>("SelectionComponent");
 }
 
 void ABaseBuildings::NotifyActorOnClicked(FKey ButtonPressed)
@@ -41,14 +37,17 @@ void ABaseBuildings::BuildingClicked_Implementation()
 	ABasePlayerController* PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	PlayerController->AddActorSelectedToList(this);
 
-	Decal->SetHiddenInGame(false, false);
-	Decal->SetVisibility(true, false);
+	SelectionComponent->ShowSelectionDecal();
+}
+
+void ABaseBuildings::SelectThis()
+{
+	SelectionComponent->ShowSelectionDecal();
 }
 
 void ABaseBuildings::DeselectThis()
 {
-	Decal->SetHiddenInGame(true, false);
-	Decal->SetVisibility(false, false);
+	SelectionComponent->HideSelectionDecal();
 }
 
 void ABaseBuildings::OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude)
