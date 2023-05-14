@@ -3,6 +3,7 @@
 #include "Buildings/BuildingComponent.h"
 #include "Units/HUD/BaseHealthBarWidgetComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetArrayLibrary.h"
 
 // Sets default values for this component's properties
 UBuildingComponent::UBuildingComponent()
@@ -23,6 +24,19 @@ void UBuildingComponent::UpdateHealthBar()
 		float CurrentHealth = Health / HealthMax;
 		
 		HealthBarWidgetComponent->UpdateHealthBar(CurrentHealth);
+	}
+}
+
+void UBuildingComponent::GetSuitableLocation(UGoalLocation*& SuitableLocationRef)
+{
+	TArray<UGoalLocation*> GoalLocations;
+	GetOwner()->GetComponents<UGoalLocation>(GoalLocations);
+
+	if (!GoalLocations.IsEmpty())
+	{
+		int32 RandomIndex = FMath::RandRange(0, GoalLocations.Num() - 1);
+		GoalLocations[RandomIndex]->IsFull = true;
+		SuitableLocationRef = GoalLocations[RandomIndex];
 	}
 }
 

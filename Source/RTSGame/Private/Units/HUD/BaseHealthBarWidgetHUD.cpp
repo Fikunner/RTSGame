@@ -19,7 +19,15 @@ void UBaseHealthBarWidgetHUD::UpdateBar(float InPercent)
 	}
 
 	HealthProgressBar->SetPercent(InPercent);
-	
+
+	if (InPercent >= 1 || InPercent <= 0)
+	{
+		HealthProgressBar->SetVisibility(ESlateVisibility::Collapsed);
+	}
+	else
+	{
+		HealthProgressBar->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	}
 }
 
 void UBaseHealthBarWidgetHUD::UpdateHealthBarColor(FLinearColor HealthBarColor)

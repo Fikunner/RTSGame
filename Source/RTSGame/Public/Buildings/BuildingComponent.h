@@ -5,6 +5,7 @@
 #include "Buildings/BaseBuildings.h"
 #include "Components/WidgetComponent.h"
 #include "GenericTeamAgentInterface.h"
+#include "Buildings/GoalLocation.h"
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
@@ -35,9 +36,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TEnumAsByte<ETeamAttitude::Type> TeamAttitude;
 
+	UFUNCTION()
 	void UpdateHealthBar();
 
-	void GetSuitableLocation();
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	void GetSuitableLocation(UGoalLocation*& SuitableLocationRef);
 
 	UFUNCTION()
 	void OnOwnerTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
