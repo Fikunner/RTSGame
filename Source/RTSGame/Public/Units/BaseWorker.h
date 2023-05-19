@@ -8,6 +8,7 @@
 #include "Buildings/SelectionEvent.h"
 #include "HUD/BaseHealthBarWidgetComponent.h"
 #include "Units/SelectionComponent.h"
+#include "GenericTeamAgentInterface.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
@@ -52,6 +53,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void RepeatTheMiningAction(AActor* ResourceRef);
+
+	UFUNCTION()
+	void OnKilledUnit(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
 
 protected:
 	

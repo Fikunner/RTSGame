@@ -44,6 +44,11 @@ void UBaseUnitComponent::OnOwnerTakeAnyDamage(AActor* DamagedActor, float Damage
 	Health -= Damage;
 	Health = UKismetMathLibrary::Max(Health, 0);
 	UpdateHealthBar();
+
+	if (Health <= 0)
+	{
+		OnKillUnitDelegate.Broadcast(TeamAttitude);
+	}
 }
 
 void UBaseUnitComponent::AddUnitToSelectionList_Implementation()
