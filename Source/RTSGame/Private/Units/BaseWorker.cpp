@@ -14,6 +14,7 @@
 #include "Resources/ResourceComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Units/BaseUnitComponent.h"
+#include "HUD/UnitSelectionMarquee.h"
 
 // Sets default values
 ABaseWorker::ABaseWorker()
@@ -92,12 +93,27 @@ void ABaseWorker::DeselectThis()
 
 void ABaseWorker::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
+	IUnitActions* UnitActions = Cast<IUnitActions>(OtherActor);
+
+	if (OtherActor != this && OtherActor != GetOwner() && !OtherActor->IsA(AUnitSelectionMarquee::StaticClass()) && OtherActor->GetClass()->ImplementsInterface(UUnitActions::StaticClass())
+		&& BaseUnitComponent->TeamAttitude == ETeamAttitude::Hostile)
+	{
+		UnitActions->Execute_AttackThisActor(this, OtherActor);
+	}
 }
 
 void ABaseWorker::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	IUnitActions* UnitActions = Cast<IUnitActions>(OtherActor);
 
+	if (OtherActor != this && OtherActor != GetOwner() && !OtherActor->IsA(AUnitSelectionMarquee::StaticClass()) && OtherActor->GetClass()->ImplementsInterface(UUnitActions::StaticClass())
+		&& BaseUnitComponent->TeamAttitude == ETeamAttitude::Hostile)
+	{
+		for (AActor* ArrayElements : RTSGameMode->ATownHalls)
+		{
+			UnitActions->Execute_AttackThisActor(this, ArrayElements);
+		}
+	}
 }
 
 // Called when the game starts or when spawned
