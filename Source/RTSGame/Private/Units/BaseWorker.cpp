@@ -24,6 +24,9 @@ ABaseWorker::ABaseWorker()
 	HealthBarWidgetComponent = CreateDefaultSubobject<UBaseHealthBarWidgetComponent>("HealthBarWidgetComponent");
 	HealthBarWidgetComponent->SetupAttachment(GetCapsuleComponent());
 
+	DetectEnemiesCollisions = CreateDefaultSubobject<UBoxComponent>("DetectEnemies");
+	DetectEnemiesCollisions->SetupAttachment(GetCapsuleComponent());
+
 	SelectionComponent = CreateDefaultSubobject<USelectionComponent>("SelectionComponent");
 	BaseUnitComponent = CreateDefaultSubobject<UBaseUnitComponent>("BaseUnitComponent");
 }
@@ -87,6 +90,16 @@ void ABaseWorker::DeselectThis()
 	SelectionComponent->HideSelectionDecal();
 }
 
+void ABaseWorker::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	
+}
+
+void ABaseWorker::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+
+}
+
 // Called when the game starts or when spawned
 void ABaseWorker::BeginPlay()
 {
@@ -100,6 +113,15 @@ void ABaseWorker::BeginPlay()
 	
 	BaseUnitComponent = Cast<UBaseUnitComponent>(GetComponentByClass(UBaseUnitComponent::StaticClass()));
 	BaseUnitComponent->OnEnterNewStateDelegate.AddDynamic(this, &ABaseWorker::OnEnterNewState);
+	BaseUnitComponent->OnKillUnitDelegate.AddDynamic(this, &ABaseWorker::OnKillEnemy);
+
+	DetectEnemiesCollisions->OnComponentBeginOverlap.AddDynamic(this, &ABaseWorker::OnBeginOverlap);
+	DetectEnemiesCollisions->OnComponentEndOverlap.AddDynamic(this, &ABaseWorker::OnEndOverlap);
+}
+
+void ABaseWorker::OnKillEnemy(TEnumAsByte<ETeamAttitude::Type> TeamAttitude)
+{
+	Destroy();
 }
 
 // Called every frame

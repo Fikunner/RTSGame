@@ -8,7 +8,8 @@
 #include "Buildings/SelectionEvent.h"
 #include "HUD/BaseHealthBarWidgetComponent.h"
 #include "Units/SelectionComponent.h"
-
+#include "Components/BoxComponent.h"
+#include "GenericTeamAgentInterface.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "BaseWorker.generated.h"
@@ -53,6 +54,11 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void RepeatTheMiningAction(AActor* ResourceRef);
 
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 protected:
 	
 	virtual void BeginPlay() override;
@@ -75,6 +81,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USelectionComponent* SelectionComponent;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UBoxComponent* DetectEnemiesCollisions;
+
+	UFUNCTION()
+	void OnKillEnemy(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
+
 public:	
 	
 	UFUNCTION()

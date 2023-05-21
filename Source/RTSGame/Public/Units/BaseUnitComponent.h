@@ -10,6 +10,7 @@
 #include "BaseUnitComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnterNewStateDelegate, EUnitState, UnitStateNew);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKillUnitDelegate, TEnumAsByte<ETeamAttitude::Type>, Team);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class RTSGAME_API UBaseUnitComponent : public UActorComponent
@@ -22,6 +23,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnEnterNewStateDelegate OnEnterNewStateDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnKillUnitDelegate OnKillUnitDelegate;
 
 	UPROPERTY(BlueprintReadWrite)
 	EUnitState StateOfUnit;
