@@ -87,11 +87,6 @@ void ABaseWorker::DeselectThis()
 	SelectionComponent->HideSelectionDecal();
 }
 
-void ABaseWorker::OnKilledUnit(TEnumAsByte<ETeamAttitude::Type> TeamAttitude)
-{
-	Destroy();
-}
-
 // Called when the game starts or when spawned
 void ABaseWorker::BeginPlay()
 {
@@ -105,7 +100,6 @@ void ABaseWorker::BeginPlay()
 	
 	BaseUnitComponent = Cast<UBaseUnitComponent>(GetComponentByClass(UBaseUnitComponent::StaticClass()));
 	BaseUnitComponent->OnEnterNewStateDelegate.AddDynamic(this, &ABaseWorker::OnEnterNewState);
-	BaseUnitComponent->OnKillUnitDelegate.AddDynamic(this, &ABaseWorker::OnKilledUnit);
 }
 
 // Called every frame
