@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "GenericTeamAgentInterface.h"
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 #include "UnitActions.generated.h"
@@ -20,9 +21,9 @@ class RTSGAME_API IUnitActions
 {
 	GENERATED_BODY()
 
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
+		// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interfaces")
 	void MoveUnitToThisLocation(FVector Location);
 
@@ -34,4 +35,11 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interfaces")
 	void AttackThisActor(AActor* ActorToAttack);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interfaces")
+	void SetTeam(uint8 const& id);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interfaces")
+	FGenericTeamId GetGenericTeamId() const;
+
 };

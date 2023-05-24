@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Units/BaseWorker.h"
 #include "AIController.h"
 #include "Units/BaseAIControllerUnits.h"
@@ -91,14 +90,25 @@ void ABaseWorker::DeselectThis()
 	SelectionComponent->HideSelectionDecal();
 }
 
+void ABaseWorker::SetTeam_Implementation(uint8 const& id)
+{
+	TeamId = FGenericTeamId(id);
+}
+
+FGenericTeamId ABaseWorker::GetGenericTeamId_Implementation() const
+{
+	return TeamId;
+}
+
 void ABaseWorker::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	IUnitActions* UnitActions = Cast<IUnitActions>(OtherActor);
 
-	if (OtherActor != this && OtherActor != GetOwner() && !OtherActor->IsA(AUnitSelectionMarquee::StaticClass()) && OtherActor->GetClass()->ImplementsInterface(UUnitActions::StaticClass())
-		&& BaseUnitComponent->TeamAttitude == ETeamAttitude::Hostile)
+	if (OtherActor != this && OtherActor != GetOwner() && OtherActor->IsA(ABaseWorker::StaticClass()) && OtherActor->GetClass()->ImplementsInterface(UUnitActions::StaticClass())
+		&& BaseUnitComponent->TeamAttitude == ETeamAttitude::Hostile && Execute_GetGenericTeamId(this) != UnitActions->Execute_GetGenericTeamId(OtherActor))
 	{
 		UnitActions->Execute_AttackThisActor(this, OtherActor);
+		
 	}
 }
 
@@ -106,8 +116,8 @@ void ABaseWorker::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 {
 	IUnitActions* UnitActions = Cast<IUnitActions>(OtherActor);
 
-	if (OtherActor != this && OtherActor != GetOwner() && !OtherActor->IsA(AUnitSelectionMarquee::StaticClass()) && OtherActor->GetClass()->ImplementsInterface(UUnitActions::StaticClass())
-		&& BaseUnitComponent->TeamAttitude == ETeamAttitude::Hostile)
+	if (OtherActor != this && OtherActor != GetOwner() && OtherActor->IsA(ABaseWorker::StaticClass()) && OtherActor->GetClass()->ImplementsInterface(UUnitActions::StaticClass())
+		&& BaseUnitComponent->TeamAttitude == ETeamAttitude::Hostile && Execute_GetGenericTeamId(this) != UnitActions->Execute_GetGenericTeamId(OtherActor))
 	{
 		for (AActor* ArrayElements : RTSGameMode->ATownHalls)
 		{
