@@ -26,6 +26,7 @@ public:
 	UBaseUserWidgetHUD(const FObjectInitializer& ObjectInitializer);
 
 	UTextBlock* TextBlockOfGold;
+	UTextBlock* TextBlockOfWood;
 	UImage* ImageOfMarquee;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

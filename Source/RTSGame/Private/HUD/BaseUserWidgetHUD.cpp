@@ -13,15 +13,21 @@ UBaseUserWidgetHUD::UBaseUserWidgetHUD(const FObjectInitializer& ObjectInitializ
 
 void UBaseUserWidgetHUD::UpdateResourceValue(EResourceTypes TypeOfResource, int Amount)
 {
-	const FName TextControlName = FName(TEXT("TB_GoldAmount"));
+	const FName TextControlNameGold = FName(TEXT("TB_GoldAmount"));
 	if (TextBlockOfGold == nullptr)
 	{
-		TextBlockOfGold = static_cast<UTextBlock*>(WidgetTree->FindWidget(TextControlName));
+		TextBlockOfGold = static_cast<UTextBlock*>(WidgetTree->FindWidget(TextControlNameGold));
+	}
+
+	const FName TextControlNameWood = FName(TEXT("TB_WoodAmount"));
+	if (TextBlockOfWood == nullptr)
+	{
+		TextBlockOfWood = static_cast<UTextBlock*>(WidgetTree->FindWidget(TextControlNameWood));
 	}
 
 	switch (TypeOfResource)
 	{
-	case EResourceTypes::Gold:
+		case EResourceTypes::Gold:
 		{
 			if (TextBlockOfGold != nullptr)
 			{
@@ -30,10 +36,17 @@ void UBaseUserWidgetHUD::UpdateResourceValue(EResourceTypes TypeOfResource, int 
 		
 			break;	
 		}
-		
-	default:
+	
+		case EResourceTypes::Wood:
 		{
+			if (TextBlockOfWood != nullptr)
+			{
+				TextBlockOfWood->SetText(UKismetTextLibrary::Conv_IntToText(Amount, false, true, 2));
+			}
+		}
 
+		default:
+		{
 			break;
 		}
 	}

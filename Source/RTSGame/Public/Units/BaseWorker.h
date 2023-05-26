@@ -68,18 +68,6 @@ protected:
 	
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, Category = "Animations")
-	UAnimMontage* AnimMontageMining;
-
-	UPROPERTY(EditAnywhere, Category = "Animations")
-	UAnimationAsset* AnimationOfWalkFWD;
-
-	UPROPERTY(EditAnywhere, Category = "Animations")
-	UAnimationAsset* AnimationIdle;
-
-	UPROPERTY(EditAnywhere, Category = "Animations")
-	UAnimationAsset* AnimationOfAttacking;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBaseUnitComponent* BaseUnitComponent;
 
