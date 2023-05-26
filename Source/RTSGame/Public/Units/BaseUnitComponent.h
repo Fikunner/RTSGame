@@ -9,7 +9,6 @@
 #include "Components/ActorComponent.h"
 #include "BaseUnitComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnterNewStateDelegate, EUnitState, UnitStateNew);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKillUnitDelegate, TEnumAsByte<ETeamAttitude::Type>, Team);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -20,9 +19,6 @@ class RTSGAME_API UBaseUnitComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UBaseUnitComponent();
-
-	UPROPERTY(BlueprintAssignable)
-	FOnEnterNewStateDelegate OnEnterNewStateDelegate;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnKillUnitDelegate OnKillUnitDelegate;
@@ -49,8 +45,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gamemode settings")
 	float DamageToApply = 10.f;
 
-	UFUNCTION(BlueprintCallable)
-	void HandleNewUnitState(EUnitState NewUnitState);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void AddUnitToSelectionList();
 

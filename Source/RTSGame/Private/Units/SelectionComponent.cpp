@@ -41,7 +41,7 @@ void USelectionComponent::BeginPlay()
 	DecalComponentRef = Cast<UDecalComponent>(GetOwner()->AddComponentByClass(UDecalComponent::StaticClass(), false, RelativeTransform, false));
 	if (DecalComponentRef)
 	{
-		FVector DecalScale = FVector(128, IndicatorRadius / DecalComponentRef->DecalSize.Y, IndicatorRadius / DecalComponentRef->DecalSize.Z);
+		FVector DecalScale = FVector(4, IndicatorRadius / DecalComponentRef->DecalSize.Y, IndicatorRadius / DecalComponentRef->DecalSize.Z);
 
 		HideSelectionDecal();
 		DecalComponentRef->SetDecalMaterial(DecalMaterial);

@@ -33,9 +33,6 @@ public:
 	
 	ABaseWorker();
 
-	UFUNCTION(BlueprintCallable)
-	void OnEnterNewState(EUnitState NewUnitState);
-
 	UFUNCTION()
 	void MoveUnitToThisLocation_Implementation(FVector Location) override;
 	UFUNCTION()

@@ -58,13 +58,6 @@ void UBaseUnitComponent::AddUnitToSelectionList_Implementation()
 	PlayerController->AddActorSelectedToList(GetOwner());
 }
 
-void UBaseUnitComponent::HandleNewUnitState(EUnitState NewUnitState)
-{
-	StateOfUnit = NewUnitState;
-
-	OnEnterNewStateDelegate.Broadcast(NewUnitState);
-}
-
 // Called every frame
 void UBaseUnitComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {

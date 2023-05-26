@@ -108,7 +108,6 @@ void ABaseWorker::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 		&& BaseUnitComponent->TeamAttitude == ETeamAttitude::Hostile && Execute_GetGenericTeamId(this) != UnitActions->Execute_GetGenericTeamId(OtherActor))
 	{
 		UnitActions->Execute_AttackThisActor(this, OtherActor);
-		
 	}
 }
 
@@ -138,7 +137,6 @@ void ABaseWorker::BeginPlay()
 	PathFollowingComponent = AIControllerUnits->GetPathFollowingComponent();
 	
 	BaseUnitComponent = Cast<UBaseUnitComponent>(GetComponentByClass(UBaseUnitComponent::StaticClass()));
-	BaseUnitComponent->OnEnterNewStateDelegate.AddDynamic(this, &ABaseWorker::OnEnterNewState);
 	BaseUnitComponent->OnKillUnitDelegate.AddDynamic(this, &ABaseWorker::OnKillEnemy);
 
 	DetectEnemiesCollisions->OnComponentBeginOverlap.AddDynamic(this, &ABaseWorker::OnBeginOverlap);
@@ -168,30 +166,4 @@ void ABaseWorker::SetTimerWithDelegate(FTimerHandle& TimerHandle, TDelegate<void
 {
 	GetWorld()->GetTimerManager().ClearTimer(HandleGatherThisResource);
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, ObjectDelegate, Time, bLoop);
-}
-
-void ABaseWorker::OnEnterNewState(EUnitState NewUnitState)
-{
-	switch (NewUnitState)
-	{
-		case EUnitState::Idle:
-
-			GetMesh()->PlayAnimation(AnimationIdle, true);
-			break;
-
-		case EUnitState::Movement:
-			
-			GetMesh()->PlayAnimation(AnimationOfWalkFWD, true);
-			break;
-
-		case EUnitState::Mining:
-
-			GetMesh()->PlayAnimation(AnimMontageMining, true);
-			break;
-
-		case EUnitState::Attacking:
-
-			GetMesh()->PlayAnimation(AnimationOfAttacking, true);
-			break;
-	}
 }
