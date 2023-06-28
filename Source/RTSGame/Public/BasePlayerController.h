@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Units/BaseUnitComponent.h"
 #include "Buildings/BuildingComponent.h"
+#include "Units/BaseUnitComponent.h"
 #include "Resources/BaseResource.h"
 #include "Units/BaseAIControllerUnits.h"
 #include "Niagara/Public/NiagaraComponent.h"

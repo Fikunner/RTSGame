@@ -4,11 +4,13 @@
 
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
+#include "Components/Overlay.h"
+#include "Components/Button.h"
 #include "Kismet/KismetTextLibrary.h"
 #include "Resources/BaseResource.h"
 #include "Resources/ResourceComponent.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
-
+#include "Kismet/GameplayStatics.h"
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "BaseUserWidgetHUD.generated.h"
@@ -28,6 +30,7 @@ public:
 	UTextBlock* TextBlockOfGold;
 	UTextBlock* TextBlockOfWood;
 	UImage* ImageOfMarquee;
+	UOverlay* OverlayOfTable;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector2D StartLocation;
@@ -35,9 +38,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector2D EndLocation;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void UpdateResourceValue(EResourceTypes TypeOfResource, int Amount);
-	
+
 	UFUNCTION()
 	void StartMarqueeUpdate();
 	
@@ -46,4 +49,10 @@ public:
 	
 	UFUNCTION()
 	void StopMarqueeUpdate();
+
+	UFUNCTION()
+	void ShowTable();
+
+	UFUNCTION()
+	void HideTable();
 };

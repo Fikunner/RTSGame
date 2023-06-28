@@ -43,11 +43,13 @@ void ABaseBuildings::BuildingClicked_Implementation()
 void ABaseBuildings::SelectThis()
 {
 	SelectionComponent->ShowSelectionDecal();
+	HUD->HUDWidgetRef->ShowTable();
 }
 
 void ABaseBuildings::DeselectThis()
 {
 	SelectionComponent->HideSelectionDecal();
+	HUD->HUDWidgetRef->HideTable();
 }
 
 void ABaseBuildings::OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude)
@@ -62,6 +64,7 @@ void ABaseBuildings::BeginPlay()
 
 	BuildingComponent->OnBuildingDestroyed.AddDynamic(this, &ABaseBuildings::OnBuildingDestroyed);
 
+	HUD = Cast<ABaseHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
 }
 
 // Called every frame

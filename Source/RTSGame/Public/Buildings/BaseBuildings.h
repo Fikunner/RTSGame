@@ -5,6 +5,8 @@
 #include "Buildings/SelectionEvent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GenericTeamAgentInterface.h"
+#include "HUD/BaseHUD.h"
+#include "HUD/BaseUserWidgetHUD.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
@@ -48,6 +50,9 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent;
+
+	UPROPERTY()
+	class ABaseHUD* HUD;
 
 	UPROPERTY(EditAnywhere)
 	FVector2D HealthBarWidgetSize = FVector2D(200, 20);

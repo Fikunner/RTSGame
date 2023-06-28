@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "BasePlayerController.h"
 #include "Components/InputComponent.h"
 #include "Buildings/BaseBuildings.h"
@@ -212,7 +211,6 @@ void ABasePlayerController::ClickSelectThisActor(AActor* SelectedActor)
 	DeselectAllActors();
 
 	SelectThisActor(SelectedActor);
-	
 }
 
 void ABasePlayerController::AddActorSelectedToList(AActor* SelectedActor)
