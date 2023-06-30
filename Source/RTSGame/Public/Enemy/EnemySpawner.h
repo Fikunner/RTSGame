@@ -26,6 +26,15 @@ protected:
 	UPROPERTY(EditAnywhere)
 	int HowMuchEnemiesToSpawn;
 
+	UPROPERTY(EditAnywhere)
+	float Time;
+	
+	UPROPERTY(EditAnywhere)
+	float RandomDelay;
+
+	UPROPERTY(EditAnywhere)
+	float SphereRadius;
+
 	UPROPERTY(EditAnywhere, Category = "Actor")
 	TSubclassOf<AActor> ActorToSpawn;
 
@@ -42,9 +51,5 @@ private:
 	
 	FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, &AEnemySpawner::SpawnWave);
 	FTimerHandle SpawnTimer;
-
-	float Time;
-	float RandomDelay;
-	float SphereRadius;
 
 };
