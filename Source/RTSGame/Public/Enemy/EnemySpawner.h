@@ -28,9 +28,6 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	float Time;
-	
-	UPROPERTY(EditAnywhere)
-	float RandomDelay;
 
 	UPROPERTY(EditAnywhere)
 	float SphereRadius;
@@ -49,6 +46,8 @@ private:
 
 	void SpawnWave();
 	
+	float RandomDelay;
+
 	FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, &AEnemySpawner::SpawnWave);
 	FTimerHandle SpawnTimer;
 

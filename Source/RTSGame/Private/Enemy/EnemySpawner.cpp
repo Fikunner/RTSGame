@@ -22,7 +22,6 @@ void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	TimerDelegate = FTimerDelegate::CreateUObject(this, &AEnemySpawner::SpawnWave);
 	GetWorld()->GetTimerManager().SetTimer(SpawnTimer, TimerDelegate, Time, true);
 
 }

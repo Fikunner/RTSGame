@@ -18,7 +18,6 @@ ABaseBuildings::ABaseBuildings()
 	HealthBarWidgetComponent = CreateDefaultSubobject<UBaseHealthBarWidgetComponent>("HealthBarWidgetComponent");
 	HealthBarWidgetComponent->SetupAttachment(Mesh);
 	HealthBarWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
-	HealthBarWidgetComponent->SetDrawSize(FVector2D(200, 20));
 
 	BuildingComponent = CreateDefaultSubobject<UBuildingComponent>("BuildingComponent");
 	SelectionComponent = CreateDefaultSubobject<USelectionComponent>("SelectionComponent");
