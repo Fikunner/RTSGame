@@ -7,6 +7,27 @@
 #include "GameFramework/Actor.h"
 #include "EnemySpawner.generated.h"
 
+USTRUCT(BlueprintType)
+struct FWaveStruct
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	TArray<TSubclassOf<AActor>> EnemiesToSpawn;
+
+	UPROPERTY(EditAnywhere)
+	float SpawnDelay;
+
+	UPROPERTY(EditAnywhere)
+	float SpawnRadius;
+
+	FWaveStruct()
+	{
+		SpawnDelay = 10.f;
+		SpawnRadius = 1500.f;
+	}
+};
+
 UCLASS()
 class RTSGAME_API AEnemySpawner : public AActor
 {
@@ -21,19 +42,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void SpawnEnemy(int EnemiesToSpawn);
+	void SpawnEnemy(TSubclassOf<AActor> ActorToSpawn, int EnemiesToSpawn);
 
 	UPROPERTY(EditAnywhere)
-	int HowMuchEnemiesToSpawn;
-
-	UPROPERTY(EditAnywhere)
-	float Time;
-
-	UPROPERTY(EditAnywhere)
-	float SphereRadius;
-
-	UPROPERTY(EditAnywhere, Category = "Actor")
-	TSubclassOf<AActor> ActorToSpawn;
+	TArray<FWaveStruct> WavesStruct;
 
 	UPROPERTY(EditAnywhere)
 	class USphereComponent* SphereCollision;
@@ -46,9 +58,11 @@ private:
 
 	void SpawnWave();
 	
+	int CurrentWaveOrder;
+
 	float RandomDelay;
 
-	FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, &AEnemySpawner::SpawnWave);
+	FTimerDelegate TimerDelegate;
 	FTimerHandle SpawnTimer;
 
 };

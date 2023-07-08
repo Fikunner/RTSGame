@@ -10,11 +10,10 @@ AEnemySpawner::AEnemySpawner()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SphereRadius = 1000.f;
-	Time = 10.f;
-
 	SphereCollision = CreateDefaultSubobject<USphereComponent>("Sphere");
-	SphereCollision->SetSphereRadius(SphereRadius);
+	SphereCollision->SetSphereRadius(1500.f);
+
+	TimerDelegate = FTimerDelegate::CreateUObject(this, &AEnemySpawner::SpawnWave);
 }
 
 // Called when the game starts or when spawned
@@ -22,7 +21,7 @@ void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetWorld()->GetTimerManager().SetTimer(SpawnTimer, TimerDelegate, Time, true);
+	GetWorld()->GetTimerManager().SetTimer(SpawnTimer, TimerDelegate, WavesStruct[0].SpawnDelay, true);
 
 }
 
@@ -33,19 +32,25 @@ void AEnemySpawner::Tick(float DeltaTime)
 
 }
 
-void AEnemySpawner::SpawnEnemy(int EnemiesToSpawn)
+void AEnemySpawner::SpawnEnemy(TSubclassOf<AActor> ActorToSpawn, int EnemiesToSpawn)
 {
-	for (int i = 1; i <= EnemiesToSpawn; i++)
-	{
-		const FVector Location = UNavigationSystemV1::GetRandomReachablePointInRadius(GetWorld(), GetActorLocation(), SphereRadius);
-		const FRotator Rotation = GetActorRotation();
-		FActorSpawnParameters SpawnInfo;
+	const FVector Location = UNavigationSystemV1::GetRandomReachablePointInRadius(GetWorld(), GetActorLocation(), WavesStruct[CurrentWaveOrder].SpawnRadius);
+	const FRotator Rotation = GetActorRotation();
+	FActorSpawnParameters SpawnInfo;
 
-		GetWorld()->SpawnActor<AActor>(ActorToSpawn, Location + FVector(0.f, 0.f, 100.f), Rotation, SpawnInfo);
-	}
+	GetWorld()->SpawnActor<AActor>(ActorToSpawn, Location + FVector(0.f, 0.f, 100.f), Rotation, SpawnInfo);
 }
 
 void AEnemySpawner::SpawnWave()
 {
-	SpawnEnemy(FMath::RandRange(1, 2));
+	if (CurrentWaveOrder < WavesStruct.Num())
+	{
+		FWaveStruct& CurrentWave = WavesStruct[CurrentWaveOrder];
+		for (TSubclassOf<AActor> ArrayElements : CurrentWave.EnemiesToSpawn)
+		{
+			SpawnEnemy(ArrayElements, CurrentWave.EnemiesToSpawn.Num());
+		}
+
+		CurrentWaveOrder++;
+	}
 }
