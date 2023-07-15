@@ -21,7 +21,7 @@ void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetWorld()->GetTimerManager().SetTimer(SpawnTimer, TimerDelegate, WavesStruct[0].SpawnDelay, true);
+	GetWorld()->GetTimerManager().SetTimer(SpawnTimer, TimerDelegate, WavesStruct[0].SpawnDelay, false);
 
 }
 
@@ -52,5 +52,6 @@ void AEnemySpawner::SpawnWave()
 		}
 
 		CurrentWaveOrder++;
+		GetWorld()->GetTimerManager().SetTimer(SpawnTimer, TimerDelegate, WavesStruct[CurrentWaveOrder].SpawnDelay, false);
 	}
 }
