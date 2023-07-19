@@ -38,8 +38,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector2D EndLocation;
 
-	float MaxFloorAngle = 45.f;
-
 	UFUNCTION(BlueprintCallable)
 	void UpdateResourceValue(EResourceTypes TypeOfResource, int Amount);
 
@@ -57,4 +55,7 @@ public:
 
 	UFUNCTION()
 	void HideTable();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool isBuilded;
 };

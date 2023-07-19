@@ -44,11 +44,6 @@ void UBaseUserWidgetHUD::UpdateResourceValue(EResourceTypes TypeOfResource, int 
 				TextBlockOfWood->SetText(UKismetTextLibrary::Conv_IntToText(Amount, false, true, 2));
 			}
 		}
-
-		default:
-		{
-			break;
-		}
 	}
 }
 

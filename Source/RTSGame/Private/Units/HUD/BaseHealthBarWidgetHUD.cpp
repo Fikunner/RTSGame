@@ -7,7 +7,6 @@
 void UBaseHealthBarWidgetHUD::NativeConstruct()
 {
 	Super::NativeConstruct();
-
 }
 
 void UBaseHealthBarWidgetHUD::UpdateBar(float InPercent)
