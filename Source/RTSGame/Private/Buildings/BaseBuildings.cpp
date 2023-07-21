@@ -41,8 +41,11 @@ void ABaseBuildings::BuildingClicked_Implementation()
 
 void ABaseBuildings::SelectThis()
 {
-	SelectionComponent->ShowSelectionDecal();
-	HUD->HUDWidgetRef->ShowTable();
+	if (!BuildingComponent->isBuilded)
+	{
+		SelectionComponent->ShowSelectionDecal();
+		HUD->HUDWidgetRef->ShowTable();
+	}
 }
 
 void ABaseBuildings::DeselectThis()

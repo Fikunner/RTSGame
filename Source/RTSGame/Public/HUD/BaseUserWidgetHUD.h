@@ -55,7 +55,4 @@ public:
 
 	UFUNCTION()
 	void HideTable();
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	bool isBuilded;
 };

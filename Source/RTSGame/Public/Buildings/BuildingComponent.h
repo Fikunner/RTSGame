@@ -51,6 +51,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float HealthMax = 400;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool isBuilded;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

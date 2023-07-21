@@ -30,9 +30,9 @@ public:
 	UFUNCTION()
 	void OnBuildingDestroyed(TEnumAsByte<ETeamAttitude::Type> TeamAttitude);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	virtual void SelectThis() override;
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	virtual void DeselectThis() override;
 
 protected:
