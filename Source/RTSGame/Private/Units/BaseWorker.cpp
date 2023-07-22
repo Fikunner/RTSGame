@@ -139,13 +139,17 @@ void ABaseWorker::BeginPlay()
 	BaseUnitComponent = Cast<UBaseUnitComponent>(GetComponentByClass(UBaseUnitComponent::StaticClass()));
 	BaseUnitComponent->OnKillUnitDelegate.AddDynamic(this, &ABaseWorker::OnKillEnemy);
 
+	HUD = Cast<ABaseHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+
 	DetectEnemiesCollisions->OnComponentBeginOverlap.AddDynamic(this, &ABaseWorker::OnBeginOverlap);
 	DetectEnemiesCollisions->OnComponentEndOverlap.AddDynamic(this, &ABaseWorker::OnEndOverlap);
 }
 
 void ABaseWorker::OnKillEnemy(TEnumAsByte<ETeamAttitude::Type> TeamAttitude)
 {
+	int x = 0;
 	Destroy();
+	HUD->HUDWidgetRef->UpdateNumberOfPlayerUnits(x);
 }
 
 // Called every frame

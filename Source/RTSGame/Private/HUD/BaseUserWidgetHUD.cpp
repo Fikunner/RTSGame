@@ -5,6 +5,9 @@
 #include "Blueprint/WidgetTree.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Units/BaseWorker.h"
+#include "Units/BaseUnitComponent.h"
 
 UBaseUserWidgetHUD::UBaseUserWidgetHUD(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -16,13 +19,13 @@ void UBaseUserWidgetHUD::UpdateResourceValue(EResourceTypes TypeOfResource, int 
 	const FName TextControlNameGold = FName(TEXT("TB_GoldAmount"));
 	if (TextBlockOfGold == nullptr)
 	{
-		TextBlockOfGold = static_cast<UTextBlock*>(WidgetTree->FindWidget(TextControlNameGold));
+		TextBlockOfGold = StaticCast<UTextBlock*>(WidgetTree->FindWidget(TextControlNameGold));
 	}
 
 	const FName TextControlNameWood = FName(TEXT("TB_WoodAmount"));
 	if (TextBlockOfWood == nullptr)
 	{
-		TextBlockOfWood = static_cast<UTextBlock*>(WidgetTree->FindWidget(TextControlNameWood));
+		TextBlockOfWood = StaticCast<UTextBlock*>(WidgetTree->FindWidget(TextControlNameWood));
 	}
 
 	switch (TypeOfResource)
@@ -52,7 +55,7 @@ void UBaseUserWidgetHUD::StartMarqueeUpdate()
 	const FName TextControlName = FName(TEXT("Img_Marquee"));
 	if (ImageOfMarquee == nullptr)
 	{
-		ImageOfMarquee = static_cast<UImage*>(WidgetTree->FindWidget(TextControlName));
+		ImageOfMarquee = StaticCast<UImage*>(WidgetTree->FindWidget(TextControlName));
 	}
 
 	StartLocation = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
@@ -78,7 +81,7 @@ void UBaseUserWidgetHUD::ShowTable()
 	const FName TextControlName = FName(TEXT("TableOverlay"));
 	if (OverlayOfTable == nullptr)
 	{
-		OverlayOfTable = static_cast<UOverlay*>(WidgetTree->FindWidget(TextControlName));
+		OverlayOfTable = StaticCast<UOverlay*>(WidgetTree->FindWidget(TextControlName));
 	}
 	
 	OverlayOfTable->SetVisibility(ESlateVisibility::Visible);
@@ -90,4 +93,30 @@ void UBaseUserWidgetHUD::HideTable()
 	{
 		OverlayOfTable->SetVisibility(ESlateVisibility::Collapsed);
 	}
+}
+
+void UBaseUserWidgetHUD::UpdateNumberOfPlayerUnits(int& UpdatedNumber)
+{
+	const FName TextControlName = FName(TEXT("TB_ActuallyNumberOfPlayerUnits"));
+	if (TextBlockOfNumberOfActuallyPlayerUnits == nullptr)
+	{
+		TextBlockOfNumberOfActuallyPlayerUnits = StaticCast<UTextBlock*>(WidgetTree->FindWidget(TextControlName));
+	}
+
+	UpdatedNumber = 0;
+	TArray<AActor*> FoundActors;
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABaseWorker::StaticClass(), FoundActors);
+
+	for (AActor* ArrayElement : FoundActors)
+	{
+		UBaseUnitComponent* UnitComponent = Cast<UBaseUnitComponent>(ArrayElement->GetComponentByClass(UBaseUnitComponent::StaticClass()));
+
+		if (UnitComponent->TeamAttitude == ETeamAttitude::Friendly)
+		{
+			UpdatedNumber++;
+		}
+	}
+
+	TextBlockOfNumberOfActuallyPlayerUnits->SetText(UKismetTextLibrary::Conv_IntToText(UpdatedNumber));
 }

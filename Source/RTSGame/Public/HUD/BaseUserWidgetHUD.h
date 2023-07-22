@@ -29,6 +29,7 @@ public:
 
 	UTextBlock* TextBlockOfGold;
 	UTextBlock* TextBlockOfWood;
+	UTextBlock* TextBlockOfNumberOfActuallyPlayerUnits;
 	UImage* ImageOfMarquee;
 	UOverlay* OverlayOfTable;
 
@@ -55,4 +56,7 @@ public:
 
 	UFUNCTION()
 	void HideTable();
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateNumberOfPlayerUnits(int& UpdatedNumber);
 };

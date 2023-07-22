@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "HUD/BaseHUD.h"
 #include "Resources/BaseResource.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "UnitActions.h"
@@ -103,7 +104,6 @@ private:
 	FTimerHandle HandleGatherThisResource;
 	
 	FTimerDelegate DelegateGatherThisResource;
-
 	FTimerDelegate DelegateOnMoveCompletedGatherThisResource;
 	
 	UPathFollowingComponent* PathFollowingComponent;
@@ -118,6 +118,7 @@ private:
 	class ABaseResource* BaseResource;
 	class AGoldResource* GoldResource;
 	class UResourceComponent* ResourceComponent;
+	class ABaseHUD* HUD;
 	UPROPERTY(EditAnywhere)
 	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent;
 };
