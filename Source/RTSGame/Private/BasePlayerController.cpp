@@ -3,13 +3,13 @@
 #include "BasePlayerController.h"
 #include "Components/InputComponent.h"
 #include "Buildings/BaseBuildings.h"
-#include "Units/BaseWorker.h"
 #include "GameFramework/Controller.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "HUD/BaseHUD.h"
 #include "HUD/BaseUserWidgetHUD.h"
 #include "HUD/UnitSelectionMarquee.h"
+
 
 ABasePlayerController::ABasePlayerController()
 {
@@ -148,7 +148,7 @@ void ABasePlayerController::MouseAction()
 
 					else if (IsValid(UnitComponent) && UnitComponent->TeamAttitude == ETeamAttitude::Hostile)
 					{
-						UnitActions->Execute_AttackThisActor(ArrayElements, OutActors[0]);
+						UnitActions->AttackThisActor(OutActors[0]);
 					}
 				}
 			}
@@ -207,10 +207,10 @@ void ABasePlayerController::DeselectThisActor(AActor* DeselectedActor)
 
 void ABasePlayerController::ClickSelectThisActor(AActor* SelectedActor)
 {
-	IsClickSelected = true;
 	DeselectAllActors();
 
 	SelectThisActor(SelectedActor);
+	IsClickSelected = true;
 }
 
 void ABasePlayerController::AddActorSelectedToList(AActor* SelectedActor)

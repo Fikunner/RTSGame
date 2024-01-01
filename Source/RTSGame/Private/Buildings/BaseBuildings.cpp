@@ -4,7 +4,7 @@
 #include "BasePlayerController.h"
 #include "Kismet/Gameplaystatics.h"
 #include "Buildings/BuildingComponent.h"
-#include "Units/SelectionComponent.h"
+#include "Units/SelectComponent.h"
 
 // Sets default values
 ABaseBuildings::ABaseBuildings()
@@ -20,7 +20,9 @@ ABaseBuildings::ABaseBuildings()
 	HealthBarWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
 
 	BuildingComponent = CreateDefaultSubobject<UBuildingComponent>("BuildingComponent");
-	SelectionComponent = CreateDefaultSubobject<USelectionComponent>("SelectionComponent");
+	SelectionComponent = CreateDefaultSubobject<USelectComponent>("SelectionComponent");
+
+	isPlayerCanSelectThis = true;
 }
 
 void ABaseBuildings::NotifyActorOnClicked(FKey ButtonPressed)
@@ -36,21 +38,21 @@ void ABaseBuildings::BuildingClicked_Implementation()
 	ABasePlayerController* PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	PlayerController->AddActorSelectedToList(this);
 
-	SelectionComponent->ShowSelectionDecal();
+	//SelectionComponent->ShowSelectionDecal();
 }
 
 void ABaseBuildings::SelectThis()
 {
-	if (!BuildingComponent->isBuilded)
+	if (!BuildingComponent->isBuilded && isPlayerCanSelectThis)
 	{
-		SelectionComponent->ShowSelectionDecal();
+		//SelectionComponent->ShowSelectionDecal();
 		HUD->HUDWidgetRef->ShowTable();
 	}
 }
 
 void ABaseBuildings::DeselectThis()
 {
-	SelectionComponent->HideSelectionDecal();
+	//SelectionComponent->HideSelectionDecal();
 	HUD->HUDWidgetRef->HideTable();
 }
 

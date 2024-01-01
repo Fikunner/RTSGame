@@ -25,10 +25,12 @@ class RTSGAME_API UBaseUserWidgetHUD : public UUserWidget
 	
 public:
 
-	UBaseUserWidgetHUD(const FObjectInitializer& ObjectInitializer);
+	UPROPERTY(BlueprintReadWrite)
+	AActor* SpawnBuildingRef;
 
 	UTextBlock* TextBlockOfGold;
 	UTextBlock* TextBlockOfWood;
+	UTextBlock* TextBlockOfFood;
 	UTextBlock* TextBlockOfNumberOfActuallyPlayerUnits;
 	UImage* ImageOfMarquee;
 	UOverlay* OverlayOfTable;
@@ -38,6 +40,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector2D EndLocation;
+
+	virtual void NativeConstruct();
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateResourceValue(EResourceTypes TypeOfResource, int Amount);
@@ -59,4 +63,14 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateNumberOfPlayerUnits(int& UpdatedNumber);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void FillBar();
+
+	void CheckGoldTB();
+	void CheckWoodTB();
+	void CheckFoodTB();
+	void CheckTableOverlay();
+	void CheckActuallyNumberOfPlayerUnitsTB();
+	void CheckImageOfMarquee();
 };

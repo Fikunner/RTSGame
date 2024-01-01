@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Units/UnitActions.h"
+#include "Navigation/PathFollowingComponent.h"
 
 #include "CoreMinimal.h"
 #include "Units/BaseAIControllerUnits.h"
@@ -12,7 +12,7 @@
  * 
  */
 UCLASS()
-class RTSGAME_API AAIControllerEnemy : public ABaseAIControllerUnits, public IUnitActions
+class RTSGAME_API AAIControllerEnemy : public ABaseAIControllerUnits //, public IUnitActions
 {
 	GENERATED_BODY()
 

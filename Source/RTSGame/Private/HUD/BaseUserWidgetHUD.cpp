@@ -6,33 +6,27 @@
 #include "Components/CanvasPanelSlot.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "Units/BaseWorker.h"
+#include "Units/BaseUnit.h"
 #include "Units/BaseUnitComponent.h"
 
-UBaseUserWidgetHUD::UBaseUserWidgetHUD(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+void UBaseUserWidgetHUD::NativeConstruct()
 {
-	TextBlockOfGold = nullptr;
+	Super::NativeConstruct(); 
+
+	CheckGoldTB();
+	CheckWoodTB();
+	CheckFoodTB();
+	CheckTableOverlay();
+	CheckImageOfMarquee();
 }
 
 void UBaseUserWidgetHUD::UpdateResourceValue(EResourceTypes TypeOfResource, int Amount)
 {
-	const FName TextControlNameGold = FName(TEXT("TB_GoldAmount"));
-	if (TextBlockOfGold == nullptr)
-	{
-		TextBlockOfGold = StaticCast<UTextBlock*>(WidgetTree->FindWidget(TextControlNameGold));
-	}
-
-	const FName TextControlNameWood = FName(TEXT("TB_WoodAmount"));
-	if (TextBlockOfWood == nullptr)
-	{
-		TextBlockOfWood = StaticCast<UTextBlock*>(WidgetTree->FindWidget(TextControlNameWood));
-	}
-
 	switch (TypeOfResource)
 	{
 		case EResourceTypes::Gold:
 		{
-			if (TextBlockOfGold != nullptr)
+			if (TextBlockOfGold)
 			{
 				TextBlockOfGold->SetText(UKismetTextLibrary::Conv_IntToText(Amount, false, true, 2));
 			}
@@ -42,25 +36,30 @@ void UBaseUserWidgetHUD::UpdateResourceValue(EResourceTypes TypeOfResource, int 
 	
 		case EResourceTypes::Wood:
 		{
-			if (TextBlockOfWood != nullptr)
+			if (TextBlockOfWood)
 			{
 				TextBlockOfWood->SetText(UKismetTextLibrary::Conv_IntToText(Amount, false, true, 2));
 			}
+
+			break;
+		}
+
+		case EResourceTypes::Food:
+		{
+			if (TextBlockOfWood)
+			{
+				TextBlockOfFood->SetText(UKismetTextLibrary::Conv_IntToText(Amount, false, true, 2));
+			}
+
+			break;
 		}
 	}
 }
 
 void UBaseUserWidgetHUD::StartMarqueeUpdate()
 {
-	const FName TextControlName = FName(TEXT("Img_Marquee"));
-	if (ImageOfMarquee == nullptr)
-	{
-		ImageOfMarquee = StaticCast<UImage*>(WidgetTree->FindWidget(TextControlName));
-	}
-
 	StartLocation = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
 	ImageOfMarquee->SetVisibility(ESlateVisibility::HitTestInvisible);
-
 }
 
 void UBaseUserWidgetHUD::UpdateMarquee_Implementation()
@@ -70,7 +69,7 @@ void UBaseUserWidgetHUD::UpdateMarquee_Implementation()
 
 void UBaseUserWidgetHUD::StopMarqueeUpdate()
 {
-	if (ImageOfMarquee != nullptr)
+	if (ImageOfMarquee)
 	{
 		ImageOfMarquee->SetVisibility(ESlateVisibility::Collapsed);
 	}
@@ -78,18 +77,12 @@ void UBaseUserWidgetHUD::StopMarqueeUpdate()
 
 void UBaseUserWidgetHUD::ShowTable()
 {
-	const FName TextControlName = FName(TEXT("TableOverlay"));
-	if (OverlayOfTable == nullptr)
-	{
-		OverlayOfTable = StaticCast<UOverlay*>(WidgetTree->FindWidget(TextControlName));
-	}
-	
 	OverlayOfTable->SetVisibility(ESlateVisibility::Visible);
 }
 
 void UBaseUserWidgetHUD::HideTable()
 {
-	if (OverlayOfTable != nullptr)
+	if (OverlayOfTable)
 	{
 		OverlayOfTable->SetVisibility(ESlateVisibility::Collapsed);
 	}
@@ -97,16 +90,12 @@ void UBaseUserWidgetHUD::HideTable()
 
 void UBaseUserWidgetHUD::UpdateNumberOfPlayerUnits(int& UpdatedNumber)
 {
-	const FName TextControlName = FName(TEXT("TB_ActuallyNumberOfPlayerUnits"));
-	if (TextBlockOfNumberOfActuallyPlayerUnits == nullptr)
-	{
-		TextBlockOfNumberOfActuallyPlayerUnits = StaticCast<UTextBlock*>(WidgetTree->FindWidget(TextControlName));
-	}
+	CheckActuallyNumberOfPlayerUnitsTB();
 
 	UpdatedNumber = 0;
 	TArray<AActor*> FoundActors;
 
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABaseWorker::StaticClass(), FoundActors);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABaseUnit::StaticClass(), FoundActors);
 
 	for (AActor* ArrayElement : FoundActors)
 	{
@@ -119,4 +108,63 @@ void UBaseUserWidgetHUD::UpdateNumberOfPlayerUnits(int& UpdatedNumber)
 	}
 
 	TextBlockOfNumberOfActuallyPlayerUnits->SetText(UKismetTextLibrary::Conv_IntToText(UpdatedNumber));
+}
+
+void UBaseUserWidgetHUD::FillBar_Implementation()
+{
+
+}
+
+void UBaseUserWidgetHUD::CheckGoldTB()
+{
+	const FName TextControlNameGold = FName(TEXT("TB_GoldAmount"));
+	if (!TextBlockOfGold)
+	{
+		TextBlockOfGold = StaticCast<UTextBlock*>(WidgetTree->FindWidget(TextControlNameGold));
+	}
+}
+
+void UBaseUserWidgetHUD::CheckWoodTB()
+{
+	const FName TextControlNameWood = FName(TEXT("TB_WoodAmount"));
+	if (!TextBlockOfWood)
+	{
+		TextBlockOfWood = StaticCast<UTextBlock*>(WidgetTree->FindWidget(TextControlNameWood));
+	}
+}
+
+void UBaseUserWidgetHUD::CheckFoodTB()
+{
+	const FName TextControlNameFood = FName(TEXT("TB_FoodAmount"));
+	if (!TextBlockOfFood)
+	{
+		TextBlockOfFood = StaticCast<UTextBlock*>(WidgetTree->FindWidget(TextControlNameFood));
+	}
+}
+
+void UBaseUserWidgetHUD::CheckTableOverlay()
+{
+	const FName TextControlName = FName(TEXT("TableOverlay"));
+	if (!OverlayOfTable)
+	{
+		OverlayOfTable = StaticCast<UOverlay*>(WidgetTree->FindWidget(TextControlName));
+	}
+}
+
+void UBaseUserWidgetHUD::CheckActuallyNumberOfPlayerUnitsTB()
+{
+	const FName TextControlName = FName(TEXT("TB_ActuallyNumberOfPlayerUnits"));
+	if (!TextBlockOfNumberOfActuallyPlayerUnits)
+	{
+		TextBlockOfNumberOfActuallyPlayerUnits = StaticCast<UTextBlock*>(WidgetTree->FindWidget(TextControlName));
+	}
+}
+
+void UBaseUserWidgetHUD::CheckImageOfMarquee()
+{
+	const FName TextControlName = FName(TEXT("Img_Marquee"));
+	if (!ImageOfMarquee)
+	{
+		ImageOfMarquee = StaticCast<UImage*>(WidgetTree->FindWidget(TextControlName));
+	}
 }

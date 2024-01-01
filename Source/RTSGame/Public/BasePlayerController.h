@@ -113,8 +113,6 @@ private:
 	UPROPERTY()
 	class ABaseBuildings* BuildingBase;
 	UPROPERTY()
-	class ABaseWorker* Worker;
-	UPROPERTY()
 	class ABaseAIControllerUnits* AIControllerUnits;
 	UPROPERTY()
 	class ABaseHUD* HUD;

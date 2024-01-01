@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Units/SelectionComponent.h"
+#include "Units/SelectComponent.h"
 #include "Components/DecalComponent.h"
 
 // Sets default values for this component's properties
-USelectionComponent::USelectionComponent()
+USelectComponent::USelectComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -15,20 +15,21 @@ USelectionComponent::USelectionComponent()
 	IndicatorOffset = FVector(0, 0, 0);
 }
 
-void USelectionComponent::ShowSelectionDecal()
+
+void USelectComponent::ShowSelectionDecal()
 {
 	DecalComponentRef->SetVisibility(true, false);
 	DecalComponentRef->SetHiddenInGame(false, false);
 }
 
-void USelectionComponent::HideSelectionDecal()
+void USelectComponent::HideSelectionDecal()
 {
 	DecalComponentRef->SetVisibility(false, false);
 	DecalComponentRef->SetHiddenInGame(true, false);
 }
 
 // Called when the game starts
-void USelectionComponent::BeginPlay()
+void USelectComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -37,6 +38,8 @@ void USelectionComponent::BeginPlay()
 	FVector3d Scale = FVector3d(1, 1, 1);
 
 	FTransform RelativeTransform = FTransform(Rotation, Location, Scale);
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, "TEST");
 
 	DecalComponentRef = Cast<UDecalComponent>(GetOwner()->AddComponentByClass(UDecalComponent::StaticClass(), false, RelativeTransform, false));
 	if (DecalComponentRef)
@@ -51,11 +54,12 @@ void USelectionComponent::BeginPlay()
 
 }
 
+
 // Called every frame
-void USelectionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void USelectComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-
+	// ...
 }
 

@@ -25,6 +25,8 @@ void UBaseUnitComponent::BeginPlay()
 
 	HealthBarWidgetComponent = Cast<UBaseHealthBarWidgetComponent>(GetOwner()->GetComponentByClass(UBaseHealthBarWidgetComponent::StaticClass()));
 
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, "TEST");
+
 	UpdateHealthBar();
 
 	GetOwner()->OnClicked.AddDynamic(this, &UBaseUnitComponent::OnOwnerClicked);

@@ -24,7 +24,7 @@ public:
 	UPROPERTY()
 	class UBaseUserWidgetHUD* UserWidgetHUD;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	class UBaseUserWidgetHUD* HUDWidgetRef;
 
 protected:

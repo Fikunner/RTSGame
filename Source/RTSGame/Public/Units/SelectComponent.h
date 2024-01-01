@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "SelectionComponent.generated.h"
+#include "SelectComponent.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class RTSGAME_API USelectionComponent : public UActorComponent
+class RTSGAME_API USelectComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	USelectionComponent();
+	USelectComponent();
 
 	UFUNCTION()
 	void ShowSelectionDecal();
@@ -23,7 +23,7 @@ public:
 	void HideSelectionDecal();
 
 	UDecalComponent* DecalComponentRef;
-	
+
 	UPROPERTY(EditAnywhere)
 	UMaterialInterface* DecalMaterial;
 

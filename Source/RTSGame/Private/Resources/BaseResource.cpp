@@ -2,7 +2,6 @@
 
 #include "Resources/BaseResource.h"
 #include "Resources/ResourceComponent.h"
-#include "Units/BaseWorker.h"
 
 // Sets default values
 ABaseResource::ABaseResource()

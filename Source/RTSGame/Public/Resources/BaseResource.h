@@ -19,9 +19,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UResourceComponent* ResourceComponent;
-
-	UPROPERTY()
-	class ABaseWorker* Worker;
 	
 protected:
 	
@@ -41,5 +38,6 @@ enum class EResourceTypes : uint8
 {
 	None UMETA(DisplayName = "None"),
 	Gold UMETA(DisplayName = "Gold"),
-	Wood UMETA(DisplayName = "Wood")
+	Wood UMETA(DisplayName = "Wood"),
+	Food UMETA(DisplayName = "Food")
 };

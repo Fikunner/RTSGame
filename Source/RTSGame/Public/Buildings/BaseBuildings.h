@@ -32,6 +32,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void SelectThis() override;
+
 	UFUNCTION(BlueprintCallable)
 	virtual void DeselectThis() override;
 
@@ -45,8 +46,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class UBuildingComponent* BuildingComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class USelectionComponent* SelectionComponent;
+	UPROPERTY(EditAnywhere)
+	class USelectComponent* SelectionComponent;
 
 	UPROPERTY(EditAnywhere)
 	class UBaseHealthBarWidgetComponent* HealthBarWidgetComponent;
@@ -56,6 +57,9 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	FVector2D HealthBarWidgetSize = FVector2D(200, 20);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool isPlayerCanSelectThis;
 
 public:	
 	// Called every frame

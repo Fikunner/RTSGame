@@ -4,6 +4,7 @@
 
 #include "GenericTeamAgentInterface.h"
 #include "Units/BaseWorker.h"
+#include "Units/BaseUnits.h"
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"

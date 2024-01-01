@@ -33,8 +33,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interfaces")
 	void InteractWithBuilding(AActor* BuildingRef);
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interfaces")
-	void AttackThisActor(AActor* ActorToAttack);
+	virtual void AttackThisActor(AActor* ActorToAttack) { check(0); }
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interfaces")
 	void SetTeam(uint8 const& id);

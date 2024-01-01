@@ -43,6 +43,8 @@ void AEnemySpawner::SpawnEnemy(TSubclassOf<AActor> ActorToSpawn, int EnemiesToSp
 
 void AEnemySpawner::SpawnWave()
 {
+	CurrentWaveOrder++;
+
 	if (CurrentWaveOrder < WavesStruct.Num())
 	{
 		FWaveStruct& CurrentWave = WavesStruct[CurrentWaveOrder];
@@ -51,7 +53,6 @@ void AEnemySpawner::SpawnWave()
 			SpawnEnemy(ArrayElements, CurrentWave.EnemiesToSpawn.Num());
 		}
 
-		CurrentWaveOrder++;
 		GetWorld()->GetTimerManager().SetTimer(SpawnTimer, TimerDelegate, WavesStruct[CurrentWaveOrder].SpawnDelay, false);
 	}
 }
