@@ -14,6 +14,7 @@ AEnemySpawner::AEnemySpawner()
 	SphereCollision->SetSphereRadius(1500.f);
 
 	TimerDelegate = FTimerDelegate::CreateUObject(this, &AEnemySpawner::SpawnWave);
+	CurrentWaveOrder = -1;
 }
 
 // Called when the game starts or when spawned
@@ -51,6 +52,7 @@ void AEnemySpawner::SpawnWave()
 		for (TSubclassOf<AActor> ArrayElements : CurrentWave.EnemiesToSpawn)
 		{
 			SpawnEnemy(ArrayElements, CurrentWave.EnemiesToSpawn.Num());
+			GEngine->AddOnScreenDebugMessage(-1, 2.f,FColor::White, "Spawn");
 		}
 
 		GetWorld()->GetTimerManager().SetTimer(SpawnTimer, TimerDelegate, WavesStruct[CurrentWaveOrder].SpawnDelay, false);

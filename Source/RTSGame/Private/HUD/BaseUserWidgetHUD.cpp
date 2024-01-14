@@ -6,7 +6,7 @@
 #include "Components/CanvasPanelSlot.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "Units/BaseUnit.h"
+#include "Units/BaseUnits.h"
 #include "Units/BaseUnitComponent.h"
 
 void UBaseUserWidgetHUD::NativeConstruct()
@@ -95,7 +95,7 @@ void UBaseUserWidgetHUD::UpdateNumberOfPlayerUnits(int& UpdatedNumber)
 	UpdatedNumber = 0;
 	TArray<AActor*> FoundActors;
 
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABaseUnit::StaticClass(), FoundActors);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABaseUnits::StaticClass(), FoundActors);
 
 	for (AActor* ArrayElement : FoundActors)
 	{
