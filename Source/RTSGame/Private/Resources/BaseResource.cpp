@@ -11,7 +11,8 @@ ABaseResource::ABaseResource()
 
 	ResourceMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	ResourceMesh->SetupAttachment(RootComponent);
-	
+	ResourceMesh->bReceivesDecals = false;
+
 }
 
 // Called when the game starts or when spawned

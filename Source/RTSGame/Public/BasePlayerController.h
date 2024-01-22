@@ -27,7 +27,7 @@ public:
 	ABasePlayerController();
 
 	UFUNCTION(BlueprintCallable)
-	void ReceiveResources(EResourceTypes ResourceType, int32 Amount);
+	void ReceiveResources(EResourceTypes ResourceType, int32 Amount, int HowMuchToSubstractFromMaxValue);
 
 	UFUNCTION()
 	void AddActorSelectedToList(AActor* SelectedActor);
@@ -109,6 +109,11 @@ private:
 
 	UFUNCTION()
 	void MouseAction();
+
+	UFUNCTION()
+	void OpenMenu();
+
+	bool IsOpenMenu;
 
 	UPROPERTY()
 	class ABaseBuildings* BuildingBase;

@@ -19,7 +19,7 @@ void UResourceComponent::GiveResource(EResourceTypes& TypeResource, int& NumberR
 {
 	TimeIsCanBeMined -= 1;
 	TypeResource = TypeOfResource;
-	NumberResourcesToGive = NumberOfResourcesToGive;
+	NumberOfResourcesToGive = NumberOfResourcesToGive;
 }
 
 bool UResourceComponent::CanThisResourceBeMined()

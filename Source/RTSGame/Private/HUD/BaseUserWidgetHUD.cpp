@@ -46,7 +46,7 @@ void UBaseUserWidgetHUD::UpdateResourceValue(EResourceTypes TypeOfResource, int 
 
 		case EResourceTypes::Food:
 		{
-			if (TextBlockOfWood)
+			if (TextBlockOfFood)
 			{
 				TextBlockOfFood->SetText(UKismetTextLibrary::Conv_IntToText(Amount, false, true, 2));
 			}

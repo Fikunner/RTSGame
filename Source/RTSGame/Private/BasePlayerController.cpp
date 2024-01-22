@@ -33,6 +33,8 @@ void ABasePlayerController::SetupInputComponent()
 	InputComponent->BindAction("MouseSelection", IE_Released, this, &ABasePlayerController::MouseDeselection);
 
 	InputComponent->BindAction("MouseAction", IE_Released, this, &ABasePlayerController::MouseAction);
+
+	InputComponent->BindAction("OpenMenu", IE_Pressed, this, &ABasePlayerController::OpenMenu);
 }
 
 void ABasePlayerController::BeginPlay()
@@ -156,8 +158,36 @@ void ABasePlayerController::MouseAction()
 	}
 }
 
-void ABasePlayerController::ReceiveResources(EResourceTypes ResourceType, int32 Amount)
+void ABasePlayerController::OpenMenu()
 {
+	HUD = Cast<ABaseHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+
+	if (IsOpenMenu == false)
+	{
+		HUD->HUDWidgetRef->ShowTable();
+		IsOpenMenu = true;
+	}
+
+	else
+	{
+		HUD->HUDWidgetRef->HideTable();
+		IsOpenMenu = false;
+	}
+}
+
+void ABasePlayerController::ReceiveResources(EResourceTypes ResourceType, int32 Amount, int HowMuchToSubstractFromMaxValue)
+{
+	int32 MinAmountValue = Amount - HowMuchToSubstractFromMaxValue;
+
+	if (MinAmountValue <= 0)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 60.f,FColor::Red, "Minimum value of the resource is less than 0");
+	}
+
+	int32 MaxAmountValue = Amount;
+
+	Amount = FMath::RandRange(MinAmountValue, MaxAmountValue);
+
 	if (StoredResource.Contains(ResourceType))
 	{
 		Amount += *StoredResource.Find(ResourceType);
